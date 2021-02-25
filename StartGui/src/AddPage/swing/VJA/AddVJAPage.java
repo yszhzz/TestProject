@@ -1,13 +1,13 @@
-/*
- * Created by JFormDesigner on Tue Feb 23 15:44:20 CST 2021
- */
-
-package cn.sources.addpage.page;
+package AddPage.swing.VJA;
 
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.border.*;
+/*
+ * Created by JFormDesigner on Tue Feb 23 09:53:45 CST 2021
+ */
+
+
 
 /**
  * @author ice
@@ -22,10 +22,6 @@ public class AddVJAPage extends JFrame {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    private JPanel dialogPane;
-    private JPanel contentPanel;
-    private JPanel buttonBar;
-    private JButton okButton;
-    private JButton cancelButton;
+    private JLabel label1;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }
