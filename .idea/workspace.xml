@@ -4,19 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f68a3aba-e173-4209-98ba-ce744f3e29bd" name="Default Changelist" comment="2021.02.24 Commit From Home">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_13.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FirstMoudule/src/main/java/cn/sources/awt/WindowsDemo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/StartGui/src/AddPage/awt/WindowsDemo.java" afterDir="false" />
+    <list default="true" id="f68a3aba-e173-4209-98ba-ce744f3e29bd" name="Default Changelist" comment="2021.02.25 Commit From Home">
+      <change afterPath="$PROJECT_DIR$/FirstMoudule/src/main/java/cn/sources/awt/WindowBasicComponentDemo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FirstMoudule/FirstMoudule.iml" beforeDir="false" afterPath="$PROJECT_DIR$/FirstMoudule/FirstMoudule.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FirstMoudule/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FirstMoudule/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FirstMoudule/src/main/java/cn/sources/addpage/page/AddVJAPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/FirstMoudule/src/main/java/cn/sources/addpage/page/AddVJAPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StartGui/StartGui.iml" beforeDir="false" afterPath="$PROJECT_DIR$/StartGui/StartGui.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StartGui/src/AddPage/VJA/AddVJAPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/StartGui/src/AddPage/swing/VJA/AddVJAPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StartGui/src/AddPage/VJA/AddVJAPage.jfd" beforeDir="false" afterPath="$PROJECT_DIR$/StartGui/src/AddPage/swing/VJA/AddVJAPage.jfd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StartGui/src/AddPage/prop/AddVJAPage.properties" beforeDir="false" afterPath="$PROJECT_DIR$/StartGui/src/AddPage/swing/prop/AddVJAPage.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FirstMoudule/src/main/java/cn/sources/awt/WindowsDemo.java" beforeDir="false" afterPath="$PROJECT_DIR$/FirstMoudule/src/main/java/cn/sources/awt/WindowsDemo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FirstMoudule/target/classes/cn/sources/addpage/page/AddVJAPage.class" beforeDir="false" afterPath="$PROJECT_DIR$/FirstMoudule/target/classes/cn/sources/addpage/page/AddVJAPage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FirstMoudule/target/classes/cn/sources/awt/WindowsDemo.class" beforeDir="false" afterPath="$PROJECT_DIR$/FirstMoudule/target/classes/cn/sources/awt/WindowsDemo.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,20 +54,21 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="MavenSettings" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.completion" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="G:\WorkSpace\WorkSpaceForIDEA\TestProject\StartGui" />
     </key>
   </component>
-  <component name="RunManager">
-    <configuration name="WindowsDemo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="AddPage.awt.WindowsDemo" />
-      <module name="StartGui" />
+  <component name="RunManager" selected="Application.WindowBasicComponentDemo">
+    <configuration name="WindowBasicComponentDemo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="cn.sources.awt.WindowBasicComponentDemo" />
+      <module name="FirstMoudule" />
+      <option name="VM_PARAMETERS" value="-Dfile.encoding=gbk" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="AddPage.awt.*" />
+          <option name="PATTERN" value="cn.sources.awt.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -78,7 +76,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="WindowsDemo1" type="Application" factoryName="Application" temporary="true">
+    <configuration name="WindowsDemo" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="cn.sources.awt.WindowsDemo" />
       <module name="FirstMoudule" />
       <option name="VM_PARAMETERS" value="-Dfile.encoding=gbk" />
@@ -92,22 +90,25 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.WindowsDemo" />
+      <item itemvalue="Application.WindowBasicComponentDemo" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.WindowsDemo1" />
+        <item itemvalue="Application.WindowBasicComponentDemo" />
+        <item itemvalue="Application.WindowsDemo" />
       </list>
     </recent_temporary>
   </component>
@@ -122,7 +123,8 @@
       <workItem from="1614076444476" duration="328000" />
       <workItem from="1614076783577" duration="44000" />
       <workItem from="1614176201596" duration="2694000" />
-      <workItem from="1614266198476" duration="1458000" />
+      <workItem from="1614266198476" duration="1860000" />
+      <workItem from="1614515994025" duration="10055000" />
     </task>
     <task id="LOCAL-00001" summary="2021.02.24 Commit From Home">
       <created>1614180483249</created>
@@ -131,7 +133,21 @@
       <option name="project" value="LOCAL" />
       <updated>1614180483249</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="2021.02.25 Commit From Home">
+      <created>1614267690518</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1614267690518</updated>
+    </task>
+    <task id="LOCAL-00003" summary="2021.02.25 Commit From Home">
+      <created>1614267709201</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1614267709201</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -151,6 +167,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="2021.02.24 Commit From Home" />
-    <option name="LAST_COMMIT_MESSAGE" value="2021.02.24 Commit From Home" />
+    <MESSAGE value="2021.02.25 Commit From Home" />
+    <option name="LAST_COMMIT_MESSAGE" value="2021.02.25 Commit From Home" />
   </component>
 </project>
