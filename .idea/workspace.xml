@@ -5,15 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f68a3aba-e173-4209-98ba-ce744f3e29bd" name="Default Changelist" comment="2021.02.25 Commit From Home">
-      <change afterPath="$PROJECT_DIR$/FirstMoudule/src/main/java/cn/sources/awt/WindowBasicComponentDemo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FirstMoudule/FirstMoudule.iml" beforeDir="false" afterPath="$PROJECT_DIR$/FirstMoudule/FirstMoudule.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FirstMoudule/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FirstMoudule/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FirstMoudule/src/main/java/cn/sources/awt/WindowsDemo.java" beforeDir="false" afterPath="$PROJECT_DIR$/FirstMoudule/src/main/java/cn/sources/awt/WindowsDemo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FirstMoudule/target/classes/cn/sources/addpage/page/AddVJAPage.class" beforeDir="false" afterPath="$PROJECT_DIR$/FirstMoudule/target/classes/cn/sources/addpage/page/AddVJAPage.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FirstMoudule/target/classes/cn/sources/awt/WindowsDemo.class" beforeDir="false" afterPath="$PROJECT_DIR$/FirstMoudule/target/classes/cn/sources/awt/WindowsDemo.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,7 +46,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.completion" />
+    <property name="settings.editor.selected.configurable" value="http.proxy" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -124,7 +116,8 @@
       <workItem from="1614076783577" duration="44000" />
       <workItem from="1614176201596" duration="2694000" />
       <workItem from="1614266198476" duration="1860000" />
-      <workItem from="1614515994025" duration="10055000" />
+      <workItem from="1614515994025" duration="11536000" />
+      <workItem from="1614529987612" duration="226000" />
     </task>
     <task id="LOCAL-00001" summary="2021.02.24 Commit From Home">
       <created>1614180483249</created>
@@ -147,7 +140,14 @@
       <option name="project" value="LOCAL" />
       <updated>1614267709201</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Commit 2021.02.28 23.59">
+      <created>1614527985067</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1614527985067</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -168,6 +168,11 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="2021.02.24 Commit From Home" />
     <MESSAGE value="2021.02.25 Commit From Home" />
-    <option name="LAST_COMMIT_MESSAGE" value="2021.02.25 Commit From Home" />
+    <MESSAGE value="Commit 2021.02.28 23.59" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit 2021.02.28 23.59" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
