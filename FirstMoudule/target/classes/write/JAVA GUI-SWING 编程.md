@@ -664,9 +664,9 @@ public class WindowDialogDemo {
 > - 事件监听器（Event Listener）：对这个事件进行处理。
 > - 注册监听：吧事件监听器绑定到事件源上。
 
-![](C:\Users\ASzsy\Desktop\text\PIC\GUI-AWT-事件监听机制.png)
+![](..\PIC\GUI-AWT-事件监听机制.png)
 
-![](C:\Users\ASzsy\Desktop\text\PIC\GUI-AWT-事件监听机制2.png)
+![](..\PIC\GUI-AWT-事件监听机制2.png)
 
 #### 6.2 事件处理使用步骤
 
@@ -734,4 +734,31 @@ public class EventDemo {
 | KeyEvent       | 键盘事件，当按键被按下、松开、单击时触发该事件。             |
 | MouseEvent     | 鼠标事件，当单击、按下、松开、移动等时触发。                 |
 | PaintEvent     | 组件绘制事件，该事件是一个特殊的事件类型，当GUI组件调用Update/paint方法来呈现自身触发该事件，并非专用于事件处理模型。 |
+
+- 高级事件
+
+| 事件           | 触发机制                                                     |
+| -------------- | ------------------------------------------------------------ |
+| ActionEvent    | 动作事件，当按钮、菜单项被单击，在TextField中按Enter时触发。 |
+| AjustmentEvent | 调节事件，在滑动条上移动滑块调节数值时触发时触发。           |
+| ItemEvent      | 选项事件，当用户选中、取消选中时触发。                       |
+| TextEvent      | 文本事件，当文本框、文本域里的文本发生改变时触发时触发。     |
+
+##### 6.3.2 事件监听器
+
+​		不同的事件需要不同的监听器监听，即使用不同的接口。
+
+| 事件           | 描述信息             | 监听器接口          |
+| -------------- | -------------------- | ------------------- |
+| ActionEvent    | 激活组件             | ActionListener      |
+| ItemEvent      | 选择了某些项目       | ItemListener        |
+| MouseEvent     | 鼠标移动             | MouseMotionListener |
+| MouseEvent     | 鼠标点击             | MouseListener       |
+| KeyEvent       | 键盘输入             | KeyListener         |
+| FocusEvent     | 收到或失去焦点       | FocusListener       |
+| AjustmentEvent | 移动了滚动条         | AjustmentListener   |
+| ComponentEvent | 对象移动缩放显示隐藏 | ComponentListener   |
+| WindowEvent    | 窗口接受到窗口级事件 | WindowListener      |
+| ContainerEvent | 容器中增加删除组件   | ContainerListener   |
+| TextEvent      | 文本发生改变         | TextListener        |
 

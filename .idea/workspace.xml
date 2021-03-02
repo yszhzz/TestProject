@@ -5,13 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f68a3aba-e173-4209-98ba-ce744f3e29bd" name="Default Changelist" comment="2021.03.01 Commit From Home">
-      <change afterPath="$PROJECT_DIR$/FirstMoudule/src/main/java/cn/sources/awt/EventDemo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FirstMoudule/src/main/java/cn/sources/awt/EventListenerDemo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FirstMoudule/src/main/java/cn/sources/awt/WindowDialogDemo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_13.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_13.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FirstMoudule/src/main/java/cn/sources/awt/MenuDemo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FirstMoudule/src/main/resources/write/JAVA GUI-SWING 编程.md" beforeDir="false" afterPath="$PROJECT_DIR$/FirstMoudule/src/main/resources/write/JAVA GUI-SWING 编程.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FirstMoudule/src/main/java/cn/sources/awt/EventListenerDemo.java" beforeDir="false" afterPath="$PROJECT_DIR$/FirstMoudule/src/main/java/cn/sources/awt/EventListenerDemo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FirstMoudule/src/main/resources/write/JAVA GUI-SWING 编程.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FirstMoudule/src/main/resources/write/PIC/GUI-AWT-事件监听机制.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FirstMoudule/src/main/resources/write/PIC/GUI-AWT-事件监听机制2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FirstMoudule/target/classes/cn/sources/awt/EventListenerDemo$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/FirstMoudule/target/classes/cn/sources/awt/EventListenerDemo$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FirstMoudule/target/classes/cn/sources/awt/EventListenerDemo$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/FirstMoudule/target/classes/cn/sources/awt/EventListenerDemo$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FirstMoudule/target/classes/cn/sources/awt/EventListenerDemo$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/FirstMoudule/target/classes/cn/sources/awt/EventListenerDemo$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FirstMoudule/target/classes/cn/sources/awt/EventListenerDemo.class" beforeDir="false" afterPath="$PROJECT_DIR$/FirstMoudule/target/classes/cn/sources/awt/EventListenerDemo.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FirstMoudule/target/classes/write/JAVA GUI-SWING 编程.md" beforeDir="false" afterPath="$PROJECT_DIR$/FirstMoudule/target/classes/write/JAVA GUI-SWING 编程.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +78,7 @@
       <recent name="G:\WorkSpace\WorkSpaceForIDEA\TestProject\StartGui" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.EventListenerDemo">
+  <component name="RunManager" selected="Application.MenuDemo">
     <configuration name="EventDemo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="cn.sources.awt.EventDemo" />
       <module name="FirstMoudule" />
@@ -90,6 +94,19 @@
     </configuration>
     <configuration name="EventListenerDemo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="cn.sources.awt.EventListenerDemo" />
+      <module name="FirstMoudule" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cn.sources.awt.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MenuDemo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="cn.sources.awt.MenuDemo" />
       <module name="FirstMoudule" />
       <extension name="coverage">
         <pattern>
@@ -128,47 +145,31 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="WindowsDemo" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="cn.sources.awt.WindowsDemo" />
-      <module name="FirstMoudule" />
-      <option name="VM_PARAMETERS" value="-Dfile.encoding=gbk" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="cn.sources.awt.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.WindowsDemo" />
       <item itemvalue="Application.WindowBasicComponentDemo" />
       <item itemvalue="Application.WindowDialogDemo" />
       <item itemvalue="Application.EventDemo" />
       <item itemvalue="Application.EventListenerDemo" />
+      <item itemvalue="Application.MenuDemo" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.MenuDemo" />
         <item itemvalue="Application.EventListenerDemo" />
         <item itemvalue="Application.EventDemo" />
         <item itemvalue="Application.WindowDialogDemo" />
         <item itemvalue="Application.WindowBasicComponentDemo" />
-        <item itemvalue="Application.WindowsDemo" />
       </list>
     </recent_temporary>
   </component>
