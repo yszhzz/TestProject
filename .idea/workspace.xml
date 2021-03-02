@@ -4,11 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f68a3aba-e173-4209-98ba-ce744f3e29bd" name="Default Changelist" comment="2021.03.01 Commit From Home" />
+    <list default="true" id="f68a3aba-e173-4209-98ba-ce744f3e29bd" name="Default Changelist" comment="2021.03.01 Commit From Home">
+      <change afterPath="$PROJECT_DIR$/FirstMoudule/src/main/java/cn/sources/awt/EventDemo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FirstMoudule/src/main/java/cn/sources/awt/EventListenerDemo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FirstMoudule/src/main/java/cn/sources/awt/WindowDialogDemo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_13.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_13.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FirstMoudule/src/main/resources/write/JAVA GUI-SWING 编程.md" beforeDir="false" afterPath="$PROJECT_DIR$/FirstMoudule/src/main/resources/write/JAVA GUI-SWING 编程.md" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -20,14 +31,25 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
-        <option name="localRepository" value="D:\SoftWare\WorkTool\Maven\mavenRepository" />
-        <option name="mavenHome" value="D:\SoftWare\WorkTool\Maven\maven-3.5.3" />
-        <option name="userSettingsFile" value="D:\SoftWare\WorkTool\Maven\maven-3.5.3\conf\settings.xml" />
+        <option name="localRepository" value="D:\SoftWare\Maven\mavenRepository" />
+        <option name="mavenHome" value="D:\SoftWare\Maven\maven-3.5.3" />
+        <option name="userSettingsFile" value="D:\SoftWare\Maven\maven-3.5.3\conf\settings.xml" />
       </MavenGeneralSettings>
     </option>
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
   </component>
   <component name="ProjectId" id="1osXo24RmsbKRFCdXRSKmkjFq1x" />
   <component name="ProjectViewState">
@@ -41,21 +63,61 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/FirstMoudule/src/main/resources/write" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="http.proxy" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="G:\WorkSpace\WorkSpaceForIDEA\TestProject\StartGui" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.WindowBasicComponentDemo">
+  <component name="RunManager" selected="Application.EventListenerDemo">
+    <configuration name="EventDemo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="cn.sources.awt.EventDemo" />
+      <module name="FirstMoudule" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cn.sources.awt.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="EventListenerDemo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="cn.sources.awt.EventListenerDemo" />
+      <module name="FirstMoudule" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cn.sources.awt.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="WindowBasicComponentDemo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="cn.sources.awt.WindowBasicComponentDemo" />
       <module name="FirstMoudule" />
       <option name="VM_PARAMETERS" value="-Dfile.encoding=gbk" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cn.sources.awt.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="WindowDialogDemo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="cn.sources.awt.WindowDialogDemo" />
+      <module name="FirstMoudule" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="cn.sources.awt.*" />
@@ -80,13 +142,15 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="class" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -94,9 +158,15 @@
     <list>
       <item itemvalue="Application.WindowsDemo" />
       <item itemvalue="Application.WindowBasicComponentDemo" />
+      <item itemvalue="Application.WindowDialogDemo" />
+      <item itemvalue="Application.EventDemo" />
+      <item itemvalue="Application.EventListenerDemo" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.EventListenerDemo" />
+        <item itemvalue="Application.EventDemo" />
+        <item itemvalue="Application.WindowDialogDemo" />
         <item itemvalue="Application.WindowBasicComponentDemo" />
         <item itemvalue="Application.WindowsDemo" />
       </list>
@@ -117,6 +187,7 @@
       <workItem from="1614515994025" duration="11536000" />
       <workItem from="1614529987612" duration="226000" />
       <workItem from="1614611084679" duration="329000" />
+      <workItem from="1614647443804" duration="8539000" />
     </task>
     <task id="LOCAL-00001" summary="2021.02.24 Commit From Home">
       <created>1614180483249</created>
