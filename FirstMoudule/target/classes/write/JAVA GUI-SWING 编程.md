@@ -664,7 +664,7 @@ public class WindowDialogDemo {
 > - 事件监听器（Event Listener）：对这个事件进行处理。
 > - 注册监听：吧事件监听器绑定到事件源上。
 
-![](..\PIC\GUI-AWT-事件监听机制.png)
+![](..\PIC\GUI-AWT-事件监听机制.png)	
 
 ![](..\PIC\GUI-AWT-事件监听机制2.png)
 
@@ -762,3 +762,282 @@ public class EventDemo {
 | ContainerEvent | 容器中增加删除组件   | ContainerListener   |
 | TextEvent      | 文本发生改变         | TextListener        |
 
+注：
+
+> - 窗口关闭按钮通过`WindowListener`实现，可使用适配器设计模式的`WindowAdapter`实现。
+> - 监听器一定要在操作前进行注册，否则无法监听
+
+
+
+```java
+package cn.sources.awt;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class EventListenerDemo {
+
+    public static void main(String[] args) {
+
+        Frame frame = new Frame("Listener");
+
+        TextField textField = new TextField(30);
+        Choice name = new Choice();
+        name.add("LY");
+        name.add("SQ");
+        name.add("YN");
+        //全重写模式
+/*        frame.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+
+            }
+        });*/
+        //设计模式 - 适配器设计模式 实现关闭
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }
+        });
+
+        textField.addTextListener(new TextListener() {
+            @Override
+            public void textValueChanged(TextEvent e) {
+                String text = textField.getText();
+
+                System.out.println(text);
+            }
+        });
+        name.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                Object item = e.getItem();
+                System.out.println(item);
+            }
+        });
+        frame.addContainerListener(new ContainerListener() {
+            @Override
+            public void componentAdded(ContainerEvent e) {
+                Component child = e.getChild();
+                System.out.println(child);
+            }
+
+            @Override
+            public void componentRemoved(ContainerEvent e) {
+                Component child = e.getChild();
+                System.out.println(child);
+            }
+        });
+
+        Box horizontalBox = Box.createHorizontalBox();
+        horizontalBox.add(name);
+        horizontalBox.add(textField);
+        frame.add(horizontalBox);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+}
+
+```
+
+### 7、菜单组件
+
+​		菜单组件
+
+![](..\PIC\GUI-AWT-菜单组件.png)
+
+| 组件             | 功能                                                         |
+| ---------------- | ------------------------------------------------------------ |
+| MenuBar          | 菜单条，菜单的容器。                                         |
+| Menu             | 菜单组件，菜单项的容器，是MenuItem的子类，亦可作为菜单项使用。 |
+| PopupMenu        | 上下文菜单组件（右键菜单）。                                 |
+| TextEvent        | 文本事件，当文本框、文本域里的文本发生改变时触发时触发。     |
+| MenuItem         | 菜单项组件。                                                 |
+| CheckboxMenuItem | 复选框菜单项组件。                                           |
+
+![](..\PIC\GUI-AWT-菜单组件继承关系.png)
+
+#### 7.1菜单项简单使用
+
+注：
+
+> - 若要在某个菜单的菜单项之间添加分割线，只需要调用Menu的`add(new MenuItem(“-”))`即可.
+> - 若要关联快捷键功能，需在创建菜单项时进行设置，`new MenuItem(“菜单项名称”,new MenuShortcut(KeyEvent.VK_Q,true))`即为添加`Ctrl+Shift+Q`快捷键，`VK_Q`表示`Ctrl+Q`，`true`表示还有`Shift`。
+> - 对于右键菜单，是同过`popupMenu.show(panel,e.getX(),e.getY())`方法来进行展示的，这里的第一个参数为事件源组件，必须与绑定该事件的组件所一致，否则会报错。后两个参数为位置信息，可通过Event获取
+> - 所有事件信息均可通过Event对象来获取，它包含了很多的信息，如getActionCommand为获取触发组件的名称。对于鼠标监听器中点击监听器，可通过Event获取是否左、右键点击，
+> - 对于文本框，可在创建是输入默认显示的文本。它在改变时候，既可以通过setText覆盖，也可通过append追加。
+> - 在创建监听器时，大概率会有部分不需要的方法，但是由于是进口，必须重写。这里提供适配器设计模式下的监听器（XXXAdapter），对每个方法都进行空实现，使用该监听器可选择需要的方法重写。
+
+```java
+package cn.sources.awt;
+
+import java.awt.*;
+import java.awt.event.*;
+
+public class MenuDemo {
+
+    private Frame frame = new Frame("Menu");
+
+
+
+    private MenuBar menuBar = new MenuBar();
+    private Menu fileMenu = new Menu("File");
+    private Menu editMenu = new Menu("Edit");
+
+    private Menu formatMenu = new Menu("Format");
+
+    private MenuItem auto = new MenuItem("auto");
+    private MenuItem copy = new MenuItem("copy");
+    private MenuItem paste = new MenuItem("paste");
+
+    private MenuItem comment = new MenuItem("comment",new MenuShortcut(KeyEvent.VK_Q,true));
+    private MenuItem cancel = new MenuItem("cancel");
+
+    private TextArea tx = new TextArea("I LOVE\n",6,40);
+
+    private Panel panelX = new Panel();
+
+    private Panel panel = new Panel();
+
+    private PopupMenu popupMenu = new PopupMenu();
+
+    private MenuItem run1 = new MenuItem("run1");
+    private MenuItem run2 = new MenuItem("run2");
+    private MenuItem run3 = new MenuItem("run3");
+
+
+
+
+
+    public void init() {
+        comment.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //可以通过Event 对象获取事件的详细信息，getActionCommand为获取触发组件的名称
+                tx.append(e.getActionCommand()+"\n");
+            }
+        });
+
+        popupMenu.add(run1);
+        popupMenu.add(run2);
+        popupMenu.add(run3);
+
+        ActionListener al = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String actionCommand = e.getActionCommand();
+                tx.append(actionCommand + "\n");
+            }
+        };
+        run1.addActionListener(al);
+        run2.addActionListener(al);
+        run3.addActionListener(al);
+
+
+        formatMenu.add(comment);
+        formatMenu.add(cancel);
+
+        editMenu.add(auto);
+        editMenu.add(copy);
+        editMenu.add(paste);
+        editMenu.add(new MenuItem("-"));
+        editMenu.add(formatMenu);
+
+        menuBar.add(fileMenu);
+        menuBar.add(editMenu);
+
+        panel.add(popupMenu);
+        panel.setPreferredSize(new Dimension(400,300));
+        //这里也使用了适配器模式，只重写需要重写的方法，其他都是空实现。
+        /*
+            new MouseListener() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        };
+        */
+        panel.addMouseListener(new MouseAdapter() {
+            //该方法为点击完成
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                //该方法获取是否为右键点击
+                boolean popupTrigger = e.isPopupTrigger();
+                //如果右键点击，则展示右键菜单，参数为事件源组件，菜单显示的位置，可通过Event对象获取
+                //事件源组件一定要与绑定监听器的组件一致，否则会报错
+                if (popupTrigger) popupMenu.show(panel,e.getX(),e.getY());
+            }
+        });
+
+        frame.setMenuBar(menuBar);
+        frame.add(tx);
+        frame.add(panel,BorderLayout.SOUTH);
+        //frame.add(panelX,BorderLayout.NORTH);
+
+
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        new MenuDemo().init();
+    }
+
+}
+```
+
+### 8、绘图组件
