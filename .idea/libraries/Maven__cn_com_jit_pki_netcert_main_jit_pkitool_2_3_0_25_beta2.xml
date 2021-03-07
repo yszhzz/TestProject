@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: cn.com.jit.pki.netcert.main:jit-pkitool:2.3.0.25-beta2">
+    <CLASSES>
+      <root url="jar://D:/SoftWare/WorkTool/Maven/mavenRepository/cn/com/jit/pki/netcert/main/jit-pkitool/2.3.0.25-beta2/jit-pkitool-2.3.0.25-beta2.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://D:/SoftWare/WorkTool/Maven/mavenRepository/cn/com/jit/pki/netcert/main/jit-pkitool/2.3.0.25-beta2/jit-pkitool-2.3.0.25-beta2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://D:/SoftWare/WorkTool/Maven/mavenRepository/cn/com/jit/pki/netcert/main/jit-pkitool/2.3.0.25-beta2/jit-pkitool-2.3.0.25-beta2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

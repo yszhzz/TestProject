@@ -7,10 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="FirstMoudule" />
+        <module name="HSourcesGUI" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="FirstMoudule" target="8" />
+      <module name="HSourcesGUI" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>
