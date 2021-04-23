@@ -1091,6 +1091,13 @@ public class HVAJapanAVMTab {
                     serviceConn.commit();
                     JOptionPane.showMessageDialog(father, "提交成功", "LabelDialog", JOptionPane.INFORMATION_MESSAGE);
                     flushLabelList();
+
+                    level_1_Select.setSelectedIndex(0);
+                    level_1_Select.setSelectedIndex(0);
+                    label_code.setText("");
+                    label_show.setText("");
+                    label_comment.setText("");
+
                 } catch (SQLException error) {
                     error.printStackTrace();
                     JOptionPane.showMessageDialog(father, "提交失败！" + error.getMessage(), "LabelDialog", JOptionPane.ERROR_MESSAGE);

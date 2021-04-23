@@ -4,11 +4,11 @@ public class LabelConstant {
 
     public static final String[] LABEL_LEVEL_1_SHOW = new String[] {"请选择","J-剧情","C-人物","R-关系","S-环境","X-性爱","O-其他"};
 
-    public static final String[] LABEL_LEVEL_2_J_SHOW = new String[] {"请选择","F-氛围","H-有剧情","S-无剧情","A-行为"};
-    public static final String[] LABEL_LEVEL_2_C_SHOW = new String[] {"请选择","S-社会","A-年龄","C-关系","I-身份","F-特征"};
-    public static final String[] LABEL_LEVEL_2_R_SHOW = new String[] {"请选择","F-社会关系","H-人际关系","S-身份关系"};
-    public static final String[] LABEL_LEVEL_2_S_SHOW = new String[] {"请选择","F-场所","H-服装","S-道具","A-行为"};
-    public static final String[] LABEL_LEVEL_2_X_SHOW = new String[] {"请选择","F-姿势","H-有剧情","S-无剧情","A-行为"};
+    public static final String[] LABEL_LEVEL_2_J_SHOW = new String[] {"请选择","F-氛围","M-模式","H-情节"};
+    public static final String[] LABEL_LEVEL_2_C_SHOW = new String[] {"请选择","S-社会角色","A-年龄角色","I-身份角色","F-特征角色"};
+    public static final String[] LABEL_LEVEL_2_R_SHOW = new String[] {"请选择","S-社会关系","C-人际关系","I-身份关系"};
+    public static final String[] LABEL_LEVEL_2_S_SHOW = new String[] {"请选择","P-场所","S-服装","T-道具"};
+    public static final String[] LABEL_LEVEL_2_X_SHOW = new String[] {"请选择","Z-姿势 ","T-特征","A-行为"};
     public static final String[] LABEL_LEVEL_2_O_SHOW = new String[] {"请选择","F-其他"};
 
     public static final Integer[] Person_Score = new Integer[100];
