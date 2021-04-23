@@ -1,10 +1,13 @@
 package cn.mypro.swing.entity;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.log4j.lf5.viewer.LogTable;
 
-import java.util.Arrays;
 import java.util.List;
 
+@Getter
+@Setter
 public class HVAJapanAVM {
     private String uuid;
     private String if_Code;
@@ -27,18 +30,18 @@ public class HVAJapanAVM {
     private String reserve_field1;
     private String reserve_field2;
     private String reserve_field3;
+    private boolean have;
 
     private List<HVAJapanAVS> sources;
     private List<HVAJapanAVPersonM> persons;
     private List<HVAJapanAVLabelM> labels;
 
-    public static void main(String[] args) {
-        List<Integer> integers = List.of(1, 2, 3);
-
-
-
-
+    @Override
+    public String toString() {
+        if ("1".equals(recommend)) {
+            return if_Code+"(推荐)";
+        } else {
+            return if_Code;
+        }
     }
-
-
 }

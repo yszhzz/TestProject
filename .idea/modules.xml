@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/FirstMoudule/FirstMoudule.iml" filepath="$PROJECT_DIR$/FirstMoudule/FirstMoudule.iml" />
       <module fileurl="file://$PROJECT_DIR$/HSourcesGUI/HSourcesGUI.iml" filepath="$PROJECT_DIR$/HSourcesGUI/HSourcesGUI.iml" />
-      <module fileurl="file://$PROJECT_DIR$/StartGui/StartGui.iml" filepath="$PROJECT_DIR$/StartGui/StartGui.iml" />
     </modules>
   </component>
 </project>

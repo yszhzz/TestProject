@@ -59,7 +59,7 @@ public class SwingComponentDemo {
         bottomPanel.add(jTextField);
         bottomPanel.add(ok);
 
-        jFrame.add(bottomPanel);
+        //jFrame.add(bottomPanel);
 
         //组装 中下
         JPanel selectJPanel = new JPanel();
@@ -88,8 +88,6 @@ public class SwingComponentDemo {
         jFrame.add(bottomPanel, BorderLayout.SOUTH);
 
         //菜单
-
-
 
         formateMenu.add(comment);
         formateMenu.add(cancelComment);

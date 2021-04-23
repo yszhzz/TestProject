@@ -1,14 +1,13 @@
 package cn.mypro.test;
 
-import com.xuggle.xuggler.ICodec;
-import com.xuggle.xuggler.IContainer;
-import com.xuggle.xuggler.IStream;
-import com.xuggle.xuggler.IStreamCoder;
+import com.xuggle.xuggler.*;
+
+import javax.lang.model.element.VariableElement;
 
 public class TestXuggle {
 
     public static void main(String[] args) {
-        String filename = "G:\\XunLeiDown\\[Thz.la]ssni-071.mp4";
+        String filename = "E:\\H Sources\\DealSourcePath\\HAVJ\\IPX-118\\IPX-118.mp4";
         // first we create a Xuggler container object
         IContainer container = IContainer.make();
         // we attempt to open up the container
@@ -20,6 +19,8 @@ public class TestXuggle {
 
         // query how many streams the call to open found
         int numStreams = container.getNumStreams();
+        //IContainer.Type type = container.getType();
+        IContainer.Type type = container.getType();
 
         // query for the total duration
         long duration = container.getDuration();
