@@ -51,9 +51,8 @@ public class StartGUIApp {
         HVAJapanAVMTab hvaJapanAVMTab = new HVAJapanAVMTab();
         JTabbedPane jTabbedPane = hvaJapanAVMTab.initAddNewSourceTab(totalJFram);
         level_1_child.addTab("日本AV管理",new ImageIcon("HSourcesGUI/src/main/resources/pic/new.png"),jTabbedPane,"日本AV管理");
-
-
         //level_1_child.setSelectedIndex(0);
+
         totalJFram.add(level_1_child);
         totalJFram.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //totalJFram.pack();

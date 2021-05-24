@@ -21,12 +21,13 @@ public class HVAJapanAVLabelDao {
 
     private static String insertLabelSql = "insert into H_V_A_JAP_AV_LABEL_M(UUID,TYPE_1,TYPE_2,TYPE_3,LABEL_CODE,LABEL_SHOW,LABEL_COMMENT,LABEL_COUNT,LABEL_LEVEL,CREATE_TIME,UPDATE_TIME) values(?,?,?,?,?,?,?,?,?,?,?)";
     private static String selectMaxType3ByType12Sql = "select Max(TYPE_3) from H_V_A_JAP_AV_LABEL_M where TYPE_1 = ? and TYPE_2 = ?";
-    private static String selectAllSql = "select UUID,TYPE_1,TYPE_2,TYPE_3,TYPE_4,TYPE_5,LABEL_CODE,LABEL_SHOW,LABEL_COMMENT,LABEL_COUNT,LABEL_LEVEL,CREATE_TIME,UPDATE_TIME from H_V_A_JAP_AV_LABEL_M order by TYPE_1,TYPE_2,TYPE_3";
+    private static String selectAllSql = "select UUID,TYPE_1,TYPE_2,TYPE_3,TYPE_4,TYPE_5,LABEL_CODE,LABEL_SHOW,LABEL_COMMENT,LABEL_COUNT,LABEL_LEVEL,CREATE_TIME,UPDATE_TIME from H_V_A_JAP_AV_LABEL_M order by TYPE_1,TYPE_2,LABEL_SHOW";
 
-    private static String selectLabelByMessageUUIDSql = "select a.UUID,a.TYPE_1,a.TYPE_2,a.TYPE_3,a.TYPE_4,a.TYPE_5,a.LABEL_CODE,a.LABEL_SHOW,a.LABEL_COMMENT,a.LABEL_COUNT,a.LABEL_LEVEL,a.CREATE_TIME,a.UPDATE_TIME from H_V_A_JAP_AV_LABEL_M a,H_V_A_JAP_AV_LABEL_C c where a.UUID = c.UUID_AV_LABLE_M and c.UUID_AV_M = ? order by a.TYPE_1,a.TYPE_2,a.TYPE_3";
-    private static String selectLabelByShowSql = "select UUID,TYPE_1,TYPE_2,TYPE_3,TYPE_4,TYPE_5,LABEL_CODE,LABEL_SHOW,LABEL_COMMENT,LABEL_COUNT,LABEL_LEVEL,CREATE_TIME,UPDATE_TIME from H_V_A_JAP_AV_LABEL_M where LABEL_SHOW like ? order by TYPE_1,TYPE_2,TYPE_3";
+    private static String selectLabelByMessageUUIDSql = "select a.UUID,a.TYPE_1,a.TYPE_2,a.TYPE_3,a.TYPE_4,a.TYPE_5,a.LABEL_CODE,a.LABEL_SHOW,a.LABEL_COMMENT,a.LABEL_COUNT,a.LABEL_LEVEL,a.CREATE_TIME,a.UPDATE_TIME from H_V_A_JAP_AV_LABEL_M a,H_V_A_JAP_AV_LABEL_C c where a.UUID = c.UUID_AV_LABLE_M and c.UUID_AV_M = ? order by a.TYPE_1,a.TYPE_2,a.LABEL_SHOW";
+    private static String selectLabelByShowSql = "select UUID,TYPE_1,TYPE_2,TYPE_3,TYPE_4,TYPE_5,LABEL_CODE,LABEL_SHOW,LABEL_COMMENT,LABEL_COUNT,LABEL_LEVEL,CREATE_TIME,UPDATE_TIME from H_V_A_JAP_AV_LABEL_M where LABEL_SHOW like ? order by TYPE_1,TYPE_2,LABEL_SHOW";
 
     private static String mergeLabelMessageCSql = "merge into H_V_A_JAP_AV_LABEL_C using dual on (UUID_AV_M = ? and UUID_AV_LABLE_M = ?) WHEN NOT MATCHED THEN insert values(?,?,?)";
+    private static String deleteAllByMUUID = "delete from H_V_A_JAP_AV_LABEL_C where UUID_AV_M = ?";
 
     public static void insertLabel(Connection connection, HVAJapanAVLabelM labelM) throws SQLException {
         DataBaseUtils.executeUpdate(connection,insertLabelSql,
@@ -73,6 +74,7 @@ public class HVAJapanAVLabelDao {
             label.setUpdate_time((String) selectLabel.get("UPDATE_TIME"));
             labels.add(label);
         }
+
         return labels;
     }
 
@@ -130,6 +132,8 @@ public class HVAJapanAVLabelDao {
     }
 
     public static void mergeLabelMessageC(Connection connection, HVAJapanAVM avm) throws SQLException {
+        DataBaseUtils.executeUpdate(connection,deleteAllByMUUID,avm.getUuid());
+        if(avm.getLabels() == null) return;
         for (HVAJapanAVLabelM label : avm.getLabels()) {
             DataBaseUtils.executeUpdate(connection,mergeLabelMessageCSql,avm.getUuid(),label.getUuid(),
                     avm.getUuid(),
@@ -138,5 +142,7 @@ public class HVAJapanAVLabelDao {
 
         }
     }
+
+
 
 }

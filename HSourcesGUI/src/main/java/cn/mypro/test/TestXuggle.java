@@ -7,7 +7,7 @@ import javax.lang.model.element.VariableElement;
 public class TestXuggle {
 
     public static void main(String[] args) {
-        String filename = "E:\\H Sources\\DealSourcePath\\HAVJ\\IPX-118\\IPX-118.mp4";
+        String filename = "E:\\H Sources\\DealSourcePath\\HAVJ\\IPX-588\\IPX-588.mp4";
         // first we create a Xuggler container object
         IContainer container = IContainer.make();
         // we attempt to open up the container

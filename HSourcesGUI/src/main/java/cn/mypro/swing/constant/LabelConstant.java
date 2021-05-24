@@ -8,7 +8,7 @@ public class LabelConstant {
     public static final String[] LABEL_LEVEL_2_C_SHOW = new String[] {"请选择","S-社会角色","A-年龄角色","I-身份角色","F-特征角色"};
     public static final String[] LABEL_LEVEL_2_R_SHOW = new String[] {"请选择","S-社会关系","C-人际关系","I-身份关系"};
     public static final String[] LABEL_LEVEL_2_S_SHOW = new String[] {"请选择","P-场所","S-服装","T-道具"};
-    public static final String[] LABEL_LEVEL_2_X_SHOW = new String[] {"请选择","Z-姿势 ","T-特征","A-行为"};
+    public static final String[] LABEL_LEVEL_2_X_SHOW = new String[] {"请选择","Z-姿势","T-特征","A-行为"};
     public static final String[] LABEL_LEVEL_2_O_SHOW = new String[] {"请选择","F-其他"};
 
     public static final Integer[] Person_Score = new Integer[100];
@@ -28,6 +28,8 @@ public class LabelConstant {
     public static final String[] SOURCE_QUALITY = {"NUL","1","2","3","4","5","6","7","8","9","10"};
     public static final String[] SOURCE_VIDEO_FORMAT = {"NUL","MPEG-4","MOV","MKV","AVI","WMV","RMVB","DVD","BLU-RAY DISK","FIV","ASF","NAVI","TS"};
     public static final String[] SOURCE_COMPRESS_FORMAT = {"NUL","7Z","ZIP","RAR","TAR","GZ"};
+
+    public static final String password = "123@pass";
 
     static {
         for (int i = 1; i <= Person_Score.length; i++) {
