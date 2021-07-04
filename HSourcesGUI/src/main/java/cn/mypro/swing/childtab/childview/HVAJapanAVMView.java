@@ -10,8 +10,8 @@ import cn.mypro.swing.entity.HVAJapanAVM;
 import cn.mypro.swing.entity.HVAJapanAVPersonM;
 import cn.mypro.swing.entity.HVAJapanAVS;
 import cn.mypro.swing.util.BaiduTranslateUtil;
-import cn.mypro.swing.util.file.FileUtils;
-import cn.mypro.swing.util.webmagic.WebMagicUtil;
+import cn.mypro.swing.util.file.MyFileUtils;
+import cn.mypro.swing.util.webmagic.WebMagicOfSourcesUtil;
 import cn.mypro.utils.DataBaseUtils;
 import cn.mypro.utils.DbName;
 import com.xuggle.xuggler.ICodec;
@@ -21,11 +21,9 @@ import com.xuggle.xuggler.IStreamCoder;
 import lombok.SneakyThrows;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import javax.swing.border.BevelBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.event.*;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -39,6 +37,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
 public class HVAJapanAVMView {
@@ -104,6 +103,10 @@ public class HVAJapanAVMView {
     private JButton uploadCoverAndCut = new JButton("上传封面&截图");
     private JButton clearMessage = new JButton("清空");
 
+    //信息进度框
+    private JTextArea messageRun = new JTextArea(10, 20);
+
+
     private Connection serviceConn = null;
     private JFrame father = null;
 
@@ -124,6 +127,7 @@ public class HVAJapanAVMView {
         this.father = father;
     }
 
+    //构建视图
     public JPanel initSelectSourcesJFrame() {
 
         JPanel tabPanel = new JPanel();
@@ -167,8 +171,8 @@ public class HVAJapanAVMView {
                         publish.setText(selectedValue.getPublish_company());
                         publishTime.setText(selectedValue.getPublish_time());
                         series.setText(selectedValue.getSeries());
-                        mosaic.setSelectedIndex(selectedValue.getLanguages().equals("HM") ?
-                                0 : selectedValue.getLanguages().equals("HN") ?
+                        mosaic.setSelectedIndex(selectedValue.getMosaic().equals("HM") ?
+                                0 : selectedValue.getMosaic().equals("HN") ?
                                 1 : 2);
                         List<HVAJapanAVLabelM> labels = selectedValue.getLabels();
                         if (labels != null && labels.size() != 0) {
@@ -225,41 +229,61 @@ public class HVAJapanAVMView {
         confirmMessage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                avCase.setIf_Code(ifCode.getText().replace(" ","").toUpperCase());
+                avCase.setOName(oName.getText());
+                avCase.setCName(cName.getText());
+                avCase.setLanguages(LabelConstant.AV_LANGUAGE[language.getSelectedIndex()]);
+                avCase.setProduction_company(production.getText());
+                avCase.setPublish_company(publish.getText());
+                avCase.setPublish_time(publishTime.getText().replace("-", "").replace(":", "").replace(" ", ""));
+                avCase.setSeries(series.getText());
+                avCase.setMosaic(LabelConstant.MOSICA[mosaic.getSelectedIndex()]);
+
+                avCase.setDuration(durationHour.getSelectedIndex() * 3600L + durationMinute.getSelectedIndex() * 60L + durationSecond.getSelectedIndex());
+                avCase.setDescribe(describe.getText());
+                avCase.setScore(LabelConstant.Person_Score[AVScore.getSelectedIndex()]);
+                avCase.setRecommend(recommend.isSelected() ? "1" : "0");
+
+                boolean exist = false;
+                try {
+                    exist = HVAJapanAVMDao.qryExist(serviceConn, avCase.getIf_Code());
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+
                 if (avCase.isHave()) {
                     updateMessage.setEnabled(true);
-
-                    avCase.setIf_Code(ifCode.getText().toUpperCase());
-                    avCase.setOName(oName.getText());
-                    avCase.setCName(cName.getText());
-                    avCase.setLanguages(LabelConstant.AV_LANGUAGE[language.getSelectedIndex()]);
-                    avCase.setProduction_company(production.getText());
-                    avCase.setPublish_company(publish.getText());
-                    avCase.setPublish_time(publishTime.getText().replace("-", "").replace(":", "").replace(" ", ""));
-                    avCase.setSeries(series.getText());
-                    avCase.setMosaic(LabelConstant.MOSICA[mosaic.getSelectedIndex()]);
-
-                    avCase.setDuration(durationHour.getSelectedIndex() * 3600L + durationMinute.getSelectedIndex() * 60L + durationSecond.getSelectedIndex());
-                    avCase.setDescribe(describe.getText());
-                    avCase.setScore(LabelConstant.Person_Score[AVScore.getSelectedIndex()]);
-                    avCase.setRecommend(recommend.isSelected() ? "1" : "0");
 
                 } else {
                     insertMessage.setEnabled(true);
 
-                    avCase.setIf_Code(ifCode.getText().toUpperCase());
-                    avCase.setOName(oName.getText());
-                    avCase.setCName(cName.getText());
-                    avCase.setLanguages(LabelConstant.AV_LANGUAGE[language.getSelectedIndex()]);
-                    avCase.setProduction_company(production.getText());
-                    avCase.setPublish_company(publish.getText());
-                    avCase.setPublish_time(publishTime.getText().replace("-", "").replace(":", "").replace(" ", ""));
-                    avCase.setSeries(series.getText());
-                    avCase.setMosaic(LabelConstant.MOSICA[mosaic.getSelectedIndex()]);
+                    if (exist) {
+                        JButton force = new JButton("强制");
+                        JButton ignore = new JButton("更正");
 
-                    avCase.setDuration(durationHour.getSelectedIndex() * 3600L + durationMinute.getSelectedIndex() * 60L + durationSecond.getSelectedIndex());
-                    avCase.setDescribe(describe.getText());
-                    avCase.setScore(LabelConstant.Person_Score[AVScore.getSelectedIndex()]);
-                    avCase.setRecommend(recommend.isSelected() ? "1" : "0");
+                        force.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                //insertMessage.setEnabled(true);
+                                Window win = SwingUtilities.getWindowAncestor(force);  //找到该组件所在窗口
+                                win.dispose();
+                            }
+                        });
+                        ignore.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                updateMessage.setEnabled(true);
+                                insertMessage.setEnabled(false);
+                                avCase.setHave(true);
+                                Window win = SwingUtilities.getWindowAncestor(ignore);  //找到该组件所在窗口
+                                win.dispose();
+                            }
+                        });
+                        JButton[] buttons = {force,ignore};
+                        JOptionPane.showOptionDialog(father, "该番号已存在！！是否为新数据？", "警告！", JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE,new ImageIcon("HSourcesGUI/src/main/resources/pic/w2.png"),buttons,buttons[0]);
+                    }
+
                 }
             }
         });
@@ -299,51 +323,7 @@ public class HVAJapanAVMView {
             @SneakyThrows
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    String fileRootPath = filePath.getText();
-                    String childPath = ifCode.getText();
-                    File coverFile = new File(fileRootPath + "\\" + childPath + "\\" + "cover.jpg");
-                    File cutFile1 = new File(fileRootPath + "\\" + childPath + "\\" + "c1.jpg");
-                    File cutFile2 = new File(fileRootPath + "\\" + childPath + "\\" + "c2.jpg");
-                    File cutFile3 = new File(fileRootPath + "\\" + childPath + "\\" + "c3.jpg");
-
-                    if (coverFile.exists() && coverFile.isFile()) {
-                        byte[] bytesFromFile = FileUtils.getBytesFromFile(coverFile);
-
-                        ImageIcon iconCover = new ImageIcon(bytesFromFile);
-                        //等比缩放
-                        iconCover = new ImageIcon(iconCover.getImage().getScaledInstance(cover.getWidth(), cover.getHeight(), Image.SCALE_DEFAULT));
-                        //强制缩放
-                        //iconCover=new ImageIcon(iconCover.getImage().getScaledInstance(200, 300-25, Image.SCALE_DEFAULT));
-                        cover.setIcon(iconCover);
-                        avCase.setCover(bytesFromFile);
-                    }
-                    if (cutFile1.exists() && cutFile1.isFile()) {
-                        byte[] bytesFromFile = FileUtils.getBytesFromFile(cutFile1);
-                        ImageIcon icon = new ImageIcon(bytesFromFile);
-                        icon = new ImageIcon(icon.getImage().getScaledInstance(cut1.getWidth(), cut1.getHeight(), Image.SCALE_DEFAULT));
-                        cut1.setIcon(icon);
-                        avCase.setCut1(bytesFromFile);
-                    }
-                    if (cutFile2.exists() && cutFile2.isFile()) {
-                        byte[] bytesFromFile = FileUtils.getBytesFromFile(cutFile2);
-                        ImageIcon icon = new ImageIcon(bytesFromFile);
-                        icon = new ImageIcon(icon.getImage().getScaledInstance(cut2.getWidth(), cut2.getHeight(), Image.SCALE_DEFAULT));
-                        cut2.setIcon(icon);
-                        avCase.setCut2(bytesFromFile);
-                    }
-                    if (cutFile3.exists() && cutFile3.isFile()) {
-                        byte[] bytesFromFile = FileUtils.getBytesFromFile(cutFile3);
-                        ImageIcon icon = new ImageIcon(bytesFromFile);
-                        icon = new ImageIcon(icon.getImage().getScaledInstance(cut3.getWidth(), cut3.getHeight(), Image.SCALE_DEFAULT));
-                        cut3.setIcon(icon);
-                        avCase.setCut3(bytesFromFile);
-                    }
-                    JOptionPane.showMessageDialog(father, "上传成功！！", "MessagePhotoDialog", JOptionPane.INFORMATION_MESSAGE);
-                } catch (Exception error) {
-                    error.printStackTrace();
-                    JOptionPane.showMessageDialog(father, "上传出错！！" + error.getMessage(), "MessagePhotoDialog", JOptionPane.ERROR_MESSAGE);
-                }
+                uploadPhotos();
 
             }
         });
@@ -449,19 +429,56 @@ public class HVAJapanAVMView {
         findMessage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                WebMagicUtil webMagicUtil = new WebMagicUtil();
-                String code = ifCode.getText();
-                if(code != null) {
+                WebMagicOfSourcesUtil webMagicUtil = new WebMagicOfSourcesUtil();
+                String code = ifCode.getText().replace(" ","");
 
+                JDialog jDialog = new JDialog(father, "资源添加", true);
 
+                int MIN_PROGRESS = 0;
+                int MAX_PROGRESS = 100;
+                int currentProgress = MIN_PROGRESS;
+                JProgressBar progressBar = new JProgressBar();
+                progressBar.setMinimum(MIN_PROGRESS);
+                progressBar.setMaximum(MAX_PROGRESS);
+                progressBar.setValue(currentProgress);
+                progressBar.setStringPainted(true);
+                progressBar.addChangeListener(new ChangeListener() {
+                    @Override
+                    public void stateChanged(ChangeEvent e) {
 
+                    }
+                });
 
+                new Thread(() -> {
+                    if(code != null) {
 
+                        HVAJapanAVM hSources = webMagicUtil.getHSources(code, filePath.getText() + "\\" + code,progressBar,messageRun);
 
+                        clearSourcesMessage();
+                        fitAVMessage(hSources);
+                        uploadPhotosQuite();
+                        progressBar.setValue(95);
+                        String translateString = BaiduTranslateUtil.translateAsString(oName.getText());
+                        cName.setText(translateString);
+                        progressBar.setValue(MAX_PROGRESS);
+                        try {
+                            TimeUnit.MILLISECONDS.sleep(500);
+                        } catch (InterruptedException interruptedException) {
+                            interruptedException.printStackTrace();
+                        }
+                        //jDialog.setVisible(false);
+                    }
+                    jDialog.setVisible(false);
+                }).start();
 
-                }
+                jDialog.add(progressBar);
+                jDialog.setLocationRelativeTo(father);
+                jDialog.pack();
+                jDialog.setVisible(true);
 
             }
+
+
         });
 
         workAuto.addActionListener(new ActionListener() {
@@ -640,7 +657,7 @@ public class HVAJapanAVMView {
         //selectResult.setPreferredSize(new Dimension(150, 0));
         JScrollPane selectResultScrollPane = new JScrollPane(selectResult);
         selectResultScrollPane.setPreferredSize(new Dimension(150, 500));
-
+        //messageRun.setPreferredSize(new Dimension());
         JSplitPane topRightSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(cover), opraBox); //上右 竖向
 
         JSplitPane topSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(messageBox), topRightSplit); //上 横向
@@ -649,7 +666,9 @@ public class HVAJapanAVMView {
 
         JSplitPane allNewSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, selectResultScrollPane, allSplit); //总 竖向
 
-        showPanel.add(allNewSplit);
+        JSplitPane allNew2Split = new JSplitPane(JSplitPane.VERTICAL_SPLIT, allNewSplit, new JScrollPane(messageRun)); //添加 总+信息框 竖向
+
+        showPanel.add(allNew2Split);
         //展示截图
 
         tabBox.add(jPanel);
@@ -660,6 +679,7 @@ public class HVAJapanAVMView {
         return tabPanel;
     }
 
+    //刷新填充信息框
     private void flushAVMList() {
         List<HVAJapanAVM> allMessage = null;
         try {
@@ -672,6 +692,7 @@ public class HVAJapanAVMView {
             e.printStackTrace();
         }
     }
+    //清除资源信息框
     private void clearSourcesMessage() {
 
         ifCode.setText("");
@@ -711,9 +732,6 @@ public class HVAJapanAVMView {
 
     public void showSelectLabelDialog() {
         JDialog jDialog = new JDialog(father, "标签选择器", true);
-
-/*        List<HVAJapanAVLabelM> allLabels;
-        List<HVAJapanAVLabelM> noSelectedLabels;*/
 
         JList<HVAJapanAVLabelM> noSelected = new JList<>();
         JList<HVAJapanAVLabelM> yesSelected = new JList<>();
@@ -835,7 +853,6 @@ public class HVAJapanAVMView {
         jDialog.pack();
         jDialog.setVisible(true);
     }
-
     public List<HVAJapanAVLabelM> removeRepLabels(List<HVAJapanAVLabelM> list1, List<HVAJapanAVLabelM> list2) {
         cyc1:
         for (HVAJapanAVLabelM label2 : list2) {
@@ -843,20 +860,6 @@ public class HVAJapanAVMView {
             for (HVAJapanAVLabelM label1 : list1) {
                 if (label1.getLabel_code().equals(label2.getLabel_code())) {
                     list1.remove(label1);
-                    continue cyc1;
-                }
-            }
-        }
-        return list1;
-    }
-
-    public List<HVAJapanAVPersonM> removeRepPersons(List<HVAJapanAVPersonM> list1, List<HVAJapanAVPersonM> list2) {
-        cyc1:
-        for (HVAJapanAVPersonM person2 : list2) {
-            cyc2:
-            for (HVAJapanAVPersonM person1 : list1) {
-                if (person1.getUuid().equals(person2.getUuid())) {
-                    list1.remove(person1);
                     continue cyc1;
                 }
             }
@@ -981,6 +984,19 @@ public class HVAJapanAVMView {
         jDialog.setLocation(500,500);
         jDialog.pack();
         jDialog.setVisible(true);
+    }
+    public List<HVAJapanAVPersonM> removeRepPersons(List<HVAJapanAVPersonM> list1, List<HVAJapanAVPersonM> list2) {
+        cyc1:
+        for (HVAJapanAVPersonM person2 : list2) {
+            cyc2:
+            for (HVAJapanAVPersonM person1 : list1) {
+                if (person1.getUuid().equals(person2.getUuid())) {
+                    list1.remove(person1);
+                    continue cyc1;
+                }
+            }
+        }
+        return list1;
     }
 
     public void showSourcesDialog() {
@@ -1453,5 +1469,176 @@ public class HVAJapanAVMView {
         }
     }
 
+    private void uploadPhotos() {
+        try {
+            String fileRootPath = filePath.getText();
+            String childPath = ifCode.getText().replace(" ","");
+            File coverFile = new File(fileRootPath + "\\" + childPath + "\\" + "cover.jpg");
+            File cutFile1 = new File(fileRootPath + "\\" + childPath + "\\" + "cut1.jpg");
+            File cutFile2 = new File(fileRootPath + "\\" + childPath + "\\" + "cut2.jpg");
+            File cutFile3 = new File(fileRootPath + "\\" + childPath + "\\" + "cut3.jpg");
 
+            if (coverFile.exists() && coverFile.isFile()) {
+                byte[] bytesFromFile = MyFileUtils.getBytesFromFile(coverFile);
+
+                ImageIcon iconCover = new ImageIcon(bytesFromFile);
+                //等比缩放
+                iconCover = new ImageIcon(iconCover.getImage().getScaledInstance(cover.getWidth(), cover.getHeight(), Image.SCALE_DEFAULT));
+                //强制缩放
+                //iconCover=new ImageIcon(iconCover.getImage().getScaledInstance(200, 300-25, Image.SCALE_DEFAULT));
+                cover.setIcon(iconCover);
+                avCase.setCover(bytesFromFile);
+            }
+            if (cutFile1.exists() && cutFile1.isFile()) {
+                byte[] bytesFromFile = MyFileUtils.getBytesFromFile(cutFile1);
+                ImageIcon icon = new ImageIcon(bytesFromFile);
+                icon = new ImageIcon(icon.getImage().getScaledInstance(cut1.getWidth(), cut1.getHeight(), Image.SCALE_DEFAULT));
+                cut1.setIcon(icon);
+                avCase.setCut1(bytesFromFile);
+            }
+            if (cutFile2.exists() && cutFile2.isFile()) {
+                byte[] bytesFromFile = MyFileUtils.getBytesFromFile(cutFile2);
+                ImageIcon icon = new ImageIcon(bytesFromFile);
+                icon = new ImageIcon(icon.getImage().getScaledInstance(cut2.getWidth(), cut2.getHeight(), Image.SCALE_DEFAULT));
+                cut2.setIcon(icon);
+                avCase.setCut2(bytesFromFile);
+            }
+            if (cutFile3.exists() && cutFile3.isFile()) {
+                byte[] bytesFromFile = MyFileUtils.getBytesFromFile(cutFile3);
+                ImageIcon icon = new ImageIcon(bytesFromFile);
+                icon = new ImageIcon(icon.getImage().getScaledInstance(cut3.getWidth(), cut3.getHeight(), Image.SCALE_DEFAULT));
+                cut3.setIcon(icon);
+                avCase.setCut3(bytesFromFile);
+            }
+            JOptionPane.showMessageDialog(father, "上传成功！！", "MessagePhotoDialog", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception error) {
+            error.printStackTrace();
+            JOptionPane.showMessageDialog(father, "上传出错！！" + error.getMessage(), "MessagePhotoDialog", JOptionPane.ERROR_MESSAGE);
+        }
+
+
+    }
+    private void uploadPhotosQuite() {
+        try {
+            String fileRootPath = filePath.getText();
+            String childPath = ifCode.getText().replace(" ","");
+            File coverFile = new File(fileRootPath + "\\" + childPath + "\\" + "cover.jpg");
+            File cutFile1 = new File(fileRootPath + "\\" + childPath + "\\" + "cut1.jpg");
+            File cutFile2 = new File(fileRootPath + "\\" + childPath + "\\" + "cut2.jpg");
+            File cutFile3 = new File(fileRootPath + "\\" + childPath + "\\" + "cut3.jpg");
+
+            if (coverFile.exists() && coverFile.isFile()) {
+                byte[] bytesFromFile = MyFileUtils.getBytesFromFile(coverFile);
+
+                ImageIcon iconCover = new ImageIcon(bytesFromFile);
+                //等比缩放
+                iconCover = new ImageIcon(iconCover.getImage().getScaledInstance(cover.getWidth(), cover.getHeight(), Image.SCALE_DEFAULT));
+                //强制缩放
+                //iconCover=new ImageIcon(iconCover.getImage().getScaledInstance(200, 300-25, Image.SCALE_DEFAULT));
+                cover.setIcon(iconCover);
+                avCase.setCover(bytesFromFile);
+            }
+            if (cutFile1.exists() && cutFile1.isFile()) {
+                byte[] bytesFromFile = MyFileUtils.getBytesFromFile(cutFile1);
+                ImageIcon icon = new ImageIcon(bytesFromFile);
+                icon = new ImageIcon(icon.getImage().getScaledInstance(cut1.getWidth(), cut1.getHeight(), Image.SCALE_DEFAULT));
+                cut1.setIcon(icon);
+                avCase.setCut1(bytesFromFile);
+            }
+            if (cutFile2.exists() && cutFile2.isFile()) {
+                byte[] bytesFromFile = MyFileUtils.getBytesFromFile(cutFile2);
+                ImageIcon icon = new ImageIcon(bytesFromFile);
+                icon = new ImageIcon(icon.getImage().getScaledInstance(cut2.getWidth(), cut2.getHeight(), Image.SCALE_DEFAULT));
+                cut2.setIcon(icon);
+                avCase.setCut2(bytesFromFile);
+            }
+            if (cutFile3.exists() && cutFile3.isFile()) {
+                byte[] bytesFromFile = MyFileUtils.getBytesFromFile(cutFile3);
+                ImageIcon icon = new ImageIcon(bytesFromFile);
+                icon = new ImageIcon(icon.getImage().getScaledInstance(cut3.getWidth(), cut3.getHeight(), Image.SCALE_DEFAULT));
+                cut3.setIcon(icon);
+                avCase.setCut3(bytesFromFile);
+            }
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+
+
+    }
+
+    private void fitAVMessage(HVAJapanAVM selectedValue) {
+        try {
+
+            if (selectedValue != null) {
+                ifCode.setText(selectedValue.getIf_Code());
+                oName.setText(selectedValue.getOName());
+                cName.setText(selectedValue.getCName());
+                if (selectedValue.getLanguages() != null) {
+                    language.setSelectedIndex(selectedValue.getLanguages().equals("JAP") ?
+                            0 : selectedValue.getLanguages().equals("CHN") ?
+                            1 : selectedValue.getLanguages().equals("EUR") ?
+                            2 : 3);
+                }
+
+                production.setText(selectedValue.getProduction_company());
+                publish.setText(selectedValue.getPublish_company());
+                publishTime.setText(selectedValue.getPublish_time());
+                series.setText(selectedValue.getSeries());
+
+                if (selectedValue.getMosaic() != null) {
+                    mosaic.setSelectedIndex(selectedValue.getMosaic().equals("HM") ?
+                            0 : selectedValue.getMosaic().equals("HN") ?
+                            1 : 2);
+                }
+
+                List<HVAJapanAVPersonM> persons = selectedValue.getPersons();
+                if (persons != null && persons.size() != 0) {
+                    avPersonList.setListData(persons.toArray(new HVAJapanAVPersonM[persons.size()]));
+                } else {
+                    avPersonList.setListData(new HVAJapanAVPersonM[0]);
+                }
+
+                if (selectedValue.getDuration() != 0) {
+                    durationHour.setSelectedIndex((int) (selectedValue.getDuration() / 3600));
+                    durationMinute.setSelectedIndex((int) (selectedValue.getDuration() % 3600) / 60);
+                    durationSecond.setSelectedIndex((int) (selectedValue.getDuration() % 60));
+                }
+
+                describe.setText(selectedValue.getDescribe());
+
+                if (selectedValue.getScore() != 0) {
+                    AVScore.setSelectedIndex((int) selectedValue.getScore() - 1);
+                }
+                recommend.setSelected("1".equals(selectedValue.getRecommend()));
+
+                if (selectedValue.getCover() != null) {
+                    ImageIcon iconCover = new ImageIcon(selectedValue.getCover());
+                    iconCover = new ImageIcon(iconCover.getImage().getScaledInstance(cover.getWidth(), cover.getHeight(), Image.SCALE_DEFAULT));
+                    cover.setIcon(iconCover);
+                }
+                if (selectedValue.getCut1() != null) {
+                    ImageIcon iconCut1 = new ImageIcon(selectedValue.getCut1());
+                    iconCut1 = new ImageIcon(iconCut1.getImage().getScaledInstance(cut1.getWidth(), cut1.getHeight(), Image.SCALE_DEFAULT));
+                    cut1.setIcon(iconCut1);
+                }
+
+                if (selectedValue.getCut2() != null) {
+                    ImageIcon iconCut2 = new ImageIcon(selectedValue.getCut2());
+                    iconCut2 = new ImageIcon(iconCut2.getImage().getScaledInstance(cut2.getWidth(), cut2.getHeight(), Image.SCALE_DEFAULT));
+                    cut2.setIcon(iconCut2);
+                }
+
+                if (selectedValue.getCut3() != null) {
+                    ImageIcon iconCut3 = new ImageIcon(selectedValue.getCut3());
+                    iconCut3 = new ImageIcon(iconCut3.getImage().getScaledInstance(cut3.getWidth(), cut3.getHeight(), Image.SCALE_DEFAULT));
+                    cut3.setIcon(iconCut3);
+                }
+
+                avCase = selectedValue;
+                avCase.setHave(false);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 }

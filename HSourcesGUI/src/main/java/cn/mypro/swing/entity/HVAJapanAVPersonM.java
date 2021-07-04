@@ -36,6 +36,6 @@ public class HVAJapanAVPersonM {
 
     @Override
     public String toString() {
-        return names+"-"+cname+"("+oname+")";
+        return ("1".equals(gender)?"W":"M") + " - " + names+"-"+cname+"("+oname+")";
     }
 }

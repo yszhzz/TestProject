@@ -3,7 +3,7 @@ package cn.mypro.swing.childtab.childview;
 import cn.mypro.swing.constant.LabelConstant;
 import cn.mypro.swing.dao.HVAJapanAVPersonDao;
 import cn.mypro.swing.entity.HVAJapanAVPersonM;
-import cn.mypro.swing.util.file.FileUtils;
+import cn.mypro.swing.util.file.MyFileUtils;
 import cn.mypro.utils.DataBaseUtils;
 import cn.mypro.utils.DbName;
 
@@ -14,10 +14,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -59,12 +56,14 @@ public class HVAJapanPersonView {
     private JLabel personStartTimeLabel = new JLabel("出道时间:");
     private JTextField personStartTime = new JTextField(15);
     private JLabel personDataInfoLabel = new JLabel("人物信息:");
-    private JTextArea personDataInfo = new JTextArea(5, 15);
+    private JTextArea personDataInfo = new JTextArea(LabelConstant.personFirstText,5, 15);
     private JLabel personOtherInfoLabel = new JLabel("其他信息:");
     private JTextArea personOtherInfo = new JTextArea(5, 15);
     private JLabel personScoreLabel = new JLabel("评价:");
     private JComboBox<Integer> personScore = new JComboBox<>(LabelConstant.Person_Score);
     private JComboBox<String> personLevel = new JComboBox<>(LabelConstant.Person_Level);
+    private JLabel personScoreExplainLabel = new JLabel("SSS:90+ SS:85+ S:80+ A:70+ B:60+ C:55+ D:50+ E:45+ F:40+ G:40-(M归属于此)");
+
     //人物照片组件
     private JLabel personPhoto1 = new JLabel();
     private JLabel personPhoto2 = new JLabel();
@@ -111,6 +110,16 @@ public class HVAJapanPersonView {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 HVAJapanAVPersonM selectedValue = selectPersonResult.getSelectedValue();
+
+                try {
+                    if (selectedValue == null ) return;
+                    selectedValue = HVAJapanAVPersonDao.qryOnePersonByUUID(serviceConn,selectedValue.getUuid());
+                } catch (Exception es) {
+                    selectedValue = null;
+                    es.printStackTrace();
+                }
+
+
                 if (selectedValue != null) {
                     personName.setText(selectedValue.getNames());
                     personCName.setText(selectedValue.getCname());
@@ -130,11 +139,15 @@ public class HVAJapanPersonView {
                         ImageIcon icon1 = new ImageIcon(selectedValue.getPhtot_1());
                         icon1 = new ImageIcon(icon1.getImage().getScaledInstance(400, 400, Image.SCALE_DEFAULT));
                         personPhoto1.setIcon(icon1);
+                    } else {
+                        personPhoto1.setIcon(null);
                     }
                     if (selectedValue.getPhtot_2() != null && selectedValue.getPhtot_2().length != 0) {
                         ImageIcon icon2 = new ImageIcon(selectedValue.getPhtot_2());
                         icon2 = new ImageIcon(icon2.getImage().getScaledInstance(400, 400, Image.SCALE_DEFAULT));
                         personPhoto2.setIcon(icon2);
+                    } else {
+                        personPhoto2.setIcon(null);
                     }
 
                     if (selectedValue.getLevels() == null || "".equals(selectedValue.getLevels())) {
@@ -164,6 +177,40 @@ public class HVAJapanPersonView {
                     personCase = selectedValue;
                     personCase.setHave(true);
                 }
+            }
+        });
+
+        personLevel.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                int selectedIndex = personLevel.getSelectedIndex();
+
+                if (selectedIndex == 0) {
+
+                } else if (selectedIndex == 1) {//SSS
+                    personScore.setSelectedIndex(89);
+                } else if (selectedIndex == 2) {//SS
+                    personScore.setSelectedIndex(84);
+                } else if (selectedIndex == 3) {//S
+                    personScore.setSelectedIndex(79);
+                } else if (selectedIndex == 4) {//A
+                    personScore.setSelectedIndex(69);
+                } else if (selectedIndex == 5) {//B
+                    personScore.setSelectedIndex(59);
+                } else if (selectedIndex == 6) {//C
+                    personScore.setSelectedIndex(54);
+                } else if (selectedIndex == 7) {//D
+                    personScore.setSelectedIndex(49);
+                } else if (selectedIndex == 8) {//E
+                    personScore.setSelectedIndex(44);
+                } else if (selectedIndex == 9) {//F
+                    personScore.setSelectedIndex(39);
+                } else if (selectedIndex == 10) {//G
+                    personScore.setSelectedIndex(0);
+                } else {
+
+                }
+
             }
         });
 
@@ -205,7 +252,7 @@ public class HVAJapanPersonView {
             female.setSelected(true);
 
             personStartTime.setText("");
-            personDataInfo.setText("");
+            personDataInfo.setText(LabelConstant.personFirstText);
             personOtherInfo.setText("");
             personScore.setSelectedIndex(0);
             personLevel.setSelectedIndex(0);
@@ -248,7 +295,7 @@ public class HVAJapanPersonView {
             try {
                 chooser.showOpenDialog(father);
                 File imageFile = chooser.getSelectedFile();
-                byte[] bytesFromFile = FileUtils.getBytesFromFile(imageFile);
+                byte[] bytesFromFile = MyFileUtils.getBytesFromFile(imageFile);
 
                 personCase.setPhtot_1(bytesFromFile);
 
@@ -269,7 +316,7 @@ public class HVAJapanPersonView {
             try {
                 chooser.showOpenDialog(father);
                 File imageFile = chooser.getSelectedFile();
-                byte[] bytesFromFile = FileUtils.getBytesFromFile(imageFile);
+                byte[] bytesFromFile = MyFileUtils.getBytesFromFile(imageFile);
 
                 personCase.setPhtot_2(bytesFromFile);
 
@@ -291,8 +338,8 @@ public class HVAJapanPersonView {
                 File imageFile1 = new File("G:\\A-MyFree\\Picture\\360\\(0).jpg");
                 File imageFile2 = new File("G:\\A-MyFree\\Picture\\360\\(1).jpg");
 
-                byte[] bytesFromFile1 = FileUtils.getBytesFromFile(imageFile1);
-                byte[] bytesFromFile2 = FileUtils.getBytesFromFile(imageFile2);
+                byte[] bytesFromFile1 = MyFileUtils.getBytesFromFile(imageFile1);
+                byte[] bytesFromFile2 = MyFileUtils.getBytesFromFile(imageFile2);
 
                 personCase.setPhtot_1(bytesFromFile1);
                 personCase.setPhtot_2(bytesFromFile2);
@@ -433,7 +480,10 @@ public class HVAJapanPersonView {
         personScoreBox.add(personScoreLabel);
         personScoreBox.add(personScore);
         personScoreBox.add(personLevel);
-        messagePersonBox.add(personScoreBox);
+        Box personScoreMBox = Box.createVerticalBox();
+        personScoreMBox.add(personScoreBox);
+        personScoreMBox.add(personScoreExplainLabel);
+        messagePersonBox.add(personScoreMBox);
 
         Box photoBox = Box.createHorizontalBox();
         personPhoto1.setPreferredSize(new Dimension(400, 400));

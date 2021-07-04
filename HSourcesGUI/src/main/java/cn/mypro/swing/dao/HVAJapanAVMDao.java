@@ -23,6 +23,8 @@ public class HVAJapanAVMDao {
 
     public static final String qryMessageByUUIDSql = "select UUID,IF_CODE,ONAME,CNAME,COVER,LANGUAGES,PRODUCTION_COMPANY,PUBLISH_COMPANY,PUBLISH_TIME,SERIES,MOSAIC,DURATION,DESCRIBE,SCORE,RECOMMEND,CUT1,CUT2,CUT3 from H_V_A_JAP_AV_M where UUID = ?";
 
+    public static final String qryExistByCodeSql = "select '1' from H_V_A_JAP_AV_M where IF_CODE = ?";
+
     public static final String insertMessageSql = "insert into H_V_A_JAP_AV_M(UUID,IF_CODE,ONAME,CNAME,COVER,LANGUAGES,PRODUCTION_COMPANY,PUBLISH_COMPANY,PUBLISH_TIME,SERIES,MOSAIC,DURATION,DESCRIBE,SCORE,RECOMMEND,CUT1,CUT2,CUT3) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     public static final String updateMessageSql = "update H_V_A_JAP_AV_M set IF_CODE = ?,ONAME = ?,CNAME = ?,COVER = ?,LANGUAGES = ?,PRODUCTION_COMPANY = ?,PUBLISH_COMPANY = ?,PUBLISH_TIME = ?,SERIES = ?,MOSAIC = ?,DURATION = ?,DESCRIBE = ?,SCORE = ?,RECOMMEND = ?,CUT1 = ?,CUT2 = ?,CUT3 = ? where UUID = ?";
     public static final String deleteMessageSql = "delete from H_V_A_JAP_AV_M where UUID = ?";
@@ -393,5 +395,8 @@ public class HVAJapanAVMDao {
         DataBaseUtils.executeUpdate(connection,deleteMessageSql,av.getUuid());
     }
 
-
+    public static boolean qryExist(Connection connection,String if_code) throws SQLException {
+        String exist = DataBaseUtils.queryOne(connection, qryExistByCodeSql, 1, if_code);
+        return exist != null;
+    }
 }

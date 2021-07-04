@@ -21,7 +21,9 @@ public class HVAJapanAVPersonDao {
     private static String insertPersonSql = "insert into H_V_A_JAP_AV_PERSON_M(UUID,NAMES,CNAME,ONAME,GENDER,START_TIME,PHTOT_1,PHTOT_2,DETA_INFO,OTHER_INFO,SCORES,LEVELS,CREATE_TIME,UPDATE_TIME) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     private static String selectAllPersonSql = "select UUID,NAMES,CNAME,ONAME,GENDER,START_TIME,PHTOT_1,PHTOT_2,DETA_INFO,OTHER_INFO,SCORES,LEVELS,CREATE_TIME,UPDATE_TIME from H_V_A_JAP_AV_PERSON_M order by GENDER,NAMES";
     private static String selectPersonByNameSql = "select UUID,NAMES,CNAME,ONAME,GENDER,START_TIME,PHTOT_1,PHTOT_2,DETA_INFO,OTHER_INFO,SCORES,LEVELS,CREATE_TIME,UPDATE_TIME from H_V_A_JAP_AV_PERSON_M where NAMES like ? or CNAME like ? or ONAME like ? order by GENDER desc,NAMES";
-    private static String selectPersonByUUIDSql = "select UUID,NAMES,CNAME,ONAME,GENDER,START_TIME,PHTOT_1,PHTOT_2,DETA_INFO,OTHER_INFO,SCORES,LEVELS,CREATE_TIME,UPDATE_TIME from H_V_A_JAP_AV_PERSON_M order by GENDER desc,NAMES";
+    private static String selectPersonByNamesSql = "select UUID,NAMES,CNAME,ONAME,GENDER,START_TIME,PHTOT_1,PHTOT_2,DETA_INFO,OTHER_INFO,SCORES,LEVELS,CREATE_TIME,UPDATE_TIME from H_V_A_JAP_AV_PERSON_M where NAMES like ? order by GENDER desc,NAMES";
+
+    private static String selectPersonByUUIDSql = "select UUID,NAMES,CNAME,ONAME,GENDER,START_TIME,PHTOT_1,PHTOT_2,DETA_INFO,OTHER_INFO,SCORES,LEVELS,CREATE_TIME,UPDATE_TIME from H_V_A_JAP_AV_PERSON_M where UUID = ?";
     private static String updatePersonByUUIDSql = "update H_V_A_JAP_AV_PERSON_M set NAMES = ?,CNAME = ?,ONAME = ?,GENDER = ?,START_TIME = ?,PHTOT_1 = ? ,PHTOT_2 = ? ,DETA_INFO = ? ,OTHER_INFO = ? ,SCORES = ? ,LEVELS = ? ,UPDATE_TIME = ? where UUID = ?";
     private static String existPersonSql = "select '1' from H_V_A_JAP_AV_PERSON_M where UUID = ?";
     private static String deleteAllByMUUID = "delete from H_V_A_JAP_AV_PERSON_C where UUID_AV_M = ?";
@@ -94,16 +96,14 @@ public class HVAJapanAVPersonDao {
             pereson.setCname((String) selectPerson.get("CNAME"));
             pereson.setOname((String) selectPerson.get("ONAME"));
             pereson.setGender((String) selectPerson.get("GENDER"));
-            pereson.setStart_time((String) selectPerson.get("START_TIME"));
+/*            pereson.setStart_time((String) selectPerson.get("START_TIME"));
 
             Blob phtot_1 = (Blob) selectPerson.get("PHTOT_1");
             if (phtot_1 != null) pereson.setPhtot_1(phtot_1.getBinaryStream().readAllBytes());
             Blob phtot_2 = (Blob) selectPerson.get("PHTOT_2");
             if (phtot_2 != null) pereson.setPhtot_2(phtot_2.getBinaryStream().readAllBytes());
-            /*pereson.setPhtot_1(((Blob) selectPerson.get("PHTOT_1")).getBinaryStream().readAllBytes());
-            pereson.setPhtot_2(((Blob) selectPerson.get("PHTOT_2")).getBinaryStream().readAllBytes());*/
             pereson.setDeta_info((String) selectPerson.get("DETA_INFO"));
-            pereson.setOther_info(((String) selectPerson.get("OTHER_INFO")));
+            pereson.setOther_info(((String) selectPerson.get("OTHER_INFO")));*/
             pereson.setScores(((BigDecimal) selectPerson.get("SCORES")).longValue());
             pereson.setLevels((String) selectPerson.get("LEVELS"));
             pereson.setCreate_time((String) selectPerson.get("CREATE_TIME"));
@@ -114,8 +114,30 @@ public class HVAJapanAVPersonDao {
         return persons;
     }
 
+    public static HVAJapanAVPersonM qryPersonByNames(Connection connection, String partOfName) throws SQLException {
+
+        Map<String, Object> selectPerson = DataBaseUtils.queryMap(connection, selectPersonByNamesSql, "%" + partOfName + "%");
+        HVAJapanAVPersonM pereson = null;
+        if (selectPerson != null) {
+            pereson = new HVAJapanAVPersonM();
+            pereson.setUuid((String) selectPerson.get("UUID"));
+            pereson.setNames((String) selectPerson.get("NAMES"));
+            pereson.setCname((String) selectPerson.get("CNAME"));
+            pereson.setOname((String) selectPerson.get("ONAME"));
+            pereson.setGender((String) selectPerson.get("GENDER"));
+
+            pereson.setScores(((BigDecimal) selectPerson.get("SCORES")).longValue());
+            pereson.setLevels((String) selectPerson.get("LEVELS"));
+            pereson.setCreate_time((String) selectPerson.get("CREATE_TIME"));
+            pereson.setUpdate_time((String) selectPerson.get("UPDATE_TIME"));
+            pereson.setHave(true);
+        }
+        return pereson;
+    }
+
+
     public static HVAJapanAVPersonM qryOnePersonByUUID(Connection connection, String uuid) throws SQLException, IOException {
-        Map<String, Object> selectPerson = DataBaseUtils.queryMap(connection, selectPersonByUUIDSql, 1, uuid);
+        Map<String, Object> selectPerson = DataBaseUtils.queryMap(connection, selectPersonByUUIDSql, uuid);
 
         HVAJapanAVPersonM pereson = null;
 
@@ -161,7 +183,7 @@ public class HVAJapanAVPersonDao {
     }
 
     public static List<HVAJapanAVPersonM> qryPersonByMessageUUID(Connection connection, String messageUUID) throws SQLException, IOException {
-        List<Map<String, Object>> messagePersons = DataBaseUtils.queryMapList(connection, selectPersonByMessageUUIDSql,messageUUID);
+        List<Map<String, Object>> messagePersons = DataBaseUtils.queryMapList(connection, selectPersonByMessageUUIDSql, messageUUID);
 
         List<HVAJapanAVPersonM> persons = new ArrayList<>();
 
@@ -189,11 +211,11 @@ public class HVAJapanAVPersonDao {
 
     public static void mergePersonMessageC(Connection connection, HVAJapanAVM avm) throws SQLException {
 
-        DataBaseUtils.executeUpdate(connection,deleteAllByMUUID,avm.getUuid());
+        DataBaseUtils.executeUpdate(connection, deleteAllByMUUID, avm.getUuid());
 
         if (avm.getPersons() == null) return;
         for (HVAJapanAVPersonM person : avm.getPersons()) {
-            DataBaseUtils.executeUpdate(connection,mergePersonMessageCSql,avm.getUuid(),person.getUuid(),
+            DataBaseUtils.executeUpdate(connection, mergePersonMessageCSql, avm.getUuid(), person.getUuid(),
                     avm.getUuid(),
                     person.getUuid(),
                     new SimpleDateFormat("yyyyMMddHHmmss").format(System.currentTimeMillis()));

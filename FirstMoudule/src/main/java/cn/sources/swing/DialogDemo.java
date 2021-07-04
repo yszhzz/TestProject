@@ -3,6 +3,7 @@ package cn.sources.swing;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class DialogDemo {
 
@@ -61,14 +62,38 @@ public class DialogDemo {
 
     public void init() {
 
-        jFrame.add(jTextArea);
+        JButton force = new JButton("强制");
+        JButton ignore = new JButton("忽略");
+
+        force.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(11);
+                Window win = SwingUtilities.getWindowAncestor(force);  //找到该组件所在窗口
+                win.dispose();
+            }
+        });
+        ignore.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(22);
+                System.out.println(11);
+                Window win = SwingUtilities.getWindowAncestor(ignore);  //找到该组件所在窗口
+                win.dispose();
+            }
+        });
+        JButton[] buttons = {force,ignore};
+        JOptionPane.showOptionDialog(jFrame, "该番号已存在！！是否为新数据？", "警告！", JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE,new ImageIcon("HSourcesGUI/src/main/resources/pic/w2.png"),buttons,buttons[0]);
+
+
+/*        jFrame.add(jTextArea);
         Box verticalBox = Box.createHorizontalBox();
         verticalBox.add(messageButton);
         verticalBox.add(confirmButton);
         verticalBox.add(inputButton);
         verticalBox.add(input2Button);
 
-        jFrame.add(verticalBox, BorderLayout.SOUTH);
+        jFrame.add(verticalBox, BorderLayout.SOUTH);*/
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.pack();
         jFrame.setVisible(true);

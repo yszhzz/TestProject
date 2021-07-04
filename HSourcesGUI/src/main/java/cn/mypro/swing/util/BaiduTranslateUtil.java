@@ -2,6 +2,7 @@ package cn.mypro.swing.util;
 
 import cn.mypro.swing.util.translateAPI.TransApi;
 import cn.mypro.swing.util.translateAPI.TranslateResult;
+import cn.mypro.utils.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
@@ -21,6 +22,7 @@ public class BaiduTranslateUtil {
     }
 
     public static String translateAsString(String text) {
+        if (StringUtils.isEmpty(text)) return null;
         return runTranslate(text).getTrans_result().get(0).getDst();
     }
 

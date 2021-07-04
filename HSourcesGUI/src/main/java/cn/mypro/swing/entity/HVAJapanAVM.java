@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.log4j.lf5.viewer.LogTable;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Getter
@@ -43,5 +44,35 @@ public class HVAJapanAVM {
         } else {
             return if_Code;
         }
+    }
+
+    public String getAllMessageString() {
+        return "HVAJapanAVM{" +
+                "uuid='" + uuid + '\'' +
+                ", if_Code='" + if_Code + '\'' +
+                ", oName='" + oName + '\'' +
+                ", cName='" + cName + '\'' +
+                ", cover=" + Arrays.toString(cover) +
+                ", languages='" + languages + '\'' +
+                ", production_company='" + production_company + '\'' +
+                ", publish_company='" + publish_company + '\'' +
+                ", publish_time='" + publish_time + '\'' +
+                ", series='" + series + '\'' +
+                ", mosaic='" + mosaic + '\'' +
+                ", duration=" + duration +
+                ", describe='" + describe + '\'' +
+                ", score=" + score +
+                ", recommend='" + recommend + '\'' +
+                ", cut1=" + Arrays.toString(cut1) +
+                ", cut2=" + Arrays.toString(cut2) +
+                ", cut3=" + Arrays.toString(cut3) +
+                ", reserve_field1='" + reserve_field1 + '\'' +
+                ", reserve_field2='" + reserve_field2 + '\'' +
+                ", reserve_field3='" + reserve_field3 + '\'' +
+                ", have=" + have +
+                ", sources=" + sources +
+                ", persons=" + persons +
+                ", labels=" + labels +
+                '}';
     }
 }

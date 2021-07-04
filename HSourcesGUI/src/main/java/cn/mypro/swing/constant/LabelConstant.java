@@ -31,16 +31,23 @@ public class LabelConstant {
 
     public static final String password = "123@pass";
 
+    public static final String personFirstText = "身高 - T:\n " +
+            "出生日期 - \n" +
+            "三围 - B:(C) W: H:\n " +
+            "出道公司 - \n" +
+            "经纪公司 - Bambi\n" +
+            "AV数量 - 部\n";
+
     static {
         for (int i = 1; i <= Person_Score.length; i++) {
             Person_Score[i-1] = i;
         }
 
         for (int k = 0; k <= 60; k++) {
-            TIME_MINUTE[k] = k+1;
+            TIME_MINUTE[k] = k;
         }
         for (int l = 0; l <= 60; l++) {
-            TIME_SECOND[l] = l+1;
+            TIME_SECOND[l] = l;
         }
     }
 
