@@ -4,8 +4,10 @@ import cn.mypro.swing.constant.LabelConstant;
 import cn.mypro.swing.dao.HVAJapanAVPersonDao;
 import cn.mypro.swing.entity.HVAJapanAVPersonM;
 import cn.mypro.swing.util.file.MyFileUtils;
+import cn.mypro.swing.util.webmagic.WebMagicOfPersonsUtil;
 import cn.mypro.utils.DataBaseUtils;
 import cn.mypro.utils.DbName;
+import cn.mypro.utils.StringUtils;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -42,6 +44,8 @@ public class HVAJapanPersonView {
     private JButton uploadPersonPhoto1 = new JButton("上传照片1");
     private JButton uploadPersonPhoto2 = new JButton("上传照片2");
     private JButton uploadPersonPhotoAuto = new JButton("自动上传");
+    private JButton addMessageByNet = new JButton("网络导入");
+
     //信息组件
     private JLabel personNameLabel = new JLabel("姓名:");
     private JTextField personName = new JTextField(15);
@@ -362,6 +366,16 @@ public class HVAJapanPersonView {
             }
         });
 
+        addMessageByNet.addActionListener((e) -> {
+            String name = personName.getText();
+            if (!StringUtils.isEmpty(name)) {
+                WebMagicOfPersonsUtil webMagicOfPersonsUtil = new WebMagicOfPersonsUtil();
+                HVAJapanAVPersonM hPersonSimple = webMagicOfPersonsUtil.getHPersonSimple(name);
+                if (hPersonSimple != null) fillPersonMessage(hPersonSimple);
+            }
+        });
+
+
         selectPersonField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -426,7 +440,7 @@ public class HVAJapanPersonView {
         opraPersonBox.add(uploadPersonPhoto1);
         opraPersonBox.add(uploadPersonPhoto2);
         opraPersonBox.add(uploadPersonPhotoAuto);
-
+        opraPersonBox.add(addMessageByNet);
         Box messagePersonBox = Box.createVerticalBox(); //信息集
 
         Box personNameBox = Box.createHorizontalBox();
@@ -523,5 +537,65 @@ public class HVAJapanPersonView {
         }
     }
 
+    public void fillPersonMessage(HVAJapanAVPersonM personValue) {
+
+        if (personValue != null) {
+            personName.setText(personValue.getNames());
+            personCName.setText(personValue.getCname());
+            personOName.setText(personValue.getOname());
+            if ("1".equals(personValue.getGender())) {
+                female.setSelected(true);
+            } else {
+                male.setSelected(true);
+            }
+            personStartTime.setText(personValue.getStart_time());
+            personDataInfo.setText(personValue.getDeta_info());
+            personOtherInfo.setText(personValue.getOther_info());
+            //personLevel.setSelectedIndex();
+            personScore.setSelectedIndex((int) personValue.getScores() - 1);
+
+            if (personValue.getPhtot_1() != null && personValue.getPhtot_1().length != 0) {
+                ImageIcon icon1 = new ImageIcon(personValue.getPhtot_1());
+                icon1 = new ImageIcon(icon1.getImage().getScaledInstance(400, 400, Image.SCALE_DEFAULT));
+                personPhoto1.setIcon(icon1);
+            } else {
+                personPhoto1.setIcon(null);
+            }
+            if (personValue.getPhtot_2() != null && personValue.getPhtot_2().length != 0) {
+                ImageIcon icon2 = new ImageIcon(personValue.getPhtot_2());
+                icon2 = new ImageIcon(icon2.getImage().getScaledInstance(400, 400, Image.SCALE_DEFAULT));
+                personPhoto2.setIcon(icon2);
+            } else {
+                personPhoto2.setIcon(null);
+            }
+
+            if (personValue.getLevels() == null || "".equals(personValue.getLevels())) {
+                personLevel.setSelectedIndex(0);
+            } else if ("SSS".equals(personValue.getLevels())) {
+                personLevel.setSelectedIndex(1);
+            } else if ("SS".equals(personValue.getLevels())) {
+                personLevel.setSelectedIndex(2);
+            } else if ("S".equals(personValue.getLevels())) {
+                personLevel.setSelectedIndex(3);
+            } else if ("A".equals(personValue.getLevels())) {
+                personLevel.setSelectedIndex(4);
+            } else if ("B".equals(personValue.getLevels())) {
+                personLevel.setSelectedIndex(5);
+            } else if ("C".equals(personValue.getLevels())) {
+                personLevel.setSelectedIndex(6);
+            } else if ("D".equals(personValue.getLevels())) {
+                personLevel.setSelectedIndex(7);
+            } else if ("E".equals(personValue.getLevels())) {
+                personLevel.setSelectedIndex(8);
+            } else if ("F".equals(personValue.getLevels())) {
+                personLevel.setSelectedIndex(9);
+            } else if ("G".equals(personValue.getLevels())) {
+                personLevel.setSelectedIndex(10);
+            }
+
+            personCase = personValue;
+            personCase.setHave(false);
+        }
+    }
 
 }

@@ -1,5 +1,6 @@
 package cn.mypro.swing.util.webmagic;
 
+import cn.mypro.swing.constant.LabelConstant;
 import cn.mypro.swing.dao.HVAJapanAVPersonDao;
 import cn.mypro.swing.entity.HVAJapanAVM;
 import cn.mypro.swing.entity.HVAJapanAVPersonM;
@@ -34,6 +35,7 @@ public class WebMagicOfPersonsUtil implements PageProcessor {
 
     private String runName = "";
     private List<Map<String, String>> returnMaps = null;
+
     private Connection serviceConn = null;
 
     @Override
@@ -42,24 +44,22 @@ public class WebMagicOfPersonsUtil implements PageProcessor {
         //该页面为详情页
         if (page.getUrl().regex("https://xslist\\.org/zh/model/.*").match()) {
 
-            Map<String,String> returnMap = new HashMap<>();
+            Map<String, String> returnMap = new HashMap<>();
 
             String h2 = page.getHtml().xpath("/html/body/div[1]/div[3]/div/h2[1]/text()").toString();
             String[] split = h2.split("\\(");
             returnMap.put("PersonOName", split[0]);
-            returnMap.put("PersonEName", split[1].split("\\)")[0].split("/")[0]);
-            returnMap.put("PersonAge", split[1].split("\\)")[0].split("/")[1]);
+            String[] split2 = split[1].split("\\)")[0].split("/");
+            if (split2.length > 0) returnMap.put("PersonEName", split2[0]);
+            if (split2.length > 1) returnMap.put("PersonAge", split2[1]);
 
-            
             List<String> namesList = page.getHtml().xpath("//span[@itemprop=additionalName]/text()").all();
 
-            System.out.println(namesList.toString());
-            //List<String> namesList = names.xpath("span/text()").all();
             StringBuilder nss = new StringBuilder();
             for (String s : namesList) {
                 nss.append(s).append("|");
             }
-            returnMap.put("PersonOtherNames",nss.toString());
+            returnMap.put("PersonOtherNames", nss.toString());
 
             String mess = page.getHtml().xpath("/html/body/div[1]/div[3]/div/p[1]/text()").toString();
 
@@ -85,7 +85,7 @@ public class WebMagicOfPersonsUtil implements PageProcessor {
             Selectable avs = page.getHtml().xpath("/html/body/div[1]/div[3]/div/table/tbody/");
 
             List<Selectable> nodes = avs.nodes();
-            StringBuilder movies= new StringBuilder();
+            StringBuilder movies = new StringBuilder();
             for (Selectable node : nodes) {
                 String if_code = node.xpath("tr/td[1]/strong/text()").toString();
                 String av_oname = node.xpath("tr/td[2]/text()").toString();
@@ -93,7 +93,6 @@ public class WebMagicOfPersonsUtil implements PageProcessor {
                 movies.append(if_code + ":" + av_oname + ":" + publish_time + "|");
             }
             returnMap.put("PersonMovies", movies.toString());
-
 
             Selectable pictureTable = page.getHtml().xpath("/html/body/div[1]/div[3]/div/div[1]/div");
             List<String> pictures = pictureTable.xpath("//a[@href]/@href").all();
@@ -105,9 +104,9 @@ public class WebMagicOfPersonsUtil implements PageProcessor {
             }
             returnMaps.add(returnMap);
 
-            for (String o : returnMap.keySet()) {
+/*            for (String o : returnMap.keySet()) {
                 System.out.println(o + ":" + returnMap.get(o) + "\n");
-            }
+            }*/
 
         } else {
             //该页面为列表页
@@ -118,21 +117,20 @@ public class WebMagicOfPersonsUtil implements PageProcessor {
 
     }
 
-/*
-    public List<HVAJapanAVPersonM> getHSources(String runCode, String imgPath, JProgressBar processBar, JTextArea messageRun) {
+    public List<HVAJapanAVPersonM> getHPerson(String namelike, JProgressBar processBar, JTextArea messageRun) {
 
         List<HVAJapanAVPersonM> lists = null;
 
-        String format = String.format(selectPath, runCode);
-        this.runName = runCode;
+        this.runName = namelike;
+        String format = String.format(selectPath, runName);
 
         Spider.create(this)
                 .addUrl(format)
                 //.addPipeline(new ConsolePipeline())
                 .thread(3).run();
 
+        processBar.setValue(10);
 
-        processBar.setValue(40);
         try {
             serviceConn = DataBaseUtils.ensureDataBaseConnection(DbName.LOCAL);
 
@@ -140,91 +138,411 @@ public class WebMagicOfPersonsUtil implements PageProcessor {
                 messageRun.append("获取无数据！！\n");
                 return null;
             }
+
             lists = new ArrayList<>();
 
             for (Map<String, String> returnMap : returnMaps) {
 
                 HVAJapanAVPersonM personM = null;
+
                 try {
                     if (returnMap != null) {
 
                         personM = new HVAJapanAVPersonM();
 
-//                        "PersonBirthday",
-//                        "PersonSW",
-//                        "PersonZB",
-//                        "PersonOutTime",
-//                        "PersonStar",
-//                        "PersonBlood",
-//                        "PersonHigh",
-//                        "PersonCountry",
-//                        "PersonDescribe",
+                        personM.setValuesAsNormal();
 
-                        personM.setOname(returnMap.get("ONAME"));
-                        hvaJapanAVM.setIf_Code(returnMap.get("IF_CODE"));
-                        if (returnMap.get("PRODUCTION_COMPANY") != null || returnMap.get("ACTOR") != null)
-                            hvaJapanAVM.setProduction_company(returnMap.get("PRODUCTION_COMPANY") + "|" + returnMap.get("ACTOR"));
-                        hvaJapanAVM.setPublish_company(returnMap.get("PUBLISH_COMPANY"));
-                        hvaJapanAVM.setPublish_time(returnMap.get("PRODUCT_DATE"));
-                        hvaJapanAVM.setSeries(returnMap.get("SERIES"));
-                        if (returnMap.get("TIME") != null) {
-                            hvaJapanAVM.setDuration(Integer.valueOf(returnMap.get("TIME").split(" ")[0]) * 60);
-                        }
-                        long score = 0;
-                        if (returnMap.get("SCORE") != null)
-                            score = (long) (Float.valueOf(returnMap.get("SCORE").substring(1).replace(" ", "").replace("分", "").split(",")[0]) * 100 / 5);
-                        hvaJapanAVM.setScore(score);
+                        personM.setNames(returnMap.get("PersonOName"));
+                        personM.setCname("");
+                        personM.setOname(returnMap.get("PersonEName") + "|" + returnMap.get("PersonOtherNames"));
+                        personM.setGender("1");
+                        personM.setStart_time(returnMap.get("PersonOutTime"));
 
-                        processBar.setValue(50);
-                        System.out.println(returnMap.get("PERSONS"));
-                        if (returnMap.get("PERSONS") != null) {
-                            List<String> personNames = Arrays.asList(returnMap.get("PERSONS").split("\\|"));
-                            List<HVAJapanAVPersonM> persons = new ArrayList<>();
-                            for (String name : personNames) {
-                                HVAJapanAVPersonM hvaJapanAVPersonM = HVAJapanAVPersonDao.qryPersonByNames(serviceConn, name);
-                                if (hvaJapanAVPersonM == null) {
-                                    messageRun.append("[" + name + "] 无该人物，请手动添加任务信息！！\n");
-                                } else {
-                                    persons.add(hvaJapanAVPersonM);
-                                }
-                            }
-                            hvaJapanAVM.setPersons(persons);
-                        }
+                        processBar.setValue(20);
+
+                        personM.setPhtot_1(MyFileUtils.getImgByteByNet(returnMap.get("(0)")));
+                        personM.setPhtot_2(MyFileUtils.getImgByteByNet(returnMap.get("(1)")));
+
                         processBar.setValue(60);
 
-                        MyFileUtils.downloadImgByNet(returnMap.get("COVER_URL"), imgPath, "cover.jpg");
-                        for (String s : returnMap.keySet()) {
-                            if (s.startsWith("CUT"))
-                                MyFileUtils.downloadImgByNet(returnMap.get(s), imgPath, s.toLowerCase() + ".jpg");
-                        }
-                        messageRun.append("图片下载成功!\n");
-                        processBar.setValue(90);
+                        String[] personSW = null;
+                        if (returnMap.get("PersonSW") != null) personSW = returnMap.get("PersonSW").replace(" ","").split("/");
 
+                        String date_info = LabelConstant.personRegexFirstText
+                                .replace("(T-Content)", returnMap.get("PersonBirthday") != null?returnMap.get("PersonBirthday"):"")
+                                .replace("(Birthday-Content)", returnMap.get("PersonBirthday"))
+                                .replace("(B-Content)", (personSW != null && personSW.length > 0 && personSW[0] != null)?personSW[0].replace("B",""):"")
+                                .replace("(W-Content)", (personSW != null && personSW.length > 1 && personSW[0] != null)?personSW[1].replace("W",""):"")
+                                .replace("(H-Content)", (personSW != null && personSW.length > 2 && personSW[0] != null)?personSW[2].replace("H",""):"")
+                                .replace("(C-Content)", returnMap.get("PersonZB") != null?returnMap.get("PersonZB").replace(" ","").replace("Cup",""):"")
+                                .replace("(Star-Content)", returnMap.get("PersonStar") != null?returnMap.get("PersonStar"):"")
+                                .replace("(Blood-Content)", returnMap.get("PersonBlood") != null?returnMap.get("PersonBlood"):"")
+                                .replace("(County-Content)", returnMap.get("PersonCountry") != null?returnMap.get("PersonCountry"):"")
+                                .replace("(Company1-Content)", returnMap.get("") != null?returnMap.get(""):"")
+                                .replace("(Company2-Content)", returnMap.get("") != null?returnMap.get(""):"")
+                                .replace("(AV Count-Content)", returnMap.get("") != null?returnMap.get(""):"");
+
+                        personM.setDeta_info(date_info);
+                        personM.setOther_info(returnMap.get("PersonDescribe"));
+
+                        personM.setScores(1L);
+                        personM.setLevels("F");
+                        lists.add(personM);
+
+                        processBar.setValue(80);
+                        messageRun.append(personM.getNames() + "网络导入完成！");
                     }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
             }
 
-        } catch (SQLException e) {
+            processBar.setValue(90);
+
+        } catch (Exception e) {
             messageRun.append("网路导入出现错误！\n");
             e.printStackTrace();
         } finally {
             DataBaseUtils.closeQuietly(serviceConn);
         }
 
-        return hvaJapanAVM;
+        return lists;
     }
-*/
+
+    public List<HVAJapanAVPersonM> getHPerson(String namelike, JTextArea messageRun) {
+
+        List<HVAJapanAVPersonM> lists = null;
+
+        this.runName = namelike;
+        String format = String.format(selectPath, runName);
+
+        Spider.create(this)
+                .addUrl(format)
+                //.addPipeline(new ConsolePipeline())
+                .thread(3).run();
+
+
+        try {
+            serviceConn = DataBaseUtils.ensureDataBaseConnection(DbName.LOCAL);
+
+            if (returnMaps == null || returnMaps.size() == 0) {
+                messageRun.append("获取无数据！！\n");
+                return null;
+            }
+
+            lists = new ArrayList<>();
+
+            for (Map<String, String> returnMap : returnMaps) {
+
+                HVAJapanAVPersonM personM = null;
+
+                try {
+                    if (returnMap != null) {
+
+                        personM = new HVAJapanAVPersonM();
+
+                        personM.setValuesAsNormal();
+
+                        personM.setNames(returnMap.get("PersonOName"));
+                        personM.setCname("");
+                        personM.setOname(returnMap.get("PersonEName") + "|" + returnMap.get("PersonOtherNames"));
+                        personM.setGender("1");
+                        personM.setStart_time(returnMap.get("PersonOutTime"));
+
+                        personM.setPhtot_1(MyFileUtils.getImgByteByNet(returnMap.get("(0)")));
+                        personM.setPhtot_2(MyFileUtils.getImgByteByNet(returnMap.get("(1)")));
+
+                        String[] personSW = null;
+                        if (returnMap.get("PersonSW") != null) personSW = returnMap.get("PersonSW").replace(" ","").split("/");
+
+                        String date_info = LabelConstant.personRegexFirstText
+                                .replace("(T-Content)", returnMap.get("PersonBirthday") != null?returnMap.get("PersonBirthday"):"")
+                                .replace("(Birthday-Content)", returnMap.get("PersonBirthday"))
+                                .replace("(B-Content)", (personSW != null && personSW.length > 0 && personSW[0] != null)?personSW[0].replace("B",""):"")
+                                .replace("(W-Content)", (personSW != null && personSW.length > 1 && personSW[0] != null)?personSW[1].replace("W",""):"")
+                                .replace("(H-Content)", (personSW != null && personSW.length > 2 && personSW[0] != null)?personSW[2].replace("H",""):"")
+                                .replace("(C-Content)", returnMap.get("PersonZB") != null?returnMap.get("PersonZB").replace(" ","").replace("Cup",""):"")
+                                .replace("(Star-Content)", returnMap.get("PersonStar") != null?returnMap.get("PersonStar"):"")
+                                .replace("(Blood-Content)", returnMap.get("PersonBlood") != null?returnMap.get("PersonBlood"):"")
+                                .replace("(County-Content)", returnMap.get("PersonCountry") != null?returnMap.get("PersonCountry"):"")
+                                .replace("(Company1-Content)", returnMap.get("") != null?returnMap.get(""):"")
+                                .replace("(Company2-Content)", returnMap.get("") != null?returnMap.get(""):"")
+                                .replace("(AV Count-Content)", returnMap.get("") != null?returnMap.get(""):"");
+
+                        personM.setDeta_info(date_info);
+                        personM.setOther_info(returnMap.get("PersonDescribe"));
+
+                        personM.setScores(1L);
+                        personM.setLevels("F");
+                        lists.add(personM);
+
+                        messageRun.append(personM.getNames() + "网络导入完成！");
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+        } catch (Exception e) {
+            messageRun.append("网路导入出现错误！\n");
+            e.printStackTrace();
+        } finally {
+            DataBaseUtils.closeQuietly(serviceConn);
+        }
+
+        return lists;
+    }
+
+    public HVAJapanAVPersonM getHPersonSimple(String namelike, JProgressBar processBar, JTextArea messageRun) {
+
+        HVAJapanAVPersonM personM = null;
+
+        this.runName = namelike;
+        String format = String.format(selectPath, runName);
+
+        Spider.create(this)
+                .addUrl(format)
+                //.addPipeline(new ConsolePipeline())
+                .thread(3).run();
+
+        processBar.setValue(10);
+
+        try {
+            serviceConn = DataBaseUtils.ensureDataBaseConnection(DbName.LOCAL);
+
+            if (returnMaps == null || returnMaps.size() == 0) {
+                messageRun.append("获取无数据！！\n");
+                return null;
+            }
+            Map<String, String> returnMap = returnMaps.get(0);
+
+            try {
+                if (returnMap != null) {
+
+                    personM = new HVAJapanAVPersonM();
+
+                    personM.setValuesAsNormal();
+
+                    personM.setNames(returnMap.get("PersonOName"));
+                    personM.setCname("");
+                    personM.setOname(returnMap.get("PersonEName") + "|" + returnMap.get("PersonOtherNames"));
+                    personM.setGender("1");
+                    personM.setStart_time(returnMap.get("PersonOutTime"));
+                    processBar.setValue(20);
+
+                    personM.setPhtot_1(MyFileUtils.getImgByteByNet(returnMap.get("(0)")));
+                    personM.setPhtot_2(MyFileUtils.getImgByteByNet(returnMap.get("(1)")));
+                    processBar.setValue(60);
+
+                    String[] personSW = null;
+                    if (returnMap.get("PersonSW") != null) personSW = returnMap.get("PersonSW").replace(" ","").split("/");
+
+                    String date_info = LabelConstant.personRegexFirstText
+                            .replace("(T-Content)", returnMap.get("PersonBirthday") != null?returnMap.get("PersonBirthday"):"")
+                            .replace("(Birthday-Content)", returnMap.get("PersonBirthday"))
+                            .replace("(B-Content)", (personSW != null && personSW.length > 0 && personSW[0] != null)?personSW[0].replace("B",""):"")
+                            .replace("(W-Content)", (personSW != null && personSW.length > 1 && personSW[0] != null)?personSW[1].replace("W",""):"")
+                            .replace("(H-Content)", (personSW != null && personSW.length > 2 && personSW[0] != null)?personSW[2].replace("H",""):"")
+                            .replace("(C-Content)", returnMap.get("PersonZB") != null?returnMap.get("PersonZB").replace(" ","").replace("Cup",""):"")
+                            .replace("(Star-Content)", returnMap.get("PersonStar") != null?returnMap.get("PersonStar"):"")
+                            .replace("(Blood-Content)", returnMap.get("PersonBlood") != null?returnMap.get("PersonBlood"):"")
+                            .replace("(County-Content)", returnMap.get("PersonCountry") != null?returnMap.get("PersonCountry"):"")
+                            .replace("(Company1-Content)", returnMap.get("") != null?returnMap.get(""):"")
+                            .replace("(Company2-Content)", returnMap.get("") != null?returnMap.get(""):"")
+                            .replace("(AV Count-Content)", returnMap.get("") != null?returnMap.get(""):"");
+
+                    personM.setDeta_info(date_info);
+                    personM.setOther_info(returnMap.get("PersonDescribe"));
+
+                    personM.setScores(1L);
+                    personM.setLevels("F");
+
+                    processBar.setValue(80);
+                    messageRun.append(personM.getNames() + "网络导入完成！");
+
+                }
+
+                processBar.setValue(90);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } catch (Exception e) {
+            messageRun.append("网路导入出现错误！\n");
+            e.printStackTrace();
+        } finally {
+            DataBaseUtils.closeQuietly(serviceConn);
+        }
+
+        return personM;
+    }
+
+    public HVAJapanAVPersonM getHPersonSimple(String namelike, JTextArea messageRun) {
+
+        HVAJapanAVPersonM personM = null;
+
+        this.runName = namelike;
+        String format = String.format(selectPath, runName);
+
+        Spider.create(this)
+                .addUrl(format)
+                //.addPipeline(new ConsolePipeline())
+                .thread(3).run();
+
+
+        try {
+            serviceConn = DataBaseUtils.ensureDataBaseConnection(DbName.LOCAL);
+
+            if (returnMaps == null || returnMaps.size() == 0) {
+                messageRun.append("获取无数据！！\n");
+                return null;
+            }
+            Map<String, String> returnMap = returnMaps.get(0);
+
+            try {
+                if (returnMap != null) {
+
+                    personM = new HVAJapanAVPersonM();
+
+                    personM.setValuesAsNormal();
+
+                    personM.setNames(returnMap.get("PersonOName"));
+                    personM.setCname("");
+                    personM.setOname(returnMap.get("PersonEName") + "|" + returnMap.get("PersonOtherNames"));
+                    personM.setGender("1");
+                    personM.setStart_time(returnMap.get("PersonOutTime"));
+
+                    personM.setPhtot_1(MyFileUtils.getImgByteByNet(returnMap.get("(0)")));
+                    personM.setPhtot_2(MyFileUtils.getImgByteByNet(returnMap.get("(1)")));
+
+                    String[] personSW = null;
+                    if (returnMap.get("PersonSW") != null) personSW = returnMap.get("PersonSW").replace(" ","").split("/");
+
+                    String date_info = LabelConstant.personRegexFirstText
+                            .replace("(T-Content)", returnMap.get("PersonBirthday") != null?returnMap.get("PersonBirthday"):"")
+                            .replace("(Birthday-Content)", returnMap.get("PersonBirthday"))
+                            .replace("(B-Content)", (personSW != null && personSW.length > 0 && personSW[0] != null)?personSW[0].replace("B",""):"")
+                            .replace("(W-Content)", (personSW != null && personSW.length > 1 && personSW[0] != null)?personSW[1].replace("W",""):"")
+                            .replace("(H-Content)", (personSW != null && personSW.length > 2 && personSW[0] != null)?personSW[2].replace("H",""):"")
+                            .replace("(C-Content)", returnMap.get("PersonZB") != null?returnMap.get("PersonZB").replace(" ","").replace("Cup",""):"")
+                            .replace("(Star-Content)", returnMap.get("PersonStar") != null?returnMap.get("PersonStar"):"")
+                            .replace("(Blood-Content)", returnMap.get("PersonBlood") != null?returnMap.get("PersonBlood"):"")
+                            .replace("(County-Content)", returnMap.get("PersonCountry") != null?returnMap.get("PersonCountry"):"")
+                            .replace("(Company1-Content)", returnMap.get("") != null?returnMap.get(""):"")
+                            .replace("(Company2-Content)", returnMap.get("") != null?returnMap.get(""):"")
+                            .replace("(AV Count-Content)", returnMap.get("") != null?returnMap.get(""):"");
+
+                    personM.setDeta_info(date_info);
+                    personM.setOther_info(returnMap.get("PersonDescribe"));
+
+                    personM.setScores(1L);
+                    personM.setLevels("F");
+
+                    messageRun.append(personM.getNames() + "网络导入完成！");
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } catch (Exception e) {
+            messageRun.append("网路导入出现错误！\n");
+            e.printStackTrace();
+        } finally {
+            DataBaseUtils.closeQuietly(serviceConn);
+        }
+
+        return personM;
+    }
+
+    public HVAJapanAVPersonM getHPersonSimple(String namelike) {
+
+        HVAJapanAVPersonM personM = null;
+
+        this.runName = namelike;
+        String format = String.format(selectPath, runName);
+
+        Spider.create(this)
+                .addUrl(format)
+                //.addPipeline(new ConsolePipeline())
+                .thread(3).run();
+
+
+        try {
+            //serviceConn = DataBaseUtils.ensureDataBaseConnection(DbName.LOCAL);
+
+            if (returnMaps == null || returnMaps.size() == 0) {
+                return null;
+            }
+            Map<String, String> returnMap = returnMaps.get(0);
+
+            try {
+                if (returnMap != null) {
+
+                    personM = new HVAJapanAVPersonM();
+
+                    personM.setValuesAsNormal();
+
+                    personM.setNames(returnMap.get("PersonOName"));
+                    personM.setCname("");
+                    personM.setOname(returnMap.get("PersonEName") + "|" + returnMap.get("PersonOtherNames"));
+                    personM.setGender("1");
+                    personM.setStart_time(returnMap.get("PersonOutTime"));
+
+                    personM.setPhtot_1(MyFileUtils.getImgByteByNet(returnMap.get("(0)")));
+                    personM.setPhtot_2(MyFileUtils.getImgByteByNet(returnMap.get("(1)")));
+
+                    String[] personSW = null;
+                    if (returnMap.get("PersonSW") != null) personSW = returnMap.get("PersonSW").replace(" ","").split("/");
+
+                    String date_info = LabelConstant.personRegexFirstText
+                            .replace("(T-Content)", returnMap.get("PersonBirthday") != null?returnMap.get("PersonBirthday"):"")
+                            .replace("(Birthday-Content)", returnMap.get("PersonBirthday"))
+                            .replace("(B-Content)", (personSW != null && personSW.length > 0 && personSW[0] != null)?personSW[0].replace("B",""):"")
+                            .replace("(W-Content)", (personSW != null && personSW.length > 1 && personSW[0] != null)?personSW[1].replace("W",""):"")
+                            .replace("(H-Content)", (personSW != null && personSW.length > 2 && personSW[0] != null)?personSW[2].replace("H",""):"")
+                            .replace("(C-Content)", returnMap.get("PersonZB") != null?returnMap.get("PersonZB").replace(" ","").replace("Cup",""):"")
+                            .replace("(Star-Content)", returnMap.get("PersonStar") != null?returnMap.get("PersonStar"):"")
+                            .replace("(Blood-Content)", returnMap.get("PersonBlood") != null?returnMap.get("PersonBlood"):"")
+                            .replace("(County-Content)", returnMap.get("PersonCountry") != null?returnMap.get("PersonCountry"):"")
+                            .replace("(Company1-Content)", returnMap.get("") != null?returnMap.get(""):"")
+                            .replace("(Company2-Content)", returnMap.get("") != null?returnMap.get(""):"")
+                            .replace("(AV Count-Content)", returnMap.get("") != null?returnMap.get(""):"");
+
+                    personM.setDeta_info(date_info);
+                    personM.setOther_info(returnMap.get("PersonDescribe"));
+
+                    personM.setScores(1L);
+                    personM.setLevels("F");
+
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DataBaseUtils.closeQuietly(serviceConn);
+        }
+
+        return personM;
+    }
+
 
     public static void main(String[] args) {
 
         WebMagicOfPersonsUtil util = new WebMagicOfPersonsUtil();
-        String runName = "明里つむぎ";
-        String format = String.format(selectPath, runName);
-        Spider.create(util)
-                .addUrl(format)
-                //.addPipeline(new ConsolePipeline())
-                .thread(3).run();
+        HVAJapanAVPersonM pp = util.getHPersonSimple("はたの ゆい");
+
+        System.out.println(pp.toString());
+        System.out.println(pp.getAllMessageString());
 
     }
 

@@ -34,9 +34,22 @@ public class LabelConstant {
     public static final String personFirstText = "身高 - T:\n " +
             "出生日期 - \n" +
             "三围 - B:(C) W: H:\n " +
+            "星座 - \n" +
+            "血型 - \n" +
+            "国籍 - \n" +
             "出道公司 - \n" +
             "经纪公司 - Bambi\n" +
             "AV数量 - 部\n";
+
+    public static final String personRegexFirstText = "身高 - T:(T-Content)\n" +
+            "出生日期 - (Birthday-Content)\n" +
+            "三围 - B:(B-Content)((C-Content)) W:(W-Content) H:(H-Content)\n" +
+            "星座 - (Star-Content)\n" +
+            "血型 - (Blood-Content)\n" +
+            "国籍 - (County-Content)\n" +
+            "出道公司 - (Company1-Content)\n" +
+            "经纪公司 - (Company2-Content)\n" +
+            "AV数量 - (AV Count-Content)部\n";
 
     static {
         for (int i = 1; i <= Person_Score.length; i++) {

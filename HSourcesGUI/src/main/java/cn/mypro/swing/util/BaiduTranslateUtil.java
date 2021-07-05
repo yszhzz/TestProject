@@ -26,4 +26,9 @@ public class BaiduTranslateUtil {
         return runTranslate(text).getTrans_result().get(0).getDst();
     }
 
+    public static void main(String[] args) {
+        String ss = BaiduTranslateUtil.translateAsString("はたの ゆい");
+        System.out.println(ss);
+    }
+
 }

@@ -5,7 +5,8 @@ import com.sun.jna.Native;
 
 public interface IRandomDataGenerate extends Library {
 
-    IRandomDataGenerate INSTANCE = Native.load("randDataGenerate", IRandomDataGenerate.class);
+    //IRandomDataGenerate INSTANCE = Native.load("randDataGenerate", IRandomDataGenerate.class);
+    IRandomDataGenerate INSTANCE = null;
 
     public void initRandData(int seed);
 

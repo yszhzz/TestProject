@@ -56,10 +56,41 @@ public class MyFileUtils {
         }
     }
 
+    public static byte[] getImgByteByNet(String imgSrc) {
+        if (imgSrc == null) return null;
+
+        try {
+            URL url = new URL(imgSrc);
+            URLConnection conn = url.openConnection();
+            //设置超时间为3秒
+            conn.setConnectTimeout(3 * 1000);
+            //防止屏蔽程序抓取而返回403错误
+            conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
+            //输出流
+            InputStream str = conn.getInputStream();
+            //控制流的大小为1k
+            ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
+            byte[] buff = new byte[100];
+            int rc = 0;
+            while ((rc = str.read(buff, 0, 100)) > 0) {
+                swapStream.write(buff, 0, rc);
+            }
+            byte[] in2b = swapStream.toByteArray();
+
+            //关闭流
+            swapStream.close();
+            str.close();
+            return in2b;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     public static void main(String[] args) {
-
-        MyFileUtils.downloadImgByNet("https://dss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/weather/icons/a7.png","E:\\Downloads","ss.png");
-
+        byte[] imgByteByNet = MyFileUtils.getImgByteByNet("https://m1.xslist.org/gallery/0/260/1576399312.jpg");
+        System.out.println(imgByteByNet.length);
     }
 
 }
