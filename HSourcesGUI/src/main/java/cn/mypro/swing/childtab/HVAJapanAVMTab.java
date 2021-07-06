@@ -18,8 +18,8 @@ public class HVAJapanAVMTab {
     private Connection serviceConn = null;
 
     public JTabbedPane initAddNewSourceTab(JFrame jFrame,JTextArea runMessage) {
-        //serviceConn = DataBaseUtils.ensureDataBaseConnection(DbName.LOCAL);
-        serviceConn = null;
+        serviceConn = DataBaseUtils.ensureDataBaseConnection(DbName.LOCAL);
+        //serviceConn = null;
         father = jFrame;
         JTabbedPane child = new JTabbedPane(SwingConstants.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
 

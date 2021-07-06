@@ -27,10 +27,7 @@ import javax.swing.border.BevelBorder;
 import javax.swing.event.*;
 import javax.swing.table.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -133,7 +130,7 @@ public class HVAJapanAVMView implements JChildTabView {
     @Override
     public JPanel initTab() {
         //列表信息填充
-        //flushAVMList();
+        flushAVMList();
         //事件绑定
         bindingOfTheEvent();
 
@@ -442,7 +439,7 @@ public class HVAJapanAVMView implements JChildTabView {
                 WebMagicOfSourcesUtil webMagicUtil = new WebMagicOfSourcesUtil();
                 String code = ifCode.getText().replace(" ","");
 
-                JDialog jDialog = new JDialog(father, "资源添加", true);
+                JDialog jDialog = new JDialog(father, "资源添加", false);
 
                 int MIN_PROGRESS = 0;
                 int MAX_PROGRESS = 100;
@@ -467,7 +464,7 @@ public class HVAJapanAVMView implements JChildTabView {
                         clearSourcesMessage();
                         fitAVMessage(hSources);
                         uploadPhotosQuite();
-                        progressBar.setValue(95);
+                        progressBar.setValue(90);
                         String translateString = BaiduTranslateUtil.translateAsString(oName.getText());
                         cName.setText(translateString);
                         progressBar.setValue(MAX_PROGRESS);
@@ -476,7 +473,7 @@ public class HVAJapanAVMView implements JChildTabView {
                         } catch (InterruptedException interruptedException) {
                             interruptedException.printStackTrace();
                         }
-                        //jDialog.setVisible(false);
+                        messageRun.append(code + " 导入完成！\n");
                     }
                     jDialog.setVisible(false);
                 }).start();
@@ -1308,6 +1305,11 @@ public class HVAJapanAVMView implements JChildTabView {
         JCheckBox watermark = new JCheckBox("有");
         watermarkBox.add(watermarkLabel);
         watermarkBox.add(watermark);
+        JLabel uploadLabel = new JLabel("是否上传:");
+        JCheckBox upload = new JCheckBox("是");
+        watermarkBox.add(new JPanel());
+        watermarkBox.add(uploadLabel);
+        watermarkBox.add(upload);
 
         Box sizeBox = Box.createHorizontalBox();
         JLabel sizeLabel = new JLabel("视频大小:");
@@ -1333,16 +1335,16 @@ public class HVAJapanAVMView implements JChildTabView {
         bitBox.add(bitLabel);
         bitBox.add(bit);
 
-        Box uploadBox = Box.createHorizontalBox();
+/*        Box uploadBox = Box.createHorizontalBox();
         JLabel uploadLabel = new JLabel("是否上传:");
         JCheckBox upload = new JCheckBox("是");
         uploadBox.add(uploadLabel);
-        uploadBox.add(upload);
+        uploadBox.add(upload);*/
 
         Box uriBox = Box.createHorizontalBox();
         JLabel uriLabel = new JLabel("URI:");
         JTextField uri = new JTextField(20);
-        uri.setText("Baidu@ZH1://HSources/AM/JAP/AV/");
+        uri.setText(LabelConstant.SOURC_PATH_1);
         uriBox.add(uriLabel);
         uriBox.add(uri);
 
@@ -1359,6 +1361,16 @@ public class HVAJapanAVMView implements JChildTabView {
         passwordBox.add(passwordLabel);
         passwordBox.add(password);
 
+        translate.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (translate.getSelectedIndex() == 1) {
+                    uri.setText(LabelConstant.SOURC_PATH_1 + ifCode.getText() + "-CH" + ".7z");
+                } else {
+                    uri.setText(LabelConstant.SOURC_PATH_1 + ifCode.getText() + ".7z");
+                }
+            }
+        });
 
         smBox.add(sourceBox);
         smBox.add(sourceNameBox);
@@ -1372,7 +1384,7 @@ public class HVAJapanAVMView implements JChildTabView {
         smBox.add(resolutionBox);
         smBox.add(resolution);
         smBox.add(bitBox);
-        smBox.add(uploadBox);
+        //smBox.add(uploadBox);
         smBox.add(uriBox);
         smBox.add(compressFormatBox);
         smBox.add(passwordBox);

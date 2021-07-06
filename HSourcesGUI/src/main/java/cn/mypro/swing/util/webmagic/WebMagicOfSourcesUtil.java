@@ -145,7 +145,7 @@ public class WebMagicOfSourcesUtil implements PageProcessor {
                 .thread(3).run();
 
 
-        processBar.setValue(40);
+        processBar.setValue(30);
         try {
             serviceConn = DataBaseUtils.ensureDataBaseConnection(DbName.LOCAL);
 
@@ -165,8 +165,8 @@ public class WebMagicOfSourcesUtil implements PageProcessor {
                 if (returnMap.get("SCORE") != null) score = (long) (Float.valueOf(returnMap.get("SCORE").substring(1).replace(" ","").replace("分","").split(",")[0]) *100/5);
                 hvaJapanAVM.setScore(score);
 
-                processBar.setValue(50);
-                System.out.println(returnMap.get("PERSONS"));
+                processBar.setValue(40);
+
                 if (returnMap.get("PERSONS") != null) {
                     List<String> personNames = Arrays.asList(returnMap.get("PERSONS").split("\\|"));
                     List<HVAJapanAVPersonM> persons = new ArrayList<>();
@@ -180,13 +180,16 @@ public class WebMagicOfSourcesUtil implements PageProcessor {
                     }
                     hvaJapanAVM.setPersons(persons);
                 }
-                processBar.setValue(60);
+                processBar.setValue(50);
 
                 MyFileUtils.downloadImgByNet(returnMap.get("COVER_URL"),imgPath,"cover.jpg");
+                int picSize = returnMap.size();
+                int every = 40 / picSize;
                 for (String s : returnMap.keySet()) {
                     if (s.startsWith("CUT")) MyFileUtils.downloadImgByNet(returnMap.get(s),imgPath,s.toLowerCase()+".jpg");
+                    processBar.setValue(processBar.getValue() + every);
                 }
-                messageRun.append("图片下载成功！  \n");
+                //messageRun.append("图片下载成功！  \n");
                 processBar.setValue(90);
 
             } else {

@@ -59,7 +59,7 @@ public class HVAJapanLabelView implements JChildTabView {
     public JPanel initTab() {
 
         //填充展示列表
-        //flushLabelList();
+        flushLabelList();
         //设置最大数量
         level_1_Select.setMaximumRowCount(10);
         bindingOfTheEvent();

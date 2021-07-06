@@ -23,6 +23,8 @@ public class LabelConstant {
     public static final String[] SOURCE_TABLE_COLUMN_TITLE = {"URL","质量","操作"};
     public static final String DEFAULT_FILE_PATH = "E:\\H Sources\\DealSourcePath\\HAVJ";
 
+    public static final String SOURC_PATH_1 = "Baidu@ZH1://HSources/AM/JAP/AV/";
+
     public static final String[] SOURCE_TRANSLATE = {"NUL","CHN","JAP","USA","EUR"};
     public static final String[] SOURCE_SUBTITLE = {"NUL","CHN","JAP","USA","EUR"};
     public static final String[] SOURCE_QUALITY = {"NUL","1","2","3","4","5","6","7","8","9","10"};

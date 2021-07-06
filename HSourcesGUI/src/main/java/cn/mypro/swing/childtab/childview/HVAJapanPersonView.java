@@ -93,7 +93,7 @@ public class HVAJapanPersonView implements JChildTabView {
 
     @Override
     public JPanel initTab() {
-        //flushPersonList();
+        flushPersonList();
 
         insertPerson.setEnabled(false);
         updatePerson.setEnabled(false);
