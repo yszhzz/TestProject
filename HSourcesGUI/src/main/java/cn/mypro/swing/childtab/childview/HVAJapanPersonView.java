@@ -1,8 +1,11 @@
 package cn.mypro.swing.childtab.childview;
 
+import cn.mypro.swing.childtab.JChildTabView;
 import cn.mypro.swing.constant.LabelConstant;
 import cn.mypro.swing.dao.HVAJapanAVPersonDao;
+import cn.mypro.swing.entity.HVAJapanAVM;
 import cn.mypro.swing.entity.HVAJapanAVPersonM;
+import cn.mypro.swing.util.BaiduTranslateUtil;
 import cn.mypro.swing.util.file.MyFileUtils;
 import cn.mypro.swing.util.webmagic.WebMagicOfPersonsUtil;
 import cn.mypro.utils.DataBaseUtils;
@@ -11,10 +14,7 @@ import cn.mypro.utils.StringUtils;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -24,8 +24,9 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-public class HVAJapanPersonView {
+public class HVAJapanPersonView implements JChildTabView {
 
 
     private Connection serviceConn = null;
@@ -73,6 +74,8 @@ public class HVAJapanPersonView {
     private JLabel personPhoto2 = new JLabel();
     private JFileChooser chooser = new JFileChooser("G:\\A-MyFree\\Picture\\360");
 
+    private JTextArea messageRun = null;
+
     /*缓存资源*/
     private HVAJapanAVPersonM personCase = new HVAJapanAVPersonM();
 
@@ -80,21 +83,26 @@ public class HVAJapanPersonView {
         this.serviceConn = DataBaseUtils.ensureDataBaseConnection(DbName.LOCAL);
         this.father = father;
     }
-    public HVAJapanPersonView(Connection serviceConn, JFrame father) {
+    public HVAJapanPersonView(Connection serviceConn, JFrame father, JTextArea messageRun) {
         this.serviceConn = serviceConn;
         this.father = father;
+        this.messageRun = messageRun;
+
     }
 
 
+    @Override
+    public JPanel initTab() {
+        //flushPersonList();
 
-    public JPanel initAddNewPersonJFrame() {
-
-        JPanel tabPersonPanel = new JPanel();
-
-        flushPersonList();
         insertPerson.setEnabled(false);
         updatePerson.setEnabled(false);
+        bindingOfTheEvent();
+        return assemblyOfTheView();
+    }
 
+    @Override
+    public void bindingOfTheEvent() {
         //绑定事件
         selectPerson.addActionListener(new ActionListener() {
             @Override
@@ -368,11 +376,40 @@ public class HVAJapanPersonView {
 
         addMessageByNet.addActionListener((e) -> {
             String name = personName.getText();
-            if (!StringUtils.isEmpty(name)) {
-                WebMagicOfPersonsUtil webMagicOfPersonsUtil = new WebMagicOfPersonsUtil();
-                HVAJapanAVPersonM hPersonSimple = webMagicOfPersonsUtil.getHPersonSimple(name);
-                if (hPersonSimple != null) fillPersonMessage(hPersonSimple);
-            }
+
+            JDialog jDialog = new JDialog(father, "网络导入", true);
+
+            int MIN_PROGRESS = 0;
+            int MAX_PROGRESS = 100;
+            int currentProgress = MIN_PROGRESS;
+            JProgressBar progressBar = new JProgressBar();
+            progressBar.setMinimum(MIN_PROGRESS);
+            progressBar.setMaximum(MAX_PROGRESS);
+            progressBar.setValue(currentProgress);
+            progressBar.setStringPainted(true);
+            progressBar.addChangeListener(new ChangeListener() {
+                @Override
+                public void stateChanged(ChangeEvent e) {
+
+                }
+            });
+
+            new Thread(() -> {
+                if (!StringUtils.isEmpty(name)) {
+                    WebMagicOfPersonsUtil webMagicOfPersonsUtil = new WebMagicOfPersonsUtil();
+                    HVAJapanAVPersonM hPersonSimple = webMagicOfPersonsUtil.getHPersonSimple(name,progressBar,messageRun);
+                    if (hPersonSimple != null) fillPersonMessage(hPersonSimple);
+                }
+                jDialog.setVisible(false);
+            }).start();
+
+            jDialog.add(progressBar);
+            jDialog.setLocationRelativeTo(father);
+            jDialog.pack();
+            jDialog.setVisible(true);
+
+
+
         });
 
 
@@ -417,7 +454,11 @@ public class HVAJapanPersonView {
                 jDialog.setVisible(true);
             }
         });
+    }
 
+    @Override
+    public JPanel assemblyOfTheView() {
+        JPanel tabPersonPanel = new JPanel();
 
         //组件组装
         Box tabBox = Box.createVerticalBox();
@@ -525,6 +566,11 @@ public class HVAJapanPersonView {
 
         tabPersonPanel.add(tabBox, BorderLayout.CENTER);
         return tabPersonPanel;
+    }
+
+    @Override
+    public void flushMessageList() {
+
     }
 
     private void flushPersonList() {

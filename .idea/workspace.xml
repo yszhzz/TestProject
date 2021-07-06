@@ -4,22 +4,82 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f68a3aba-e173-4209-98ba-ce744f3e29bd" name="Default Changelist" comment="2021.03.07-15 Commit From Home">
-      <change afterPath="$PROJECT_DIR$/HSourcesGUI/src/main/java/cn/mypro/Run.java" afterDir="false" />
+    <list default="true" id="f68a3aba-e173-4209-98ba-ce744f3e29bd" name="Default Changelist" comment="2021.07.05-17 Commit From Company">
+      <change afterPath="$PROJECT_DIR$/HSourcesGUI/src/main/java/cn/mypro/swing/childtab/JChildTabView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/src/main/java/cn/mypro/swing/StartGUIApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/src/main/java/cn/mypro/swing/StartGUIApp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HSourcesGUI/src/main/java/cn/mypro/swing/childtab/HVAJapanAVMTab.java" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/src/main/java/cn/mypro/swing/childtab/HVAJapanAVMTab.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/src/main/java/cn/mypro/swing/childtab/childview/HVAJapanAVMView.java" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/src/main/java/cn/mypro/swing/childtab/childview/HVAJapanAVMView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/src/main/java/cn/mypro/swing/childtab/childview/HVAJapanLabelView.java" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/src/main/java/cn/mypro/swing/childtab/childview/HVAJapanLabelView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HSourcesGUI/src/main/java/cn/mypro/swing/childtab/childview/HVAJapanPersonView.java" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/src/main/java/cn/mypro/swing/childtab/childview/HVAJapanPersonView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HSourcesGUI/src/main/java/cn/mypro/swing/constant/LabelConstant.java" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/src/main/java/cn/mypro/swing/constant/LabelConstant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HSourcesGUI/src/main/java/cn/mypro/swing/entity/HVAJapanAVPersonM.java" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/src/main/java/cn/mypro/swing/entity/HVAJapanAVPersonM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HSourcesGUI/src/main/java/cn/mypro/swing/util/BaiduTranslateUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/src/main/java/cn/mypro/swing/util/BaiduTranslateUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HSourcesGUI/src/main/java/cn/mypro/swing/util/file/MyFileUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/src/main/java/cn/mypro/swing/util/file/MyFileUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HSourcesGUI/src/main/java/cn/mypro/swing/util/webmagic/WebMagicOfPersonsUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/src/main/java/cn/mypro/swing/util/webmagic/WebMagicOfPersonsUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HSourcesGUI/src/main/java/cn/mypro/utils/IRandomDataGenerate.java" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/src/main/java/cn/mypro/utils/IRandomDataGenerate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/StartGUIApp$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/StartGUIApp$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/StartGUIApp.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/StartGUIApp.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/HVAJapanAVMTab.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/HVAJapanAVMTab.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$10.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$10.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$11.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$11.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$12.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$12.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$13.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$13.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$14.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$14.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$15.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$15.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$16.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$16.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$17$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$17$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$17.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$17.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$18$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$18$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$18$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$18$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$18.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$18.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$19.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$19.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$1ActionPanelEditorRenderer$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$1ActionPanelEditorRenderer$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$1ActionPanelEditorRenderer$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$1ActionPanelEditorRenderer$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$1ActionPanelEditorRenderer.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$1ActionPanelEditorRenderer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$20.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$20.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$21$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$21$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$21$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$21$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$21.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$21.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$22$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$22$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$22$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$22$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$22.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$22.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$23.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$23.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$24.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$24.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$25$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$25$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$25$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$25$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$25.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$25.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$26$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$26$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$26$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$26$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$26.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$26.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$27.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$27.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$28.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$28.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$29.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$29.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$2ActionPanelEditorRenderer$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$2ActionPanelEditorRenderer$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$2ActionPanelEditorRenderer$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$2ActionPanelEditorRenderer$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$2ActionPanelEditorRenderer.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$2ActionPanelEditorRenderer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$3$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$3$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$3$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$3$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$30.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$30.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$31.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$31.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$5.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$6.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$7.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$8.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$9.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView$9.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanAVMView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanLabelView$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanLabelView$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanLabelView$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanLabelView$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanLabelView$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanLabelView$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanLabelView.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanLabelView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanPersonView$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanPersonView$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanPersonView$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanPersonView$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanPersonView$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanPersonView$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanPersonView$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanPersonView$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanPersonView$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanPersonView$5.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanPersonView$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanPersonView$6.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanPersonView.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/childtab/childview/HVAJapanPersonView.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/util/file/MyFileUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/util/file/MyFileUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/constant/LabelConstant.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/constant/LabelConstant.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/util/webmagic/WebMagicOfPersonsUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/swing/util/webmagic/WebMagicOfPersonsUtil.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/utils/IRandomDataGenerate.class" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/target/classes/cn/mypro/utils/IRandomDataGenerate.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,6 +93,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -91,7 +152,7 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="MavenSettings" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -102,13 +163,26 @@
       <recent name="G:\WorkSpace\WorkSpaceForIDEA\TestProject\HSourcesGUI\src\main\java\cn\mypro" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.WebMagicOfPersonsUtil">
+  <component name="RunManager" selected="Application.StartGUIApp">
     <configuration name="BaiduTranslateUtil" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="cn.mypro.swing.util.BaiduTranslateUtil" />
       <module name="HSourcesGUI" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="cn.mypro.swing.util.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="JSplitPaneDemo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="cn.sources.swing.JSplitPaneDemo" />
+      <module name="FirstMoudule" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cn.sources.swing.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -155,28 +229,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="WebMagicUtil" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="cn.mypro.swing.util.webmagic.WebMagicUtil" />
-      <module name="HSourcesGUI" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="cn.mypro.swing.util.webmagic.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -230,18 +289,18 @@
     </configuration>
     <list>
       <item itemvalue="Application.StartGUIApp" />
-      <item itemvalue="Application.WebMagicUtil" />
       <item itemvalue="Application.WebMagicOfPersonsUtil" />
       <item itemvalue="Application.MyFileUtils" />
       <item itemvalue="Application.BaiduTranslateUtil" />
+      <item itemvalue="Application.JSplitPaneDemo" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.StartGUIApp" />
+        <item itemvalue="Application.JSplitPaneDemo" />
         <item itemvalue="Application.WebMagicOfPersonsUtil" />
         <item itemvalue="Application.BaiduTranslateUtil" />
-        <item itemvalue="Application.StartGUIApp" />
         <item itemvalue="Application.MyFileUtils" />
-        <item itemvalue="Application.WebMagicUtil" />
       </list>
     </recent_temporary>
   </component>
@@ -311,7 +370,8 @@
       <workItem from="1621776424654" duration="3434000" />
       <workItem from="1621780117998" duration="10361000" />
       <workItem from="1621853909361" duration="5254000" />
-      <workItem from="1625468024279" duration="5607000" />
+      <workItem from="1625468024279" duration="7329000" />
+      <workItem from="1625531533806" duration="9418000" />
     </task>
     <task id="LOCAL-00001" summary="2021.02.24 Commit From Home">
       <created>1614180483249</created>
@@ -404,7 +464,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619193644858</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="2021.07.05-17 Commit From Company">
+      <created>1625476211271</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1625476211272</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -432,7 +499,8 @@
     <MESSAGE value="2021.03.07-15 Commit From Home" />
     <MESSAGE value="2021.4.23-22 Commit From Home" />
     <MESSAGE value="2021.4.23-23 Commit From Home" />
-    <option name="LAST_COMMIT_MESSAGE" value="2021.4.23-23 Commit From Home" />
+    <MESSAGE value="2021.07.05-17 Commit From Company" />
+    <option name="LAST_COMMIT_MESSAGE" value="2021.07.05-17 Commit From Company" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

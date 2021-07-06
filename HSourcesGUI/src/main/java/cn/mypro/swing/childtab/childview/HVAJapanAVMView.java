@@ -1,5 +1,6 @@
 package cn.mypro.swing.childtab.childview;
 
+import cn.mypro.swing.childtab.JChildTabView;
 import cn.mypro.swing.constant.LabelConstant;
 import cn.mypro.swing.dao.HVAJapanAVLabelDao;
 import cn.mypro.swing.dao.HVAJapanAVMDao;
@@ -40,7 +41,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
-public class HVAJapanAVMView {
+public class HVAJapanAVMView implements JChildTabView {
 
 
     /*查询页面组件*/
@@ -104,7 +105,7 @@ public class HVAJapanAVMView {
     private JButton clearMessage = new JButton("清空");
 
     //信息进度框
-    private JTextArea messageRun = new JTextArea(10, 20);
+    private JTextArea messageRun = null;
 
 
     private Connection serviceConn = null;
@@ -117,9 +118,10 @@ public class HVAJapanAVMView {
     private List<HVAJapanAVPersonM> allPersons;
     private List<HVAJapanAVPersonM> noSelectedPersons;
 
-    public HVAJapanAVMView(Connection serviceConn, JFrame father) {
+    public HVAJapanAVMView(Connection serviceConn, JFrame father,JTextArea messageRun) {
         this.serviceConn = serviceConn;
         this.father = father;
+        this.messageRun = messageRun;
     }
 
     public HVAJapanAVMView(JFrame father) {
@@ -127,12 +129,20 @@ public class HVAJapanAVMView {
         this.father = father;
     }
 
-    //构建视图
-    public JPanel initSelectSourcesJFrame() {
+    //构建
+    @Override
+    public JPanel initTab() {
+        //列表信息填充
+        //flushAVMList();
+        //事件绑定
+        bindingOfTheEvent();
 
-        JPanel tabPanel = new JPanel();
+        return assemblyOfTheView();
+    }
 
-        flushAVMList();
+    //绑定键位
+    @Override
+    public void bindingOfTheEvent() {
         //绑定Button
         select.addActionListener(new ActionListener() {
             @Override
@@ -522,6 +532,11 @@ public class HVAJapanAVMView {
 
             }
         });
+    }
+    //视图组装
+    @Override
+    public JPanel assemblyOfTheView() {
+        JPanel tabPanel = new JPanel();
 
         Box tabBox = Box.createVerticalBox();
         //查询栏
@@ -666,9 +681,9 @@ public class HVAJapanAVMView {
 
         JSplitPane allNewSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, selectResultScrollPane, allSplit); //总 竖向
 
-        JSplitPane allNew2Split = new JSplitPane(JSplitPane.VERTICAL_SPLIT, allNewSplit, new JScrollPane(messageRun)); //添加 总+信息框 竖向
+        //JSplitPane allNew2Split = new JSplitPane(JSplitPane.VERTICAL_SPLIT, allNewSplit, new JScrollPane(messageRun)); //添加 总+信息框 竖向
 
-        showPanel.add(allNew2Split);
+        showPanel.add(allNewSplit);
         //展示截图
 
         tabBox.add(jPanel);
@@ -679,6 +694,10 @@ public class HVAJapanAVMView {
         return tabPanel;
     }
 
+    @Override
+    public void flushMessageList() {
+
+    }
     //刷新填充信息框
     private void flushAVMList() {
         List<HVAJapanAVM> allMessage = null;

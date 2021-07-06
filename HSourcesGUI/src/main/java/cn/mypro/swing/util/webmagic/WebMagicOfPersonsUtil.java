@@ -84,6 +84,7 @@ public class WebMagicOfPersonsUtil implements PageProcessor {
 
             Selectable avs = page.getHtml().xpath("/html/body/div[1]/div[3]/div/table/tbody/");
 
+            int num = 0;
             List<Selectable> nodes = avs.nodes();
             StringBuilder movies = new StringBuilder();
             for (Selectable node : nodes) {
@@ -91,8 +92,10 @@ public class WebMagicOfPersonsUtil implements PageProcessor {
                 String av_oname = node.xpath("tr/td[2]/text()").toString();
                 String publish_time = node.xpath("tr/td[3]/text()").toString();
                 movies.append(if_code + ":" + av_oname + ":" + publish_time + "|");
+                num++;
             }
             returnMap.put("PersonMovies", movies.toString());
+            returnMap.put("PersonMoviesCount",num+"");
 
             Selectable pictureTable = page.getHtml().xpath("/html/body/div[1]/div[3]/div/div[1]/div");
             List<String> pictures = pictureTable.xpath("//a[@href]/@href").all();
@@ -132,7 +135,7 @@ public class WebMagicOfPersonsUtil implements PageProcessor {
         processBar.setValue(10);
 
         try {
-            serviceConn = DataBaseUtils.ensureDataBaseConnection(DbName.LOCAL);
+            //serviceConn = DataBaseUtils.ensureDataBaseConnection(DbName.LOCAL);
 
             if (returnMaps == null || returnMaps.size() == 0) {
                 messageRun.append("获取无数据！！\n");
@@ -140,58 +143,22 @@ public class WebMagicOfPersonsUtil implements PageProcessor {
             }
 
             lists = new ArrayList<>();
-
+            processBar.setValue(20);
+            int size = returnMaps.size();
+            int every = 70/size;
             for (Map<String, String> returnMap : returnMaps) {
 
                 HVAJapanAVPersonM personM = null;
 
                 try {
-                    if (returnMap != null) {
 
-                        personM = new HVAJapanAVPersonM();
-
-                        personM.setValuesAsNormal();
-
-                        personM.setNames(returnMap.get("PersonOName"));
-                        personM.setCname("");
-                        personM.setOname(returnMap.get("PersonEName") + "|" + returnMap.get("PersonOtherNames"));
-                        personM.setGender("1");
-                        personM.setStart_time(returnMap.get("PersonOutTime"));
-
-                        processBar.setValue(20);
-
-                        personM.setPhtot_1(MyFileUtils.getImgByteByNet(returnMap.get("(0)")));
-                        personM.setPhtot_2(MyFileUtils.getImgByteByNet(returnMap.get("(1)")));
-
-                        processBar.setValue(60);
-
-                        String[] personSW = null;
-                        if (returnMap.get("PersonSW") != null) personSW = returnMap.get("PersonSW").replace(" ","").split("/");
-
-                        String date_info = LabelConstant.personRegexFirstText
-                                .replace("(T-Content)", returnMap.get("PersonBirthday") != null?returnMap.get("PersonBirthday"):"")
-                                .replace("(Birthday-Content)", returnMap.get("PersonBirthday"))
-                                .replace("(B-Content)", (personSW != null && personSW.length > 0 && personSW[0] != null)?personSW[0].replace("B",""):"")
-                                .replace("(W-Content)", (personSW != null && personSW.length > 1 && personSW[0] != null)?personSW[1].replace("W",""):"")
-                                .replace("(H-Content)", (personSW != null && personSW.length > 2 && personSW[0] != null)?personSW[2].replace("H",""):"")
-                                .replace("(C-Content)", returnMap.get("PersonZB") != null?returnMap.get("PersonZB").replace(" ","").replace("Cup",""):"")
-                                .replace("(Star-Content)", returnMap.get("PersonStar") != null?returnMap.get("PersonStar"):"")
-                                .replace("(Blood-Content)", returnMap.get("PersonBlood") != null?returnMap.get("PersonBlood"):"")
-                                .replace("(County-Content)", returnMap.get("PersonCountry") != null?returnMap.get("PersonCountry"):"")
-                                .replace("(Company1-Content)", returnMap.get("") != null?returnMap.get(""):"")
-                                .replace("(Company2-Content)", returnMap.get("") != null?returnMap.get(""):"")
-                                .replace("(AV Count-Content)", returnMap.get("") != null?returnMap.get(""):"");
-
-                        personM.setDeta_info(date_info);
-                        personM.setOther_info(returnMap.get("PersonDescribe"));
-
-                        personM.setScores(1L);
-                        personM.setLevels("F");
-                        lists.add(personM);
-
-                        processBar.setValue(80);
+                    personM = analyzeOfReturnMap(returnMap);
+                    if (personM != null) {
                         messageRun.append(personM.getNames() + "网络导入完成！");
+                    } else {
+                        messageRun.append(personM.getNames() + "网络导入失败！");
                     }
+                    processBar.setValue(processBar.getValue() + every);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -225,7 +192,7 @@ public class WebMagicOfPersonsUtil implements PageProcessor {
 
 
         try {
-            serviceConn = DataBaseUtils.ensureDataBaseConnection(DbName.LOCAL);
+            //serviceConn = DataBaseUtils.ensureDataBaseConnection(DbName.LOCAL);
 
             if (returnMaps == null || returnMaps.size() == 0) {
                 messageRun.append("获取无数据！！\n");
@@ -239,46 +206,11 @@ public class WebMagicOfPersonsUtil implements PageProcessor {
                 HVAJapanAVPersonM personM = null;
 
                 try {
-                    if (returnMap != null) {
-
-                        personM = new HVAJapanAVPersonM();
-
-                        personM.setValuesAsNormal();
-
-                        personM.setNames(returnMap.get("PersonOName"));
-                        personM.setCname("");
-                        personM.setOname(returnMap.get("PersonEName") + "|" + returnMap.get("PersonOtherNames"));
-                        personM.setGender("1");
-                        personM.setStart_time(returnMap.get("PersonOutTime"));
-
-                        personM.setPhtot_1(MyFileUtils.getImgByteByNet(returnMap.get("(0)")));
-                        personM.setPhtot_2(MyFileUtils.getImgByteByNet(returnMap.get("(1)")));
-
-                        String[] personSW = null;
-                        if (returnMap.get("PersonSW") != null) personSW = returnMap.get("PersonSW").replace(" ","").split("/");
-
-                        String date_info = LabelConstant.personRegexFirstText
-                                .replace("(T-Content)", returnMap.get("PersonBirthday") != null?returnMap.get("PersonBirthday"):"")
-                                .replace("(Birthday-Content)", returnMap.get("PersonBirthday"))
-                                .replace("(B-Content)", (personSW != null && personSW.length > 0 && personSW[0] != null)?personSW[0].replace("B",""):"")
-                                .replace("(W-Content)", (personSW != null && personSW.length > 1 && personSW[0] != null)?personSW[1].replace("W",""):"")
-                                .replace("(H-Content)", (personSW != null && personSW.length > 2 && personSW[0] != null)?personSW[2].replace("H",""):"")
-                                .replace("(C-Content)", returnMap.get("PersonZB") != null?returnMap.get("PersonZB").replace(" ","").replace("Cup",""):"")
-                                .replace("(Star-Content)", returnMap.get("PersonStar") != null?returnMap.get("PersonStar"):"")
-                                .replace("(Blood-Content)", returnMap.get("PersonBlood") != null?returnMap.get("PersonBlood"):"")
-                                .replace("(County-Content)", returnMap.get("PersonCountry") != null?returnMap.get("PersonCountry"):"")
-                                .replace("(Company1-Content)", returnMap.get("") != null?returnMap.get(""):"")
-                                .replace("(Company2-Content)", returnMap.get("") != null?returnMap.get(""):"")
-                                .replace("(AV Count-Content)", returnMap.get("") != null?returnMap.get(""):"");
-
-                        personM.setDeta_info(date_info);
-                        personM.setOther_info(returnMap.get("PersonDescribe"));
-
-                        personM.setScores(1L);
-                        personM.setLevels("F");
-                        lists.add(personM);
-
+                    personM = analyzeOfReturnMap(returnMap);
+                    if (personM != null) {
                         messageRun.append(personM.getNames() + "网络导入完成！");
+                    } else {
+                        messageRun.append(runName + "网络导入失败！");
                     }
 
                 } catch (Exception e) {
@@ -300,6 +232,7 @@ public class WebMagicOfPersonsUtil implements PageProcessor {
     public HVAJapanAVPersonM getHPersonSimple(String namelike, JProgressBar processBar, JTextArea messageRun) {
 
         HVAJapanAVPersonM personM = null;
+        processBar.setValue(10);
 
         this.runName = namelike;
         String format = String.format(selectPath, runName);
@@ -309,10 +242,10 @@ public class WebMagicOfPersonsUtil implements PageProcessor {
                 //.addPipeline(new ConsolePipeline())
                 .thread(3).run();
 
-        processBar.setValue(10);
+
 
         try {
-            serviceConn = DataBaseUtils.ensureDataBaseConnection(DbName.LOCAL);
+            //serviceConn = DataBaseUtils.ensureDataBaseConnection(DbName.LOCAL);
 
             if (returnMaps == null || returnMaps.size() == 0) {
                 messageRun.append("获取无数据！！\n");
@@ -321,51 +254,13 @@ public class WebMagicOfPersonsUtil implements PageProcessor {
             Map<String, String> returnMap = returnMaps.get(0);
 
             try {
-                if (returnMap != null) {
-
-                    personM = new HVAJapanAVPersonM();
-
-                    personM.setValuesAsNormal();
-
-                    personM.setNames(returnMap.get("PersonOName"));
-                    personM.setCname("");
-                    personM.setOname(returnMap.get("PersonEName") + "|" + returnMap.get("PersonOtherNames"));
-                    personM.setGender("1");
-                    personM.setStart_time(returnMap.get("PersonOutTime"));
-                    processBar.setValue(20);
-
-                    personM.setPhtot_1(MyFileUtils.getImgByteByNet(returnMap.get("(0)")));
-                    personM.setPhtot_2(MyFileUtils.getImgByteByNet(returnMap.get("(1)")));
-                    processBar.setValue(60);
-
-                    String[] personSW = null;
-                    if (returnMap.get("PersonSW") != null) personSW = returnMap.get("PersonSW").replace(" ","").split("/");
-
-                    String date_info = LabelConstant.personRegexFirstText
-                            .replace("(T-Content)", returnMap.get("PersonBirthday") != null?returnMap.get("PersonBirthday"):"")
-                            .replace("(Birthday-Content)", returnMap.get("PersonBirthday"))
-                            .replace("(B-Content)", (personSW != null && personSW.length > 0 && personSW[0] != null)?personSW[0].replace("B",""):"")
-                            .replace("(W-Content)", (personSW != null && personSW.length > 1 && personSW[0] != null)?personSW[1].replace("W",""):"")
-                            .replace("(H-Content)", (personSW != null && personSW.length > 2 && personSW[0] != null)?personSW[2].replace("H",""):"")
-                            .replace("(C-Content)", returnMap.get("PersonZB") != null?returnMap.get("PersonZB").replace(" ","").replace("Cup",""):"")
-                            .replace("(Star-Content)", returnMap.get("PersonStar") != null?returnMap.get("PersonStar"):"")
-                            .replace("(Blood-Content)", returnMap.get("PersonBlood") != null?returnMap.get("PersonBlood"):"")
-                            .replace("(County-Content)", returnMap.get("PersonCountry") != null?returnMap.get("PersonCountry"):"")
-                            .replace("(Company1-Content)", returnMap.get("") != null?returnMap.get(""):"")
-                            .replace("(Company2-Content)", returnMap.get("") != null?returnMap.get(""):"")
-                            .replace("(AV Count-Content)", returnMap.get("") != null?returnMap.get(""):"");
-
-                    personM.setDeta_info(date_info);
-                    personM.setOther_info(returnMap.get("PersonDescribe"));
-
-                    personM.setScores(1L);
-                    personM.setLevels("F");
-
-                    processBar.setValue(80);
+                processBar.setValue(20);
+                personM = analyzeOfReturnMap(returnMap);
+                if (personM != null) {
                     messageRun.append(personM.getNames() + "网络导入完成！");
-
+                } else {
+                    messageRun.append(personM.getNames() + "网络导入失败！");
                 }
-
                 processBar.setValue(90);
 
             } catch (Exception e) {
@@ -396,7 +291,7 @@ public class WebMagicOfPersonsUtil implements PageProcessor {
 
 
         try {
-            serviceConn = DataBaseUtils.ensureDataBaseConnection(DbName.LOCAL);
+            //serviceConn = DataBaseUtils.ensureDataBaseConnection(DbName.LOCAL);
 
             if (returnMaps == null || returnMaps.size() == 0) {
                 messageRun.append("获取无数据！！\n");
@@ -405,46 +300,12 @@ public class WebMagicOfPersonsUtil implements PageProcessor {
             Map<String, String> returnMap = returnMaps.get(0);
 
             try {
-                if (returnMap != null) {
+                personM = analyzeOfReturnMap(returnMap);
 
-                    personM = new HVAJapanAVPersonM();
-
-                    personM.setValuesAsNormal();
-
-                    personM.setNames(returnMap.get("PersonOName"));
-                    personM.setCname("");
-                    personM.setOname(returnMap.get("PersonEName") + "|" + returnMap.get("PersonOtherNames"));
-                    personM.setGender("1");
-                    personM.setStart_time(returnMap.get("PersonOutTime"));
-
-                    personM.setPhtot_1(MyFileUtils.getImgByteByNet(returnMap.get("(0)")));
-                    personM.setPhtot_2(MyFileUtils.getImgByteByNet(returnMap.get("(1)")));
-
-                    String[] personSW = null;
-                    if (returnMap.get("PersonSW") != null) personSW = returnMap.get("PersonSW").replace(" ","").split("/");
-
-                    String date_info = LabelConstant.personRegexFirstText
-                            .replace("(T-Content)", returnMap.get("PersonBirthday") != null?returnMap.get("PersonBirthday"):"")
-                            .replace("(Birthday-Content)", returnMap.get("PersonBirthday"))
-                            .replace("(B-Content)", (personSW != null && personSW.length > 0 && personSW[0] != null)?personSW[0].replace("B",""):"")
-                            .replace("(W-Content)", (personSW != null && personSW.length > 1 && personSW[0] != null)?personSW[1].replace("W",""):"")
-                            .replace("(H-Content)", (personSW != null && personSW.length > 2 && personSW[0] != null)?personSW[2].replace("H",""):"")
-                            .replace("(C-Content)", returnMap.get("PersonZB") != null?returnMap.get("PersonZB").replace(" ","").replace("Cup",""):"")
-                            .replace("(Star-Content)", returnMap.get("PersonStar") != null?returnMap.get("PersonStar"):"")
-                            .replace("(Blood-Content)", returnMap.get("PersonBlood") != null?returnMap.get("PersonBlood"):"")
-                            .replace("(County-Content)", returnMap.get("PersonCountry") != null?returnMap.get("PersonCountry"):"")
-                            .replace("(Company1-Content)", returnMap.get("") != null?returnMap.get(""):"")
-                            .replace("(Company2-Content)", returnMap.get("") != null?returnMap.get(""):"")
-                            .replace("(AV Count-Content)", returnMap.get("") != null?returnMap.get(""):"");
-
-                    personM.setDeta_info(date_info);
-                    personM.setOther_info(returnMap.get("PersonDescribe"));
-
-                    personM.setScores(1L);
-                    personM.setLevels("F");
-
-                    messageRun.append(personM.getNames() + "网络导入完成！");
-
+                if (personM != null) {
+                    messageRun.append(runName + "网络导入完成！");
+                } else {
+                    messageRun.append(runName + "网络导入失败！");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -482,46 +343,7 @@ public class WebMagicOfPersonsUtil implements PageProcessor {
             Map<String, String> returnMap = returnMaps.get(0);
 
             try {
-                if (returnMap != null) {
-
-                    personM = new HVAJapanAVPersonM();
-
-                    personM.setValuesAsNormal();
-
-                    personM.setNames(returnMap.get("PersonOName"));
-                    personM.setCname("");
-                    personM.setOname(returnMap.get("PersonEName") + "|" + returnMap.get("PersonOtherNames"));
-                    personM.setGender("1");
-                    personM.setStart_time(returnMap.get("PersonOutTime"));
-
-                    personM.setPhtot_1(MyFileUtils.getImgByteByNet(returnMap.get("(0)")));
-                    personM.setPhtot_2(MyFileUtils.getImgByteByNet(returnMap.get("(1)")));
-
-                    String[] personSW = null;
-                    if (returnMap.get("PersonSW") != null) personSW = returnMap.get("PersonSW").replace(" ","").split("/");
-
-                    String date_info = LabelConstant.personRegexFirstText
-                            .replace("(T-Content)", returnMap.get("PersonBirthday") != null?returnMap.get("PersonBirthday"):"")
-                            .replace("(Birthday-Content)", returnMap.get("PersonBirthday"))
-                            .replace("(B-Content)", (personSW != null && personSW.length > 0 && personSW[0] != null)?personSW[0].replace("B",""):"")
-                            .replace("(W-Content)", (personSW != null && personSW.length > 1 && personSW[0] != null)?personSW[1].replace("W",""):"")
-                            .replace("(H-Content)", (personSW != null && personSW.length > 2 && personSW[0] != null)?personSW[2].replace("H",""):"")
-                            .replace("(C-Content)", returnMap.get("PersonZB") != null?returnMap.get("PersonZB").replace(" ","").replace("Cup",""):"")
-                            .replace("(Star-Content)", returnMap.get("PersonStar") != null?returnMap.get("PersonStar"):"")
-                            .replace("(Blood-Content)", returnMap.get("PersonBlood") != null?returnMap.get("PersonBlood"):"")
-                            .replace("(County-Content)", returnMap.get("PersonCountry") != null?returnMap.get("PersonCountry"):"")
-                            .replace("(Company1-Content)", returnMap.get("") != null?returnMap.get(""):"")
-                            .replace("(Company2-Content)", returnMap.get("") != null?returnMap.get(""):"")
-                            .replace("(AV Count-Content)", returnMap.get("") != null?returnMap.get(""):"");
-
-                    personM.setDeta_info(date_info);
-                    personM.setOther_info(returnMap.get("PersonDescribe"));
-
-                    personM.setScores(1L);
-                    personM.setLevels("F");
-
-
-                }
+                personM = analyzeOfReturnMap(returnMap);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -535,6 +357,76 @@ public class WebMagicOfPersonsUtil implements PageProcessor {
         return personM;
     }
 
+    public HVAJapanAVPersonM analyzeOfReturnMap (Map<String, String> returnMap) {
+        HVAJapanAVPersonM personM = null;
+
+        try {
+
+            if (returnMap != null) {
+
+                personM = new HVAJapanAVPersonM();
+
+                personM.setValuesAsNormal();
+
+                personM.setNames(returnMap.get("PersonOName"));
+                personM.setCname("");
+                personM.setOname(returnMap.get("PersonEName") + "|" + returnMap.get("PersonOtherNames"));
+                personM.setGender("1");
+                if (returnMap.get("PersonOutTime") != null)
+                    personM.setStart_time(add0(returnMap.get("PersonOutTime").replace("年","").replace("月","").replace("日","")));
+
+                personM.setPhtot_1(MyFileUtils.getImgByteByNet(returnMap.get("(1)")));
+                personM.setPhtot_2(MyFileUtils.getImgByteByNet(returnMap.get("(2)")));
+
+                String[] personSW = null;
+                if (returnMap.get("PersonSW") != null) personSW = returnMap.get("PersonSW").replace(" ","").split("/");
+
+                String date_info = LabelConstant.personRegexFirstText
+                        .replace("(T-Content)", returnMap.get("PersonBirthday") != null?returnMap.get("PersonBirthday"):"")
+                        .replace("(Birthday-Content)", returnMap.get("PersonBirthday"))
+                        .replace("(B-Content)", (personSW != null && personSW.length > 0 && personSW[0] != null)?personSW[0].replace("B",""):"")
+                        .replace("(W-Content)", (personSW != null && personSW.length > 1 && personSW[0] != null)?personSW[1].replace("W",""):"")
+                        .replace("(H-Content)", (personSW != null && personSW.length > 2 && personSW[0] != null)?personSW[2].replace("H",""):"")
+                        .replace("(C-Content)", returnMap.get("PersonZB") != null?returnMap.get("PersonZB").replace(" ","").replace("Cup",""):"")
+                        .replace("(Star-Content)", returnMap.get("PersonStar") != null?returnMap.get("PersonStar"):"")
+                        .replace("(Blood-Content)", returnMap.get("PersonBlood") != null?returnMap.get("PersonBlood"):"")
+                        .replace("(County-Content)", returnMap.get("PersonCountry") != null?returnMap.get("PersonCountry"):"")
+                        .replace("(Company1-Content)", returnMap.get("") != null?returnMap.get(""):"")
+                        .replace("(Company2-Content)", returnMap.get("") != null?returnMap.get(""):"")
+                        .replace("(AV Count-Content)", returnMap.get("PersonMoviesCount") != null?returnMap.get("PersonMoviesCount"):"");
+
+                personM.setDeta_info(date_info);
+                personM.setOther_info(returnMap.get("PersonDescribe"));
+
+                personM.setScores(1L);
+                personM.setLevels("F");
+
+
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return personM;
+    }
+
+    private String add0(String s) {
+        if (s != null && s.length() != 8) {
+
+            if (s.length() < 8) {
+                int cyc = 8-s.length();
+                for (int i = 0; i < cyc; i++) {
+                     s = s + "0";
+                }
+                return s;
+            }
+            if (s.length() > 8) return s.substring(0,8);
+
+        }
+        return s;
+    }
 
     public static void main(String[] args) {
 

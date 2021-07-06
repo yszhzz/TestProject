@@ -1,5 +1,6 @@
 package cn.mypro.swing.childtab.childview;
 
+import cn.mypro.swing.childtab.JChildTabView;
 import cn.mypro.swing.constant.LabelConstant;
 import cn.mypro.swing.dao.HVAJapanAVLabelDao;
 import cn.mypro.swing.entity.HVAJapanAVLabelM;
@@ -17,7 +18,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-public class HVAJapanLabelView {
+public class HVAJapanLabelView implements JChildTabView {
 
     /*Label页面组件*/
     //展示所有Lab
@@ -35,15 +36,19 @@ public class HVAJapanLabelView {
     private  JButton label_ok = new JButton("OK");
     private  JButton label_commit = new JButton("Commit");
 
+    private JTextArea messageRun = null;
+
     private HVAJapanAVLabelM labelCase = new HVAJapanAVLabelM();
 
     private Connection serviceConn = null;
     private JFrame father = null;
 
 
-    public HVAJapanLabelView(Connection serviceConn,JFrame father) {
+    public HVAJapanLabelView(Connection serviceConn,JFrame father,JTextArea messageRun) {
         this.serviceConn = serviceConn;
         this.father = father;
+        this.messageRun = messageRun;
+
     }
 
     public HVAJapanLabelView(JFrame father) {
@@ -51,44 +56,19 @@ public class HVAJapanLabelView {
         this.father = father;
     }
 
-    public JPanel initAddNewLabelJFrame() {
+    public JPanel initTab() {
 
-        JPanel tabPanel = new JPanel();
-        tabPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.RED, Color.GREEN, Color.BLUE, Color.GRAY));
         //填充展示列表
-        flushLabelList();
+        //flushLabelList();
         //设置最大数量
         level_1_Select.setMaximumRowCount(10);
+        bindingOfTheEvent();
 
-        //组件组装
-        Box selectBox = Box.createHorizontalBox();
-        selectBox.add(level_1_Select);
-        selectBox.add(level_2_Select);
-        selectBox.add(level_3_add);
+        return assemblyOfTheView();
+    }
 
-        Box buttenBox = Box.createHorizontalBox();
-        buttenBox.add(label_ok);
-        buttenBox.add(new JPanel());
-        buttenBox.add(label_commit);
-
-        Box textBox = Box.createVerticalBox();
-        label_comment.setLineWrap(true);//自动换行
-        textBox.add(label_code);
-        textBox.add(new JPanel());
-        textBox.add(label_show);
-        textBox.add(new JPanel());
-        textBox.add(label_comment);
-        textBox.add(buttenBox);
-
-        //labelList.setPreferredSize(new Dimension(150, 1000));
-        selectBox.setPreferredSize(new Dimension(300, 25));
-        textBox.setPreferredSize(new Dimension(300, 200));
-
-        JSplitPane rightSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(selectBox), textBox); //上右 竖向
-        //labelList.setVisibleRowCount(30);
-        JSplitPane allSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(labelList), rightSplit); //上右 竖向
-
-
+    @Override
+    public void bindingOfTheEvent() {
         //绑定事件
         level_1_Select.addItemListener(new ItemListener() {
             @Override
@@ -194,9 +174,51 @@ public class HVAJapanLabelView {
 
             }
         });
+    }
+
+    @Override
+    public JPanel assemblyOfTheView() {
+        JPanel tabPanel = new JPanel();
+        tabPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.RED, Color.GREEN, Color.BLUE, Color.GRAY));
+
+        //组件组装
+        Box selectBox = Box.createHorizontalBox();
+        selectBox.add(level_1_Select);
+        selectBox.add(level_2_Select);
+        selectBox.add(level_3_add);
+
+        Box buttenBox = Box.createHorizontalBox();
+        buttenBox.add(label_ok);
+        buttenBox.add(new JPanel());
+        buttenBox.add(label_commit);
+
+        Box textBox = Box.createVerticalBox();
+        label_comment.setLineWrap(true);//自动换行
+        textBox.add(label_code);
+        textBox.add(new JPanel());
+        textBox.add(label_show);
+        textBox.add(new JPanel());
+        textBox.add(label_comment);
+        textBox.add(buttenBox);
+
+        //labelList.setPreferredSize(new Dimension(150, 1000));
+        selectBox.setPreferredSize(new Dimension(300, 25));
+        textBox.setPreferredSize(new Dimension(300, 200));
+
+        JSplitPane rightSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(selectBox), textBox); //上右 竖向
+        //labelList.setVisibleRowCount(30);
+        JSplitPane allSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(labelList), rightSplit); //上右 竖向
+
+
+
 
         tabPanel.add(allSplit, BorderLayout.CENTER);
         return tabPanel;
+    }
+
+    @Override
+    public void flushMessageList() {
+
     }
 
     private void flushLabelList() {

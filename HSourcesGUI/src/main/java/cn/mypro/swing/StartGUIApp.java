@@ -3,6 +3,8 @@ package cn.mypro.swing;
 import cn.mypro.swing.childtab.HVAJapanAVMTab;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -11,7 +13,7 @@ public class StartGUIApp {
 
     JFrame totalJFram = new JFrame("HSources Manage Tools");
     JTabbedPane level_1_child = new JTabbedPane(SwingConstants.LEFT,JTabbedPane.WRAP_TAB_LAYOUT);
-
+    JTextArea runMessage = new JTextArea(20,50);
     //菜单
     JMenuBar menuBar = new JMenuBar();
     JMenu fileMenu = new JMenu("文件");
@@ -31,6 +33,8 @@ public class StartGUIApp {
     JRadioButtonMenuItem windows_classItem = new JRadioButtonMenuItem("Windows Class Style");
     JRadioButtonMenuItem motifItem = new JRadioButtonMenuItem("Motif Style");
     ButtonGroup popupButtonGroup = new ButtonGroup();
+
+
     public static void main(String[] args) {
         StartGUIApp startGUIApp = new StartGUIApp();
         startGUIApp.init();
@@ -38,24 +42,37 @@ public class StartGUIApp {
     }
 
     public void init(){
-        //设置jf大小
-        totalJFram.setBounds(10,10,1800,1000);
-        //设置jf大小是否能变化
-        totalJFram.setResizable(true);
 
+        /*日志框 设置*/
+        runMessage.append("欢迎使用！！\n");
+        runMessage.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+
+        /*初始化部件*/
         //顶部菜单初始化
         menuInit();
         //右键菜单初始化
         rightMenuInit();
+
         //日本AV Tab
         HVAJapanAVMTab hvaJapanAVMTab = new HVAJapanAVMTab();
-        JTabbedPane jTabbedPane = hvaJapanAVMTab.initAddNewSourceTab(totalJFram);
+        JTabbedPane jTabbedPane = hvaJapanAVMTab.initAddNewSourceTab(totalJFram,runMessage);
         level_1_child.addTab("日本AV管理",new ImageIcon("HSourcesGUI/src/main/resources/pic/new.png"),jTabbedPane,"日本AV管理");
         //level_1_child.setSelectedIndex(0);
+        JSplitPane all = new JSplitPane(JSplitPane.VERTICAL_SPLIT, level_1_child, new JScrollPane(runMessage));
+        all.setDividerSize(10);
+        all.setDividerLocation(800);
+        all.setContinuousLayout(true);
+        all.setOneTouchExpandable(true);
 
-        totalJFram.add(level_1_child);
+        /*jFram 设置*/
+        //设置jf大小
+        totalJFram.setBounds(10,10,1800,1000);
+        //设置jf大小是否能变化
+        totalJFram.setResizable(true);
+        //设置jf退出模式
         totalJFram.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //totalJFram.pack();
+        //添加组件
+        totalJFram.add(all);
         totalJFram.setVisible(true);
 
     }
@@ -115,6 +132,8 @@ public class StartGUIApp {
         jPopupMenu.add(motifItem);
 
         //自动监听右键！！
+
+
         level_1_child.setComponentPopupMenu(jPopupMenu);
 
     }
