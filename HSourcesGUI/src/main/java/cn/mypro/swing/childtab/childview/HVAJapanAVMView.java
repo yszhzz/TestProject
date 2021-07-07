@@ -12,6 +12,7 @@ import cn.mypro.swing.entity.HVAJapanAVPersonM;
 import cn.mypro.swing.entity.HVAJapanAVS;
 import cn.mypro.swing.util.BaiduTranslateUtil;
 import cn.mypro.swing.util.file.MyFileUtils;
+import cn.mypro.swing.util.webmagic.WebMagicOfPersonsUtil;
 import cn.mypro.swing.util.webmagic.WebMagicOfSourcesUtil;
 import cn.mypro.utils.DataBaseUtils;
 import cn.mypro.utils.DbName;
@@ -99,11 +100,21 @@ public class HVAJapanAVMView implements JChildTabView {
     private JButton updateMessage = new JButton("修改信息");
     private JButton showSources = new JButton("查看资源");
     private JButton uploadCoverAndCut = new JButton("上传封面&截图");
-    private JButton clearMessage = new JButton("清空");
+    private JButton clearMessage = new JButton("    清空    ");
 
     //信息进度框
     private JTextArea messageRun = null;
 
+    private JButton autoImport = new JButton("全自动导入");
+    private JButton fulshList = new JButton("刷新列表");
+    private JButton fulshRobotList = new JButton("自导数据");
+    private JButton nouse = new JButton("无用的按钮");
+
+    //自动注入框
+    private JDialog showBar = null;
+    private JProgressBar showProgressBar = new JProgressBar();
+    private JTextArea sources = new JTextArea();
+    private boolean isClose = false;
 
     private Connection serviceConn = null;
     private JFrame father = null;
@@ -115,10 +126,12 @@ public class HVAJapanAVMView implements JChildTabView {
     private List<HVAJapanAVPersonM> allPersons;
     private List<HVAJapanAVPersonM> noSelectedPersons;
 
-    public HVAJapanAVMView(Connection serviceConn, JFrame father,JTextArea messageRun) {
+    public HVAJapanAVMView(Connection serviceConn, JFrame father, JTextArea messageRun) {
         this.serviceConn = serviceConn;
         this.father = father;
         this.messageRun = messageRun;
+
+        showBar = new JDialog(father, "资源自动注入进度", false);
     }
 
     public HVAJapanAVMView(JFrame father) {
@@ -170,10 +183,11 @@ public class HVAJapanAVMView implements JChildTabView {
                         ifCode.setText(selectedValue.getIf_Code());
                         oName.setText(selectedValue.getOName());
                         cName.setText(selectedValue.getCName());
-                        language.setSelectedIndex(selectedValue.getLanguages().equals("JAP") ?
-                                0 : selectedValue.getLanguages().equals("CHN") ?
-                                1 : selectedValue.getLanguages().equals("EUR") ?
-                                2 : 3);
+                        if (selectedValue.getLanguages() != null)
+                            language.setSelectedIndex(selectedValue.getLanguages().equals("JAP") ?
+                                    0 : selectedValue.getLanguages().equals("CHN") ?
+                                    1 : selectedValue.getLanguages().equals("EUR") ?
+                                    2 : 3);
                         production.setText(selectedValue.getProduction_company());
                         publish.setText(selectedValue.getPublish_company());
                         publishTime.setText(selectedValue.getPublish_time());
@@ -205,23 +219,31 @@ public class HVAJapanAVMView implements JChildTabView {
                             ImageIcon iconCover = new ImageIcon(selectedValue.getCover());
                             iconCover = new ImageIcon(iconCover.getImage().getScaledInstance(cover.getWidth(), cover.getHeight(), Image.SCALE_DEFAULT));
                             cover.setIcon(iconCover);
+                        } else {
+                            cover.setIcon(null);
                         }
                         if (selectedValue.getCut1() != null) {
                             ImageIcon iconCut1 = new ImageIcon(selectedValue.getCut1());
                             iconCut1 = new ImageIcon(iconCut1.getImage().getScaledInstance(cut1.getWidth(), cut1.getHeight(), Image.SCALE_DEFAULT));
                             cut1.setIcon(iconCut1);
+                        } else {
+                            cover.setIcon(null);
                         }
 
                         if (selectedValue.getCut2() != null) {
                             ImageIcon iconCut2 = new ImageIcon(selectedValue.getCut2());
                             iconCut2 = new ImageIcon(iconCut2.getImage().getScaledInstance(cut2.getWidth(), cut2.getHeight(), Image.SCALE_DEFAULT));
                             cut2.setIcon(iconCut2);
+                        } else {
+                            cover.setIcon(null);
                         }
 
                         if (selectedValue.getCut3() != null) {
                             ImageIcon iconCut3 = new ImageIcon(selectedValue.getCut3());
                             iconCut3 = new ImageIcon(iconCut3.getImage().getScaledInstance(cut3.getWidth(), cut3.getHeight(), Image.SCALE_DEFAULT));
                             cut3.setIcon(iconCut3);
+                        } else {
+                            cover.setIcon(null);
                         }
 
                         avCase = selectedValue;
@@ -237,7 +259,7 @@ public class HVAJapanAVMView implements JChildTabView {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                avCase.setIf_Code(ifCode.getText().replace(" ","").toUpperCase());
+                avCase.setIf_Code(ifCode.getText().replace(" ", "").toUpperCase());
                 avCase.setOName(oName.getText());
                 avCase.setCName(cName.getText());
                 avCase.setLanguages(LabelConstant.AV_LANGUAGE[language.getSelectedIndex()]);
@@ -287,8 +309,8 @@ public class HVAJapanAVMView implements JChildTabView {
                                 win.dispose();
                             }
                         });
-                        JButton[] buttons = {force,ignore};
-                        JOptionPane.showOptionDialog(father, "该番号已存在！！是否为新数据？", "警告！", JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE,new ImageIcon("HSourcesGUI/src/main/resources/pic/w2.png"),buttons,buttons[0]);
+                        JButton[] buttons = {force, ignore};
+                        JOptionPane.showOptionDialog(father, "该番号已存在！！是否为新数据？", "警告！", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, new ImageIcon("HSourcesGUI/src/main/resources/pic/w2.png"), buttons, buttons[0]);
                     }
 
                 }
@@ -365,7 +387,7 @@ public class HVAJapanAVMView implements JChildTabView {
                 //jDialog.setBounds(100,100,10,10);
                 jDialog.add(new JLabel(new ImageIcon(avCase.getCover())));
                 //jDialog.setLocationRelativeTo(father);
-                jDialog.setLocation(500,500);
+                jDialog.setLocation(500, 500);
                 jDialog.pack();
                 jDialog.setVisible(true);
             }
@@ -377,7 +399,7 @@ public class HVAJapanAVMView implements JChildTabView {
                 //jDialog.setBounds(100,100,10,10);
                 jDialog.add(new JLabel(new ImageIcon(avCase.getCut1())));
                 //jDialog.setLocationRelativeTo(father);
-                jDialog.setLocation(500,500);
+                jDialog.setLocation(500, 500);
                 jDialog.pack();
                 jDialog.setVisible(true);
             }
@@ -389,7 +411,7 @@ public class HVAJapanAVMView implements JChildTabView {
                 //jDialog.setBounds(100,100,10,10);
                 jDialog.add(new JLabel(new ImageIcon(avCase.getCut2())));
                 //jDialog.setLocationRelativeTo(father);
-                jDialog.setLocation(500,500);
+                jDialog.setLocation(500, 500);
                 jDialog.pack();
                 jDialog.setVisible(true);
             }
@@ -401,7 +423,7 @@ public class HVAJapanAVMView implements JChildTabView {
                 //jDialog.setBounds(100,100,10,10);
                 jDialog.add(new JLabel(new ImageIcon(avCase.getCut3())));
                 //jDialog.setLocationRelativeTo(father);
-                jDialog.setLocation(500,500);
+                jDialog.setLocation(500, 500);
                 jDialog.pack();
                 jDialog.setVisible(true);
             }
@@ -437,7 +459,7 @@ public class HVAJapanAVMView implements JChildTabView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 WebMagicOfSourcesUtil webMagicUtil = new WebMagicOfSourcesUtil();
-                String code = ifCode.getText().replace(" ","");
+                String code = ifCode.getText().replace(" ", "");
 
                 JDialog jDialog = new JDialog(father, "资源添加", false);
 
@@ -457,9 +479,9 @@ public class HVAJapanAVMView implements JChildTabView {
                 });
 
                 new Thread(() -> {
-                    if(code != null) {
+                    if (code != null) {
 
-                        HVAJapanAVM hSources = webMagicUtil.getHSources(code, filePath.getText() + "\\" + code,progressBar,messageRun);
+                        HVAJapanAVM hSources = webMagicUtil.getHSources(code, filePath.getText() + "\\" + code, progressBar, messageRun);
 
                         clearSourcesMessage();
                         fitAVMessage(hSources);
@@ -529,7 +551,237 @@ public class HVAJapanAVMView implements JChildTabView {
 
             }
         });
+
+        autoImport.addActionListener((e) -> {
+
+            int MIN_PROGRESS = 0;
+            int MAX_PROGRESS = 100;
+
+            Box verticalBox = Box.createVerticalBox();
+
+            showProgressBar.setMinimum(MIN_PROGRESS);
+            showProgressBar.setMaximum(MAX_PROGRESS);
+            showProgressBar.setValue(MIN_PROGRESS);
+            showProgressBar.setPreferredSize(new Dimension(300, 20));
+            showProgressBar.setStringPainted(true);
+            sources.setPreferredSize(new Dimension(300, 400));
+            verticalBox.add(showProgressBar);
+            verticalBox.add(new JScrollPane(sources));
+
+            showBar.add(verticalBox);
+            showBar.setLocationRelativeTo(father);
+            showBar.addWindowListener(new WindowListener() {
+                @Override
+                public void windowOpened(WindowEvent e) {
+
+                }
+
+                @Override
+                public void windowClosing(WindowEvent e) {
+
+                }
+
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    isClose = true;
+                    showBar.setVisible(false);
+                }
+
+                @Override
+                public void windowIconified(WindowEvent e) {
+
+                }
+
+                @Override
+                public void windowDeiconified(WindowEvent e) {
+
+                }
+
+                @Override
+                public void windowActivated(WindowEvent e) {
+
+                }
+
+                @Override
+                public void windowDeactivated(WindowEvent e) {
+
+                }
+            });
+
+
+            new Thread(() -> {
+
+                try {
+                    TimeUnit.SECONDS.sleep(2);
+                } catch (Exception se) {
+                    se.printStackTrace();
+                }
+
+                Connection importConn = DataBaseUtils.ensureDataBaseConnection(DbName.LOCAL);
+
+                messageRun.append("自动注入开始！\n");
+                messageRun.paintImmediately(messageRun.getBounds());
+
+                WebMagicOfSourcesUtil webMagicUtil = new WebMagicOfSourcesUtil();
+                WebMagicOfPersonsUtil webMagicPersonUtil = new WebMagicOfPersonsUtil();
+                //获取需自动注入的所有 code
+                File rootFile = new File(filePath.getText());
+                File[] files = rootFile.listFiles();
+                List<File> files1 = new ArrayList<>(Arrays.asList(files));
+                files1.removeIf(new Predicate<File>() {
+                    @Override
+                    public boolean test(File file) {
+                        return file.isFile();
+                    }
+                });
+                files1.sort(new Comparator<File>() {
+                    @Override
+                    public int compare(File o1, File o2) {
+                        return o1.getName().compareTo(o2.getName());
+                    }
+                });
+
+                messageRun.append("本次需处理[" + files1.size() + "]个番号\n");
+                messageRun.paintImmediately(messageRun.getBounds());
+
+                if (isClose) {
+                    messageRun.append("关闭窗口自动注入停止！");
+                    messageRun.paintImmediately(messageRun.getBounds());
+                    return;
+                }
+
+                int successCount = 0;
+                int errorCount = 0;
+
+                for (File file : files1) {
+                    try {
+                        messageRun.append("开始处理[" + file.getName() + "]");
+                        messageRun.paintImmediately(messageRun.getBounds());
+
+                        if (HVAJapanAVMDao.qryExist(importConn, file.getName())) {
+                            messageRun.append("[" + file.getName() + "]已存在，跳过！\n");
+                            messageRun.paintImmediately(messageRun.getBounds());
+                            continue;
+                        };
+
+                        long start = System.currentTimeMillis();
+                        String code = file.getName().replace(" ", "");
+
+                        if (isClose) {
+                            messageRun.append("关闭窗口自动注入停止！");
+                            messageRun.paintImmediately(messageRun.getBounds());
+                            return;
+                        }
+
+                        sources.append("开始处理[" + file.getName() + "]\n");
+                        sources.paintImmediately(sources.getBounds());
+                        messageRun.append(" .");
+                        messageRun.paintImmediately(messageRun.getBounds());
+                        HVAJapanAVM hSources = webMagicUtil.getHSourceBatch(code, filePath.getText() + "\\" + code, showProgressBar, sources);
+                        messageRun.append(" .");
+                        messageRun.paintImmediately(messageRun.getBounds());
+                        showProgressBar.setValue(80);
+
+                        if (isClose) {
+                            messageRun.append("关闭窗口自动注入停止！");
+                            messageRun.paintImmediately(messageRun.getBounds());
+                            return;
+                        }
+
+                        if (hSources.getNotExistsPerson() != null && hSources.getNotExistsPerson().size() != 0) {
+                            System.out.println(hSources.getNotExistsPerson().toString());
+                            for (String notExistsPerson : hSources.getNotExistsPerson()) {
+                                try {
+
+                                    HVAJapanAVPersonM hPersonSimple = webMagicPersonUtil.getHPersonSimple(notExistsPerson);
+                                    hPersonSimple.setCname(BaiduTranslateUtil.translateAsString(hPersonSimple.getNames()));
+                                    if (hPersonSimple != null) {
+                                        HVAJapanAVPersonDao.insertPerson(importConn, hPersonSimple);
+                                        hSources.getPersons().add(hPersonSimple);
+                                        sources.append("添加人物[" + notExistsPerson + "]完成！\n");
+                                        sources.paintImmediately(sources.getBounds());
+
+                                    } else {
+                                        sources.append("添加人物[" + notExistsPerson + "]失败！原因[不存在该人物]\n");
+                                        sources.paintImmediately(sources.getBounds());
+                                    }
+                                } catch (Exception exx) {
+                                    exx.printStackTrace();
+                                    sources.append("添加人物[" + notExistsPerson + "]失败！原因[导入错误]\n");
+                                    sources.paintImmediately(sources.getBounds());
+                                }
+                            }
+                        }
+                        messageRun.append(" .");
+                        messageRun.paintImmediately(messageRun.getBounds());
+                        showProgressBar.setValue(85);
+
+                        hSources.setRobot("1");
+                        String translateString = BaiduTranslateUtil.translateAsString(hSources.getOName());
+                        hSources.setCName(translateString);
+                        hSources.setLanguages("JAP");
+                        hSources.setMosaic("HM");
+                        hSources.setScore(60);
+                        hSources.setRecommend("0");
+
+                        String fileRootPath = filePath.getText();
+                        String childPath = hSources.getIf_Code().replace(" ", "");
+
+                        File coverFile = new File(fileRootPath + "\\" + childPath + "\\" + "cover.jpg");
+                        File cutFile1 = new File(fileRootPath + "\\" + childPath + "\\" + "cut1.jpg");
+                        File cutFile2 = new File(fileRootPath + "\\" + childPath + "\\" + "cut2.jpg");
+                        File cutFile3 = new File(fileRootPath + "\\" + childPath + "\\" + "cut3.jpg");
+                        if (coverFile.exists() && coverFile.isFile()) {
+                            hSources.setCover(MyFileUtils.getBytesFromFile(coverFile));
+                        }
+                        if (cutFile1.exists() && cutFile1.isFile()) {
+                            hSources.setCut1(MyFileUtils.getBytesFromFile(cutFile1));
+                        }
+                        if (cutFile2.exists() && cutFile2.isFile()) {
+                            hSources.setCut2(MyFileUtils.getBytesFromFile(cutFile2));
+                        }
+                        if (cutFile3.exists() && cutFile3.isFile()) {
+                            hSources.setCut3(MyFileUtils.getBytesFromFile(cutFile3));
+                        }
+
+                        showProgressBar.setValue(90);
+                        HVAJapanAVMDao.insertMessage(importConn, hSources);
+                        long end = System.currentTimeMillis();
+                        sources.append("[" + file.getName() + "]完成注入！耗时[" + (end - start) / 1000 + "]\n");
+                        sources.paintImmediately(sources.getBounds());
+                        showProgressBar.setValue(MAX_PROGRESS);
+
+                        importConn.commit();
+                        successCount++;
+                        messageRun.append("处理完毕！\n");
+                        messageRun.paintImmediately(messageRun.getBounds());
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        errorCount++;
+                        messageRun.append("处理出错！\n");
+                        messageRun.paintImmediately(messageRun.getBounds());
+                    }
+                }
+                //showBar.setVisible(false);
+                messageRun.append("本次注入完成！成功处理[" + successCount + "]个，失败[" + errorCount + "]个");
+                messageRun.paintImmediately(messageRun.getBounds());
+            }).start();
+
+            showBar.pack();
+            showBar.setVisible(true);
+
+        });
+
+        fulshList.addActionListener((e) -> {
+            flushAVMList();
+        });
+
+        fulshRobotList.addActionListener((e) -> {
+            flushRobotAVMList();
+        });
+
     }
+
     //视图组装
     @Override
     public JPanel assemblyOfTheView() {
@@ -556,6 +808,7 @@ public class HVAJapanAVMView implements JChildTabView {
         opraBoxChile2.add(insertMessage);
         opraBoxChile2.add(updateMessage);
         opraBoxChile2.add(uploadCoverAndCut);
+        //opraBoxChile2.add(autoImport);
 
         opraBox.add(opraBoxChile1);
         opraBox.add(opraBoxChile2);
@@ -664,11 +917,26 @@ public class HVAJapanAVMView implements JChildTabView {
 
         cover.setPreferredSize(new Dimension(200, 300));
         opraBox.setPreferredSize(new Dimension(200, 100));
-        messageBox.setPreferredSize(new Dimension(600, 400));
+        messageBox.setPreferredSize(new Dimension(800, 400));
         cutPanel.setPreferredSize(new Dimension(450, 100));
-        //selectResult.setPreferredSize(new Dimension(150, 0));
+        //selectResult.setPreferredSize(new Dimension(100, 0));
+        Box listBox = Box.createVerticalBox();
+
+        Box listButtonBox = Box.createHorizontalBox();
+        listButtonBox.add(autoImport);
+        listButtonBox.add(fulshList);
+
+        Box listButtonBox2 = Box.createHorizontalBox();
+        listButtonBox2.add(nouse);
+        listButtonBox2.add(fulshRobotList);
+
         JScrollPane selectResultScrollPane = new JScrollPane(selectResult);
-        selectResultScrollPane.setPreferredSize(new Dimension(150, 500));
+        listBox.add(listButtonBox);
+        listBox.add(listButtonBox2);
+        listBox.add(selectResultScrollPane);
+
+        selectResultScrollPane.setPreferredSize(new Dimension(150, 450));
+        //listButtonBox2.setPreferredSize(new Dimension(150, 50));
         //messageRun.setPreferredSize(new Dimension());
         JSplitPane topRightSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(cover), opraBox); //上右 竖向
 
@@ -676,7 +944,7 @@ public class HVAJapanAVMView implements JChildTabView {
 
         JSplitPane allSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT, topSplit, new JScrollPane(cutPanel)); //总 竖向
 
-        JSplitPane allNewSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, selectResultScrollPane, allSplit); //总 竖向
+        JSplitPane allNewSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, listBox, allSplit); //总 竖向
 
         //JSplitPane allNew2Split = new JSplitPane(JSplitPane.VERTICAL_SPLIT, allNewSplit, new JScrollPane(messageRun)); //添加 总+信息框 竖向
 
@@ -695,6 +963,7 @@ public class HVAJapanAVMView implements JChildTabView {
     public void flushMessageList() {
 
     }
+
     //刷新填充信息框
     private void flushAVMList() {
         List<HVAJapanAVM> allMessage = null;
@@ -708,6 +977,20 @@ public class HVAJapanAVMView implements JChildTabView {
             e.printStackTrace();
         }
     }
+
+    private void flushRobotAVMList() {
+        List<HVAJapanAVM> allMessage = null;
+        try {
+            //allMessage = HVAJapanAVMDao.selectAllMessage(serviceConn);
+            allMessage = HVAJapanAVMDao.selectAllNameRobotMessage(serviceConn);
+            if (allMessage != null) {
+                selectResult.setListData(allMessage.toArray(new HVAJapanAVM[allMessage.size()]));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     //清除资源信息框
     private void clearSourcesMessage() {
 
@@ -855,9 +1138,9 @@ public class HVAJapanAVMView implements JChildTabView {
         });
 
         JScrollPane noScrollPane = new JScrollPane(noSelected);
-        noScrollPane.setPreferredSize(new Dimension(250,500));
+        noScrollPane.setPreferredSize(new Dimension(250, 500));
         JScrollPane yesScrollPane = new JScrollPane(yesSelected);
-        yesScrollPane.setPreferredSize(new Dimension(250,500));
+        yesScrollPane.setPreferredSize(new Dimension(250, 500));
         jDialog.add(noScrollPane, BorderLayout.WEST);
         jDialog.add(yesScrollPane, BorderLayout.EAST);
         Box buttonBox = Box.createVerticalBox();
@@ -865,10 +1148,11 @@ public class HVAJapanAVMView implements JChildTabView {
         buttonBox.add(remove);
         jDialog.add(buttonBox);
         //jDialog.setLocationRelativeTo(father);
-        jDialog.setLocation(500,500);
+        jDialog.setLocation(500, 500);
         jDialog.pack();
         jDialog.setVisible(true);
     }
+
     public List<HVAJapanAVLabelM> removeRepLabels(List<HVAJapanAVLabelM> list1, List<HVAJapanAVLabelM> list2) {
         cyc1:
         for (HVAJapanAVLabelM label2 : list2) {
@@ -997,10 +1281,11 @@ public class HVAJapanAVMView implements JChildTabView {
         buttonBox.add(remove);
         jDialog.add(buttonBox);
         //jDialog.setLocationRelativeTo(father);
-        jDialog.setLocation(500,500);
+        jDialog.setLocation(500, 500);
         jDialog.pack();
         jDialog.setVisible(true);
     }
+
     public List<HVAJapanAVPersonM> removeRepPersons(List<HVAJapanAVPersonM> list1, List<HVAJapanAVPersonM> list2) {
         cyc1:
         for (HVAJapanAVPersonM person2 : list2) {
@@ -1047,10 +1332,10 @@ public class HVAJapanAVMView implements JChildTabView {
                 JOptionPane.showMessageDialog(father, "无资源！！", "SourcesDialog", JOptionPane.WARNING_MESSAGE);
             } else {
                 int size = hvaJapanAVS.size();
-                Object[][] tableData = new Object[size+1][LabelConstant.SOURCE_TABLE_COLUMN_TITLE.length];
-                tableData[0] = new Object[]{"URL","质量","操作"};
+                Object[][] tableData = new Object[size + 1][LabelConstant.SOURCE_TABLE_COLUMN_TITLE.length];
+                tableData[0] = new Object[]{"URL", "质量", "操作"};
                 for (int i = 1; i <= size; i++) {
-                    HVAJapanAVS hvaJapanAVS1 = hvaJapanAVS.get(i-1);
+                    HVAJapanAVS hvaJapanAVS1 = hvaJapanAVS.get(i - 1);
                     tableData[i] = new Object[]{hvaJapanAVS1.getSource_uri(), hvaJapanAVS1.getQuality(), null};
                 }
                 //table = new JTable(tableData, LabelConstant.SOURCE_TABLE_COLUMN_TITLE);
@@ -1075,7 +1360,7 @@ public class HVAJapanAVMView implements JChildTabView {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 if (ro == 0) return;
-                                HVAJapanAVS hvaJapanAVS1 = hvaJapanAVS.get(ro-1);
+                                HVAJapanAVS hvaJapanAVS1 = hvaJapanAVS.get(ro - 1);
                                 showSourcesDetailDialog(hvaJapanAVS1);
                             }
                         });
@@ -1085,7 +1370,7 @@ public class HVAJapanAVMView implements JChildTabView {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 if (ro == 0) return;
-                                HVAJapanAVS hvaJapanAVS1 = hvaJapanAVS.get(ro-1);
+                                HVAJapanAVS hvaJapanAVS1 = hvaJapanAVS.get(ro - 1);
                                 HVAJapanAVSDao.deleteSources(serviceConn, hvaJapanAVS1);
                                 avCase.setSources(HVAJapanAVSDao.selectSourcesByMUUID(serviceConn, avCase.getUuid()));
                                 JOptionPane.showMessageDialog(father, "请重新打开资源表格！！", "SourcesDialog", JOptionPane.WARNING_MESSAGE);
@@ -1125,14 +1410,14 @@ public class HVAJapanAVMView implements JChildTabView {
                 column.setCellRenderer(er);
                 column.setCellEditor(er);
                 FitTableColumns(table);
-                table.setPreferredSize(new Dimension(450,100));
+                table.setPreferredSize(new Dimension(450, 100));
                 jDialog.add(table, BorderLayout.CENTER);
             }
 
             jDialog.add(add, BorderLayout.SOUTH);
             //jDialog.setLocationRelativeTo(father);
             jDialog.pack();
-            jDialog.setLocation(500,500);
+            jDialog.setLocation(500, 500);
             //jDialog.setPreferredSize(new Dimension(800,400));
             jDialog.setVisible(true);
 
@@ -1503,7 +1788,7 @@ public class HVAJapanAVMView implements JChildTabView {
     private void uploadPhotos() {
         try {
             String fileRootPath = filePath.getText();
-            String childPath = ifCode.getText().replace(" ","");
+            String childPath = ifCode.getText().replace(" ", "");
             File coverFile = new File(fileRootPath + "\\" + childPath + "\\" + "cover.jpg");
             File cutFile1 = new File(fileRootPath + "\\" + childPath + "\\" + "cut1.jpg");
             File cutFile2 = new File(fileRootPath + "\\" + childPath + "\\" + "cut2.jpg");
@@ -1549,10 +1834,11 @@ public class HVAJapanAVMView implements JChildTabView {
 
 
     }
+
     private void uploadPhotosQuite() {
         try {
             String fileRootPath = filePath.getText();
-            String childPath = ifCode.getText().replace(" ","");
+            String childPath = ifCode.getText().replace(" ", "");
             File coverFile = new File(fileRootPath + "\\" + childPath + "\\" + "cover.jpg");
             File cutFile1 = new File(fileRootPath + "\\" + childPath + "\\" + "cut1.jpg");
             File cutFile2 = new File(fileRootPath + "\\" + childPath + "\\" + "cut2.jpg");
@@ -1671,5 +1957,12 @@ public class HVAJapanAVMView implements JChildTabView {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void showDialog(JDialog showBar, JProgressBar showProgressBar, JTextArea sources) {
+
+
+        //showBar.setBounds(100, 200, 300, 200);
+
     }
 }

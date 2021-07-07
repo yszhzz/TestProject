@@ -15,18 +15,19 @@ import java.util.*;
 
 public class HVAJapanAVMDao {
 
-    public static final String qryAllMessageByCodeNameSql = "select UUID,IF_CODE,ONAME,CNAME,COVER,LANGUAGES,PRODUCTION_COMPANY,PUBLISH_COMPANY,PUBLISH_TIME,SERIES,MOSAIC,DURATION,DESCRIBE,SCORE,RECOMMEND,CUT1,CUT2,CUT3 from H_V_A_JAP_AV_M order by IF_CODE";
-    public static final String qryAllNameMessageByCodeNameSql = "select UUID,IF_CODE,RECOMMEND from H_V_A_JAP_AV_M order by IF_CODE";
-    public static final String qryMessageByCodeNameSql = "select UUID,IF_CODE,ONAME,CNAME,COVER,LANGUAGES,PRODUCTION_COMPANY,PUBLISH_COMPANY,PUBLISH_TIME,SERIES,MOSAIC,DURATION,DESCRIBE,SCORE,RECOMMEND,CUT1,CUT2,CUT3 from H_V_A_JAP_AV_M where IF_CODE like ? or ONAME like ? or CNAME like ? order by IF_CODE";
-    public static final String qryMessageByLabelUUIDSql = "select UUID,IF_CODE,ONAME,CNAME,COVER,LANGUAGES,PRODUCTION_COMPANY,PUBLISH_COMPANY,PUBLISH_TIME,SERIES,MOSAIC,DURATION,DESCRIBE,SCORE,RECOMMEND,CUT1,CUT2,CUT3 from H_V_A_JAP_AV_M a, H_V_A_JAP_AV_LABEL_C c where a.UUID = c.UUID_AV_M and c.UUID_AV_LABLE_M = ? order by IF_CODE";
-    public static final String qryMessageByPersonUUIDSql = "select UUID,IF_CODE,ONAME,CNAME,COVER,LANGUAGES,PRODUCTION_COMPANY,PUBLISH_COMPANY,PUBLISH_TIME,SERIES,MOSAIC,DURATION,DESCRIBE,SCORE,RECOMMEND,CUT1,CUT2,CUT3 from H_V_A_JAP_AV_M a, H_V_A_JAP_AV_PERSON_C c where a.UUID = c.UUID_AV_M and c.UUID_AV_PERSON_M = ? order by IF_CODE";
+    public static final String qryAllMessageByCodeNameSql = "select UUID,IF_CODE,ONAME,CNAME,COVER,LANGUAGES,PRODUCTION_COMPANY,PUBLISH_COMPANY,PUBLISH_TIME,SERIES,MOSAIC,DURATION,DESCRIBE,SCORE,RECOMMEND,CUT1,CUT2,CUT3,ROBOT from H_V_A_JAP_AV_M order by IF_CODE";
+    public static final String qryAllNameMessageByCodeNameSql = "select UUID,IF_CODE,RECOMMEND,ROBOT from H_V_A_JAP_AV_M order by IF_CODE";
+    public static final String qryAllNameRobotMessageByCodeNameSql = "select UUID,IF_CODE,RECOMMEND,ROBOT from H_V_A_JAP_AV_M where ROBOT = '1' order by IF_CODE";
+    public static final String qryMessageByCodeNameSql = "select UUID,IF_CODE,ONAME,CNAME,COVER,LANGUAGES,PRODUCTION_COMPANY,PUBLISH_COMPANY,PUBLISH_TIME,SERIES,MOSAIC,DURATION,DESCRIBE,SCORE,RECOMMEND,CUT1,CUT2,CUT3,ROBOT from H_V_A_JAP_AV_M where IF_CODE like ? or ONAME like ? or CNAME like ? order by IF_CODE";
+    public static final String qryMessageByLabelUUIDSql = "select UUID,IF_CODE,ONAME,CNAME,COVER,LANGUAGES,PRODUCTION_COMPANY,PUBLISH_COMPANY,PUBLISH_TIME,SERIES,MOSAIC,DURATION,DESCRIBE,SCORE,RECOMMEND,CUT1,CUT2,CUT3,ROBOT from H_V_A_JAP_AV_M a, H_V_A_JAP_AV_LABEL_C c where a.UUID = c.UUID_AV_M and c.UUID_AV_LABLE_M = ? order by IF_CODE";
+    public static final String qryMessageByPersonUUIDSql = "select UUID,IF_CODE,ONAME,CNAME,COVER,LANGUAGES,PRODUCTION_COMPANY,PUBLISH_COMPANY,PUBLISH_TIME,SERIES,MOSAIC,DURATION,DESCRIBE,SCORE,RECOMMEND,CUT1,CUT2,CUT3,ROBOT from H_V_A_JAP_AV_M a, H_V_A_JAP_AV_PERSON_C c where a.UUID = c.UUID_AV_M and c.UUID_AV_PERSON_M = ? order by IF_CODE";
 
-    public static final String qryMessageByUUIDSql = "select UUID,IF_CODE,ONAME,CNAME,COVER,LANGUAGES,PRODUCTION_COMPANY,PUBLISH_COMPANY,PUBLISH_TIME,SERIES,MOSAIC,DURATION,DESCRIBE,SCORE,RECOMMEND,CUT1,CUT2,CUT3 from H_V_A_JAP_AV_M where UUID = ?";
+    public static final String qryMessageByUUIDSql = "select UUID,IF_CODE,ONAME,CNAME,COVER,LANGUAGES,PRODUCTION_COMPANY,PUBLISH_COMPANY,PUBLISH_TIME,SERIES,MOSAIC,DURATION,DESCRIBE,SCORE,RECOMMEND,CUT1,CUT2,CUT3,ROBOT from H_V_A_JAP_AV_M where UUID = ?";
 
     public static final String qryExistByCodeSql = "select '1' from H_V_A_JAP_AV_M where IF_CODE = ?";
 
-    public static final String insertMessageSql = "insert into H_V_A_JAP_AV_M(UUID,IF_CODE,ONAME,CNAME,COVER,LANGUAGES,PRODUCTION_COMPANY,PUBLISH_COMPANY,PUBLISH_TIME,SERIES,MOSAIC,DURATION,DESCRIBE,SCORE,RECOMMEND,CUT1,CUT2,CUT3) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-    public static final String updateMessageSql = "update H_V_A_JAP_AV_M set IF_CODE = ?,ONAME = ?,CNAME = ?,COVER = ?,LANGUAGES = ?,PRODUCTION_COMPANY = ?,PUBLISH_COMPANY = ?,PUBLISH_TIME = ?,SERIES = ?,MOSAIC = ?,DURATION = ?,DESCRIBE = ?,SCORE = ?,RECOMMEND = ?,CUT1 = ?,CUT2 = ?,CUT3 = ? where UUID = ?";
+    public static final String insertMessageSql = "insert into H_V_A_JAP_AV_M(UUID,IF_CODE,ONAME,CNAME,COVER,LANGUAGES,PRODUCTION_COMPANY,PUBLISH_COMPANY,PUBLISH_TIME,SERIES,MOSAIC,DURATION,DESCRIBE,SCORE,RECOMMEND,CUT1,CUT2,CUT3,ROBOT) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    public static final String updateMessageSql = "update H_V_A_JAP_AV_M set IF_CODE = ?,ONAME = ?,CNAME = ?,COVER = ?,LANGUAGES = ?,PRODUCTION_COMPANY = ?,PUBLISH_COMPANY = ?,PUBLISH_TIME = ?,SERIES = ?,MOSAIC = ?,DURATION = ?,DESCRIBE = ?,SCORE = ?,RECOMMEND = ?,CUT1 = ?,CUT2 = ?,CUT3 = ?,ROBOT = ? where UUID = ?";
     public static final String deleteMessageSql = "delete from H_V_A_JAP_AV_M where UUID = ?";
 
     public static HVAJapanAVM selectMessageByUUID(Connection connection, String uuid) throws SQLException, IOException {
@@ -53,7 +54,7 @@ public class HVAJapanAVMDao {
         message.setDescribe((String) map.get("DESCRIBE"));
         message.setScore(((BigDecimal) map.get("SCORE")).longValue());
         message.setRecommend((String) map.get("RECOMMEND"));
-
+        message.setRobot((String) map.get("ROBOT"));
 
         Object db_cut1 = map.get("CUT1");
         if (db_cut1 != null)   message.setCut1(((Blob) db_cut1).getBinaryStream().readAllBytes());
@@ -98,7 +99,7 @@ public class HVAJapanAVMDao {
             message.setDescribe((String) map.get("DESCRIBE"));
             message.setScore(((BigDecimal) map.get("SCORE")).longValue());
             message.setRecommend((String) map.get("RECOMMEND"));
-
+            message.setRobot((String) map.get("ROBOT"));
 
             Object db_cut1 = map.get("CUT1");
             if (db_cut1 != null)   message.setCut1(((Blob) db_cut1).getBinaryStream().readAllBytes());
@@ -129,10 +130,26 @@ public class HVAJapanAVMDao {
             message.setUuid((String) map.get("UUID"));
             message.setIf_Code((String) map.get("IF_CODE"));
             message.setRecommend((String) map.get("RECOMMEND"));
+            message.setRobot((String) map.get("ROBOT"));
             list.add(message);
         }
         return list;
+    }
 
+    public static List<HVAJapanAVM> selectAllNameRobotMessage(Connection connection) throws SQLException {
+        List<Map<String, Object>> maps = DataBaseUtils.queryMapList(connection, qryAllNameRobotMessageByCodeNameSql);
+        if (maps == null || maps.size() == 0) return null;
+
+        List<HVAJapanAVM> list = new ArrayList<>();
+        for (Map<String, Object> map : maps) {
+            HVAJapanAVM message = new HVAJapanAVM();
+            message.setUuid((String) map.get("UUID"));
+            message.setIf_Code((String) map.get("IF_CODE"));
+            message.setRecommend((String) map.get("RECOMMEND"));
+            message.setRobot((String) map.get("ROBOT"));
+            list.add(message);
+        }
+        return list;
     }
 
     public static List<HVAJapanAVM> selectMessageByCodeName(Connection connection, String text) throws SQLException, IOException {
@@ -163,7 +180,7 @@ public class HVAJapanAVMDao {
             message.setDescribe((String) map.get("DESCRIBE"));
             message.setScore(((BigDecimal) map.get("SCORE")).longValue());
             message.setRecommend((String) map.get("RECOMMEND"));
-
+            message.setRobot((String) map.get("ROBOT"));
 
             Object db_cut1 = map.get("CUT1");
             if (db_cut1 != null)   message.setCut1(((Blob) db_cut1).getBinaryStream().readAllBytes());
@@ -210,7 +227,7 @@ public class HVAJapanAVMDao {
             message.setDescribe((String) map.get("DESCRIBE"));
             message.setScore(((BigDecimal) map.get("SCORE")).longValue());
             message.setRecommend((String) map.get("RECOMMEND"));
-
+            message.setRobot((String) map.get("ROBOT"));
 
             Object db_cut1 = map.get("CUT1");
             if (db_cut1 != null)   message.setCut1(((Blob) db_cut1).getBinaryStream().readAllBytes());
@@ -257,7 +274,7 @@ public class HVAJapanAVMDao {
             message.setDescribe((String) map.get("DESCRIBE"));
             message.setScore(((BigDecimal) map.get("SCORE")).longValue());
             message.setRecommend((String) map.get("RECOMMEND"));
-
+            message.setRobot((String) map.get("ROBOT"));
 
             Object db_cut1 = map.get("CUT1");
             if (db_cut1 != null)   message.setCut1(((Blob) db_cut1).getBinaryStream().readAllBytes());
@@ -360,7 +377,8 @@ public class HVAJapanAVMDao {
                 av.getRecommend(),
                 av.getCut1(),
                 av.getCut2(),
-                av.getCut3());
+                av.getCut3(),
+                av.getRobot());
 
         HVAJapanAVLabelDao.mergeLabelMessageC(connection,av);
         HVAJapanAVPersonDao.mergePersonMessageC(connection,av);
@@ -386,6 +404,7 @@ public class HVAJapanAVMDao {
                 av.getCut1(),
                 av.getCut2(),
                 av.getCut3(),
+                av.getRobot(),
                 av.getUuid());
         HVAJapanAVLabelDao.mergeLabelMessageC(connection,av);
         HVAJapanAVPersonDao.mergePersonMessageC(connection,av);

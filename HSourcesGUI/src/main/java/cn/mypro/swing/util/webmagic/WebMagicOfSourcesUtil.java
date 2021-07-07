@@ -206,4 +206,77 @@ public class WebMagicOfSourcesUtil implements PageProcessor {
         return hvaJapanAVM;
     }
 
+    public HVAJapanAVM getHSourceBatch(String runCode, String imgPath, JProgressBar processBar, JTextArea messageRun) {
+
+        HVAJapanAVM hvaJapanAVM = null;
+
+        String format = String.format(selectPath, runCode);
+        this.runCode = runCode;
+        Spider.create(this)
+                .addUrl(format)
+                //.addPipeline(new ConsolePipeline())
+                .thread(3).run();
+
+
+        processBar.setValue(20);
+        try {
+            serviceConn = DataBaseUtils.ensureDataBaseConnection(DbName.LOCAL);
+
+            if (returnMap != null) {
+
+                hvaJapanAVM = new HVAJapanAVM();
+                hvaJapanAVM.setOName(returnMap.get("ONAME"));
+                hvaJapanAVM.setIf_Code(returnMap.get("IF_CODE"));
+                if (returnMap.get("PRODUCTION_COMPANY") != null || returnMap.get("ACTOR") != null) hvaJapanAVM.setProduction_company(returnMap.get("PRODUCTION_COMPANY")+"|"+returnMap.get("ACTOR"));
+                hvaJapanAVM.setPublish_company(returnMap.get("PUBLISH_COMPANY"));
+                if (returnMap.get("PRODUCT_DATE") != null)  hvaJapanAVM.setPublish_time(returnMap.get("PRODUCT_DATE").replace("-",""));
+                hvaJapanAVM.setSeries(returnMap.get("SERIES"));
+                if (returnMap.get("TIME") != null) {
+                    hvaJapanAVM.setDuration(Integer.valueOf(returnMap.get("TIME").split(" ")[0])*60);
+                }
+                long score = 0;
+                if (returnMap.get("SCORE") != null) score = (long) (Float.valueOf(returnMap.get("SCORE").substring(1).replace(" ","").replace("分","").split(",")[0]) *100/5);
+                hvaJapanAVM.setScore(score);
+
+                processBar.setValue(30);
+
+                if (returnMap.get("PERSONS") != null) {
+                    List<String> personNames = Arrays.asList(returnMap.get("PERSONS").split("\\|"));
+                    List<HVAJapanAVPersonM> persons = new ArrayList<>();
+                    for (String name : personNames) {
+                        HVAJapanAVPersonM hvaJapanAVPersonM = HVAJapanAVPersonDao.qryPersonByNames(serviceConn, name);
+                        if (hvaJapanAVPersonM == null) {
+                            messageRun.append("["+name+"] 无该人物，请手动添加任务信息！！\n");
+                        } else {
+                            persons.add(hvaJapanAVPersonM);
+                        }
+                    }
+                    hvaJapanAVM.setPersons(persons);
+                }
+                processBar.setValue(40);
+
+                MyFileUtils.downloadImgByNet(returnMap.get("COVER_URL"),imgPath,"cover.jpg");
+                int picSize = returnMap.size();
+                int every = picSize == 0 ? 0:40 / picSize;
+                for (String s : returnMap.keySet()) {
+                    if (s.startsWith("CUT")) MyFileUtils.downloadImgByNet(returnMap.get(s),imgPath,s.toLowerCase()+".jpg");
+                    processBar.setValue(processBar.getValue() + every);
+                }
+                //messageRun.append("图片下载成功！  \n");
+                processBar.setValue(80);
+
+            } else {
+                messageRun.append("获取无数据！！\n");
+                processBar.setValue(90);
+            }
+        } catch (SQLException e) {
+            messageRun.append("网路导入出现错误！\n");
+            e.printStackTrace();
+        } finally {
+            DataBaseUtils.closeQuietly(serviceConn);
+        }
+
+        return hvaJapanAVM;
+    }
+
 }

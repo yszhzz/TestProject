@@ -32,10 +32,13 @@ public class HVAJapanAVM {
     private String reserve_field2;
     private String reserve_field3;
     private boolean have;
+    private String robot = "0";
 
     private List<HVAJapanAVS> sources;
     private List<HVAJapanAVPersonM> persons;
     private List<HVAJapanAVLabelM> labels;
+
+    private List<String> notExistsPerson;
 
     @Override
     public String toString() {
