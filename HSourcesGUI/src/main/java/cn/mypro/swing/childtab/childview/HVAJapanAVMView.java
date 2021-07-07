@@ -688,73 +688,83 @@ public class HVAJapanAVMView implements JChildTabView {
                             return;
                         }
 
-                        if (hSources.getNotExistsPerson() != null && hSources.getNotExistsPerson().size() != 0) {
-                            System.out.println(hSources.getNotExistsPerson().toString());
-                            for (String notExistsPerson : hSources.getNotExistsPerson()) {
-                                try {
+                        if (hSources != null) {
+                            if (hSources.getNotExistsPerson() != null && hSources.getNotExistsPerson().size() != 0) {
+                                System.out.println(hSources.getNotExistsPerson().toString());
+                                for (String notExistsPerson : hSources.getNotExistsPerson()) {
+                                    try {
 
-                                    HVAJapanAVPersonM hPersonSimple = webMagicPersonUtil.getHPersonSimple(notExistsPerson);
-                                    hPersonSimple.setCname(BaiduTranslateUtil.translateAsString(hPersonSimple.getNames()));
-                                    if (hPersonSimple != null) {
-                                        HVAJapanAVPersonDao.insertPerson(importConn, hPersonSimple);
-                                        hSources.getPersons().add(hPersonSimple);
-                                        sources.append("添加人物[" + notExistsPerson + "]完成！\n");
-                                        sources.paintImmediately(sources.getBounds());
+                                        HVAJapanAVPersonM hPersonSimple = webMagicPersonUtil.getHPersonSimple(notExistsPerson);
+                                        hPersonSimple.setCname(BaiduTranslateUtil.translateAsString(hPersonSimple.getNames()));
+                                        if (hPersonSimple != null) {
+                                            HVAJapanAVPersonDao.insertPerson(importConn, hPersonSimple);
+                                            hSources.getPersons().add(hPersonSimple);
+                                            sources.append("添加人物[" + notExistsPerson + "]完成！\n");
+                                            sources.paintImmediately(sources.getBounds());
 
-                                    } else {
-                                        sources.append("添加人物[" + notExistsPerson + "]失败！原因[不存在该人物]\n");
+                                        } else {
+                                            sources.append("添加人物[" + notExistsPerson + "]失败！原因[不存在该人物]\n");
+                                            sources.paintImmediately(sources.getBounds());
+                                        }
+                                    } catch (Exception exx) {
+                                        exx.printStackTrace();
+                                        sources.append("添加人物[" + notExistsPerson + "]失败！原因[导入错误]\n");
                                         sources.paintImmediately(sources.getBounds());
                                     }
-                                } catch (Exception exx) {
-                                    exx.printStackTrace();
-                                    sources.append("添加人物[" + notExistsPerson + "]失败！原因[导入错误]\n");
-                                    sources.paintImmediately(sources.getBounds());
                                 }
                             }
-                        }
-                        messageRun.append(" .");
-                        messageRun.paintImmediately(messageRun.getBounds());
-                        showProgressBar.setValue(85);
+                            messageRun.append(" .");
+                            messageRun.paintImmediately(messageRun.getBounds());
+                            showProgressBar.setValue(85);
 
-                        hSources.setRobot("1");
-                        String translateString = BaiduTranslateUtil.translateAsString(hSources.getOName());
-                        hSources.setCName(translateString);
-                        hSources.setLanguages("JAP");
-                        hSources.setMosaic("HM");
-                        hSources.setScore(60);
-                        hSources.setRecommend("0");
+                            hSources.setRobot("1");
+                            String translateString = BaiduTranslateUtil.translateAsString(hSources.getOName());
+                            hSources.setCName(translateString);
+                            hSources.setLanguages("JAP");
+                            hSources.setMosaic("HM");
+                            hSources.setScore(60);
+                            hSources.setRecommend("0");
 
-                        String fileRootPath = filePath.getText();
-                        String childPath = hSources.getIf_Code().replace(" ", "");
+                            String fileRootPath = filePath.getText();
+                            String childPath = hSources.getIf_Code().replace(" ", "");
 
-                        File coverFile = new File(fileRootPath + "\\" + childPath + "\\" + "cover.jpg");
-                        File cutFile1 = new File(fileRootPath + "\\" + childPath + "\\" + "cut1.jpg");
-                        File cutFile2 = new File(fileRootPath + "\\" + childPath + "\\" + "cut2.jpg");
-                        File cutFile3 = new File(fileRootPath + "\\" + childPath + "\\" + "cut3.jpg");
-                        if (coverFile.exists() && coverFile.isFile()) {
-                            hSources.setCover(MyFileUtils.getBytesFromFile(coverFile));
-                        }
-                        if (cutFile1.exists() && cutFile1.isFile()) {
-                            hSources.setCut1(MyFileUtils.getBytesFromFile(cutFile1));
-                        }
-                        if (cutFile2.exists() && cutFile2.isFile()) {
-                            hSources.setCut2(MyFileUtils.getBytesFromFile(cutFile2));
-                        }
-                        if (cutFile3.exists() && cutFile3.isFile()) {
-                            hSources.setCut3(MyFileUtils.getBytesFromFile(cutFile3));
+                            File coverFile = new File(fileRootPath + "\\" + childPath + "\\" + "cover.jpg");
+                            File cutFile1 = new File(fileRootPath + "\\" + childPath + "\\" + "cut1.jpg");
+                            File cutFile2 = new File(fileRootPath + "\\" + childPath + "\\" + "cut2.jpg");
+                            File cutFile3 = new File(fileRootPath + "\\" + childPath + "\\" + "cut3.jpg");
+                            if (coverFile.exists() && coverFile.isFile()) {
+                                hSources.setCover(MyFileUtils.getBytesFromFile(coverFile));
+                            }
+                            if (cutFile1.exists() && cutFile1.isFile()) {
+                                hSources.setCut1(MyFileUtils.getBytesFromFile(cutFile1));
+                            }
+                            if (cutFile2.exists() && cutFile2.isFile()) {
+                                hSources.setCut2(MyFileUtils.getBytesFromFile(cutFile2));
+                            }
+                            if (cutFile3.exists() && cutFile3.isFile()) {
+                                hSources.setCut3(MyFileUtils.getBytesFromFile(cutFile3));
+                            }
+
+                            showProgressBar.setValue(90);
+                            HVAJapanAVMDao.insertMessage(importConn, hSources);
+                            long end = System.currentTimeMillis();
+                            sources.append("[" + file.getName() + "]完成注入！耗时[" + (end - start) / 1000 + "]\n");
+                            sources.paintImmediately(sources.getBounds());
+                            showProgressBar.setValue(MAX_PROGRESS);
+
+                            importConn.commit();
+                            successCount++;
+                            messageRun.append("处理完毕！\n");
+                            messageRun.paintImmediately(messageRun.getBounds());
+                        } else {
+                            long end = System.currentTimeMillis();
+                            sources.append("[" + file.getName() + "]因[未获取有效数据]注入失败！耗时[" + (end - start) / 1000 + "]\n");
+                            sources.paintImmediately(sources.getBounds());
+                            messageRun.append("未获取有效数据，结束！\n");
+                            messageRun.paintImmediately(messageRun.getBounds());
                         }
 
-                        showProgressBar.setValue(90);
-                        HVAJapanAVMDao.insertMessage(importConn, hSources);
-                        long end = System.currentTimeMillis();
-                        sources.append("[" + file.getName() + "]完成注入！耗时[" + (end - start) / 1000 + "]\n");
-                        sources.paintImmediately(sources.getBounds());
-                        showProgressBar.setValue(MAX_PROGRESS);
 
-                        importConn.commit();
-                        successCount++;
-                        messageRun.append("处理完毕！\n");
-                        messageRun.paintImmediately(messageRun.getBounds());
                     } catch (Exception ex) {
                         ex.printStackTrace();
                         errorCount++;
