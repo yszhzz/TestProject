@@ -1,11 +1,14 @@
 package cn.mypro.swing.childtab.childview;
 
+import cn.mypro.swing.childtab.HVAJapanAVMTab;
 import cn.mypro.swing.childtab.JChildTabView;
 import cn.mypro.swing.constant.LabelConstant;
 import cn.mypro.swing.dao.HVAJapanAVLabelDao;
 import cn.mypro.swing.entity.HVAJapanAVLabelM;
 import cn.mypro.utils.DataBaseUtils;
 import cn.mypro.utils.DbName;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -19,6 +22,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class HVAJapanLabelView implements JChildTabView {
+
+    private static Logger logger = LoggerFactory.getLogger(HVAJapanLabelView.class);
 
     /*Label页面组件*/
     //展示所有Lab
@@ -58,17 +63,19 @@ public class HVAJapanLabelView implements JChildTabView {
 
     public JPanel initTab() {
 
+        logger.info("开始初始化[标签操作界面]");
+        logger.info("[标签操作界面]-[列表信息填充]");
         //填充展示列表
         flushLabelList();
-        //设置最大数量
-        level_1_Select.setMaximumRowCount(10);
+        logger.info("[标签操作界面]-[绑定事件]");
         bindingOfTheEvent();
-
+        logger.info("[标签操作界面]-[组装视图]");
         return assemblyOfTheView();
     }
 
     @Override
     public void bindingOfTheEvent() {
+        level_1_Select.setMaximumRowCount(10);
         //绑定事件
         level_1_Select.addItemListener(new ItemListener() {
             @Override

@@ -22,17 +22,41 @@ public class LabelConstant {
 
     public static final String[] SOURCE_TABLE_COLUMN_TITLE = {"URL","质量","操作"};
     public static final String DEFAULT_FILE_PATH = "E:\\H Sources\\DealSourcePath\\HAVJ";
+    public static final String DEFAULT_COMPRESS_FILE_PATH = "E:\\H Sources\\DealSourcePath\\Compress";
+
+    public static final String SOURCES_FLUSH_MODLE_ALL = "0";
+    public static final String SOURCES_FLUSH_MODLE_AUTO_IMPORT = "1";
+    public static final String SOURCES_FLUSH_MODLE_DEAL_FIRST = "2";
+    public static final String SOURCES_FLUSH_MODLE_BY_CUSTOM = "9";
 
     public static final String SOURC_PATH_1 = "Baidu@ZH1://HSources/AM/JAP/AV/";
 
     public static final String[] SOURCE_TRANSLATE = {"NUL","CHN","JAP","USA","EUR"};
     public static final String[] SOURCE_SUBTITLE = {"NUL","CHN","JAP","USA","EUR"};
     public static final String[] SOURCE_QUALITY = {"NUL","1","2","3","4","5","6","7","8","9","10"};
-    public static final String[] SOURCE_VIDEO_FORMAT = {"NUL","MPEG-4","MOV","MKV","AVI","WMV","RMVB","DVD","BLU-RAY DISK","FIV","ASF","NAVI","TS"};
+    public static final String[] SOURCE_VIDEO_FORMAT = {"NUL","MPEG-4","MOV","MKV","AVI","WMV","RMVB","DVD","BLU-RAY DISK","FIV","ASF","NAVI","TS","OTHER"};
     public static final String[] SOURCE_COMPRESS_FORMAT = {"NUL","7Z","ZIP","RAR","TAR","GZ"};
 
     public static final String password = "123@pass";
 
+    public static final String TEXT_APPEND_MODEL_NO_TIME_AND_NO_NEXT = "0";
+    public static final String TEXT_APPEND_MODEL_TIME_AND_NEXT = "1";
+
+    public static final String ROBOT_TEXT_IMPORT_BY_PERSON = "0";
+    public static final String ROBOT_TEXT_IMPORT_AUTO = "1";
+    public static final String ROBOT_TEXT_DEAL_FIRST = "2";
+
+    public static final String IS_FILE = "";
+    public static final String IS_NOT_FILE = "";
+
+    public static final String RETURN_ANSWER_SUCCESS = "SUCCESS";
+    public static final String RETURN_ANSWER_OBJECT = "RETURN";
+
+    public static final String IF_COD_ERROR_PREFIX_1PONDO = "1Pondo";
+    public static final String IF_COD_ERROR_PREFIX_10MUSUME = "10MUSUME";
+    public static final String IF_COD_ERROR_PREFIX_CARIBBEAN = "Caribbean";
+    public static final String IF_COD_ERROR_PREFIX_FC2 = "FC2";
+    public static final String IF_COD_ERROR_PREFIX_HEYZO = "Heyzo";
     public static final String personFirstText = "身高 - T:\n " +
             "出生日期 - \n" +
             "三围 - B:(C) W: H:\n " +

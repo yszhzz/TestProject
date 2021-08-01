@@ -66,7 +66,11 @@ public class StartGUIApp {
 
         /*jFram 设置*/
         //设置jf大小
-        totalJFram.setBounds(10,10,1800,1000);
+        //totalJFram.setBounds(10,10,1800,1000);
+        //totalJFram.setBounds(0,0,1920,1080);
+        totalJFram.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        //totalJFram.getGraphicsConfiguration().getDevice().setFullScreenWindow(totalJFram);
+        //totalJFram.setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
         //设置jf大小是否能变化
         totalJFram.setResizable(true);
         //设置jf退出模式

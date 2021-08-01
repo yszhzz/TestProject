@@ -28,6 +28,13 @@ public class HVAJapanAVM {
     private byte[] cut1;
     private byte[] cut2;
     private byte[] cut3;
+    private byte[] cut4;
+    private byte[] cut5;
+    private byte[] cut6;
+    private byte[] cut7;
+    private byte[] cut8;
+    private byte[] cut9;
+
     private String reserve_field1;
     private String reserve_field2;
     private String reserve_field3;

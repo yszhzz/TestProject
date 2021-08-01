@@ -25,6 +25,8 @@
     <orderEntry type="library" name="Maven: com.sansec:SwxaJCE:0.1.0" level="project" />
     <orderEntry type="library" name="Maven: com.sansec:Sm2DecZJB:0.1.0" level="project" />
     <orderEntry type="library" name="Maven: com.oracle:ojdbc7:12.1.0.2" level="project" />
+    <orderEntry type="library" name="Maven: oro:oro:2.0.8" level="project" />
+    <orderEntry type="library" name="Maven: com.github.dadiyang:jave:1.0.4" level="project" />
     <orderEntry type="library" name="Maven: xuggle:xuggle-xuggler:5.4" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.11" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />

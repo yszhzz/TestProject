@@ -1,12 +1,13 @@
 package cn.mypro.swing.util.webmagic;
 
 import cn.mypro.swing.constant.LabelConstant;
-import cn.mypro.swing.dao.HVAJapanAVPersonDao;
-import cn.mypro.swing.entity.HVAJapanAVM;
 import cn.mypro.swing.entity.HVAJapanAVPersonM;
+import cn.mypro.swing.util.translateAPI.BaiduTranslateUtil;
 import cn.mypro.swing.util.file.MyFileUtils;
+import cn.mypro.swing.util.video.VideoAnalyticalUtil;
 import cn.mypro.utils.DataBaseUtils;
-import cn.mypro.utils.DbName;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
@@ -15,11 +16,12 @@ import us.codecraft.webmagic.selector.Selectable;
 
 import javax.swing.*;
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.SQLOutput;
 import java.util.*;
 
 public class WebMagicOfPersonsUtil implements PageProcessor {
+
+    private static Logger logger = LoggerFactory.getLogger(WebMagicOfPersonsUtil.class);
+
 
     private Site site = Site.me().setRetryTimes(3).setSleepTime(100);
 
@@ -175,6 +177,7 @@ public class WebMagicOfPersonsUtil implements PageProcessor {
             DataBaseUtils.closeQuietly(serviceConn);
         }
 
+        returnMaps.clear();
         return lists;
     }
 
@@ -226,6 +229,7 @@ public class WebMagicOfPersonsUtil implements PageProcessor {
             DataBaseUtils.closeQuietly(serviceConn);
         }
 
+        returnMaps.clear();
         return lists;
     }
 
@@ -274,6 +278,7 @@ public class WebMagicOfPersonsUtil implements PageProcessor {
             DataBaseUtils.closeQuietly(serviceConn);
         }
 
+        returnMaps.clear();
         return personM;
     }
 
@@ -318,6 +323,7 @@ public class WebMagicOfPersonsUtil implements PageProcessor {
             DataBaseUtils.closeQuietly(serviceConn);
         }
 
+        returnMaps.clear();
         return personM;
     }
 
@@ -354,6 +360,8 @@ public class WebMagicOfPersonsUtil implements PageProcessor {
             DataBaseUtils.closeQuietly(serviceConn);
         }
 
+
+        returnMaps.clear();
         return personM;
     }
 
@@ -369,14 +377,34 @@ public class WebMagicOfPersonsUtil implements PageProcessor {
                 personM.setValuesAsNormal();
 
                 personM.setNames(returnMap.get("PersonOName"));
-                personM.setCname("");
+                personM.setCname(BaiduTranslateUtil.translateAsString(personM.getNames()));
                 personM.setOname(returnMap.get("PersonEName") + "|" + returnMap.get("PersonOtherNames"));
                 personM.setGender("1");
                 if (returnMap.get("PersonOutTime") != null)
-                    personM.setStart_time(add0(returnMap.get("PersonOutTime").replace("年","").replace("月","").replace("日","")));
+                    personM.setStart_time(add0(returnMap.get("PersonOutTime").replace("年","").replace("月","").replace("日","").replace(" ","").replace(" ","")));
 
-                personM.setPhtot_1(MyFileUtils.getImgByteByNet(returnMap.get("(1)")));
-                personM.setPhtot_2(MyFileUtils.getImgByteByNet(returnMap.get("(2)")));
+                int i = 0;
+                for (String s : returnMap.keySet()) {
+                    if (returnMap.get(s).startsWith("http") && returnMap.get(s).endsWith("jpg")) {
+                        if (i == 2) break;
+
+                        Map<String, Object> imgByteByNet = MyFileUtils.getImgByteByNet(returnMap.get(s));
+                        if (!((boolean) imgByteByNet.get(LabelConstant.RETURN_ANSWER_SUCCESS))) continue;
+                        if ((imgByteByNet.get(LabelConstant.RETURN_ANSWER_OBJECT)) == null) continue;
+
+                        if (i == 0) {
+                            personM.setPhtot_1((byte[]) imgByteByNet.get(LabelConstant.RETURN_ANSWER_OBJECT));
+                        }
+                        if (i == 1) {
+                            /*Map<String, Object> imgByteByNet = MyFileUtils.getImgByteByNet(returnMap.get(s));
+                            if (!((boolean) imgByteByNet.get(LabelConstant.RETURN_ANSWER_SUCCESS))) continue;
+                            if ((imgByteByNet.get(LabelConstant.RETURN_ANSWER_OBJECT)) == null) continue;*/
+                            personM.setPhtot_2((byte[]) imgByteByNet.get(LabelConstant.RETURN_ANSWER_OBJECT));
+                        }
+                        i++;
+
+                    }
+                }
 
                 String[] personSW = null;
                 if (returnMap.get("PersonSW") != null) personSW = returnMap.get("PersonSW").replace(" ","").split("/");
@@ -401,14 +429,10 @@ public class WebMagicOfPersonsUtil implements PageProcessor {
                 personM.setScores(1L);
                 personM.setLevels("F");
 
-
-
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return personM;
     }
 
@@ -431,10 +455,11 @@ public class WebMagicOfPersonsUtil implements PageProcessor {
     public static void main(String[] args) {
 
         WebMagicOfPersonsUtil util = new WebMagicOfPersonsUtil();
-        HVAJapanAVPersonM pp = util.getHPersonSimple("はたの ゆい");
+        //HVAJapanAVPersonM pp = util.getHPersonSimple("永井マリア");
 
-        System.out.println(pp.toString());
-        System.out.println(pp.getAllMessageString());
+        //System.out.println(pp.getAllMessageString());
+
+        System.out.println(util.add0("202004"));
 
     }
 

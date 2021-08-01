@@ -3,14 +3,14 @@ package cn.mypro.swing.childtab.childview;
 import cn.mypro.swing.childtab.JChildTabView;
 import cn.mypro.swing.constant.LabelConstant;
 import cn.mypro.swing.dao.HVAJapanAVPersonDao;
-import cn.mypro.swing.entity.HVAJapanAVM;
 import cn.mypro.swing.entity.HVAJapanAVPersonM;
-import cn.mypro.swing.util.BaiduTranslateUtil;
 import cn.mypro.swing.util.file.MyFileUtils;
 import cn.mypro.swing.util.webmagic.WebMagicOfPersonsUtil;
 import cn.mypro.utils.DataBaseUtils;
 import cn.mypro.utils.DbName;
 import cn.mypro.utils.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -24,10 +24,10 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class HVAJapanPersonView implements JChildTabView {
 
+    private Logger logger = LoggerFactory.getLogger(HVAJapanPersonView.class);
 
     private Connection serviceConn = null;
     private JFrame father = null;
@@ -68,6 +68,7 @@ public class HVAJapanPersonView implements JChildTabView {
     private JComboBox<Integer> personScore = new JComboBox<>(LabelConstant.Person_Score);
     private JComboBox<String> personLevel = new JComboBox<>(LabelConstant.Person_Level);
     private JLabel personScoreExplainLabel = new JLabel("SSS:90+ SS:85+ S:80+ A:70+ B:60+ C:55+ D:50+ E:45+ F:40+ G:40-(M归属于此)");
+    private JRadioButton isRobot = new JRadioButton("自动注入", false);
 
     //人物照片组件
     private JLabel personPhoto1 = new JLabel();
@@ -75,6 +76,7 @@ public class HVAJapanPersonView implements JChildTabView {
     private JFileChooser chooser = new JFileChooser("G:\\A-MyFree\\Picture\\360");
 
     private JTextArea messageRun = null;
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     /*缓存资源*/
     private HVAJapanAVPersonM personCase = new HVAJapanAVPersonM();
@@ -93,16 +95,20 @@ public class HVAJapanPersonView implements JChildTabView {
 
     @Override
     public JPanel initTab() {
+        logger.info("开始初始化[人物操作界面]");
+        logger.info("[人物操作界面]-[列表信息填充]");
         flushPersonList();
-
-        insertPerson.setEnabled(false);
-        updatePerson.setEnabled(false);
+        logger.info("[人物操作界面]-[绑定事件]");
         bindingOfTheEvent();
+        logger.info("[人物操作界面]-[组装视图]");
         return assemblyOfTheView();
     }
 
     @Override
     public void bindingOfTheEvent() {
+
+        insertPerson.setEnabled(false);
+        updatePerson.setEnabled(false);
         //绑定事件
         selectPerson.addActionListener(new ActionListener() {
             @Override
@@ -146,6 +152,7 @@ public class HVAJapanPersonView implements JChildTabView {
                     personOtherInfo.setText(selectedValue.getOther_info());
                     //personLevel.setSelectedIndex();
                     personScore.setSelectedIndex((int) selectedValue.getScores() - 1);
+                    isRobot.setSelected("1".equals(selectedValue.getRobot()));
 
                     if (selectedValue.getPhtot_1() != null && selectedValue.getPhtot_1().length != 0) {
                         ImageIcon icon1 = new ImageIcon(selectedValue.getPhtot_1());
@@ -398,7 +405,12 @@ public class HVAJapanPersonView implements JChildTabView {
                 if (!StringUtils.isEmpty(name)) {
                     WebMagicOfPersonsUtil webMagicOfPersonsUtil = new WebMagicOfPersonsUtil();
                     HVAJapanAVPersonM hPersonSimple = webMagicOfPersonsUtil.getHPersonSimple(name,progressBar,messageRun);
-                    if (hPersonSimple != null) fillPersonMessage(hPersonSimple);
+                    if (hPersonSimple != null) {
+                        fillPersonMessage(hPersonSimple);
+                        runMessagePrint(messageRun,"["+name+"]注入完成！\n",LabelConstant.TEXT_APPEND_MODEL_TIME_AND_NEXT);
+                    } else {
+                        runMessagePrint(messageRun,"["+name+"]注入失败！原因[未发现有效数据]\n",LabelConstant.TEXT_APPEND_MODEL_TIME_AND_NEXT);
+                    }
                 }
                 jDialog.setVisible(false);
             }).start();
@@ -537,7 +549,10 @@ public class HVAJapanPersonView implements JChildTabView {
         personScoreBox.add(personLevel);
         Box personScoreMBox = Box.createVerticalBox();
         personScoreMBox.add(personScoreBox);
-        personScoreMBox.add(personScoreExplainLabel);
+        Box textAndChoose = Box.createHorizontalBox();
+        textAndChoose.add(personScoreExplainLabel);
+        textAndChoose.add(isRobot);
+        personScoreMBox.add(textAndChoose);
         messagePersonBox.add(personScoreMBox);
 
         Box photoBox = Box.createHorizontalBox();
@@ -550,13 +565,15 @@ public class HVAJapanPersonView implements JChildTabView {
         photoBox.setPreferredSize(new Dimension(810, 400));
         opraPersonBox.setPreferredSize(new Dimension(800, 50));
         messagePersonBox.setPreferredSize(new Dimension(600, 450));
-        selectPersonResult.setPreferredSize(new Dimension(200, 450));
+
+        JScrollPane selectPersonResultPane = new JScrollPane(selectPersonResult);
+        selectPersonResultPane.setPreferredSize(new Dimension(200, 450));
 
         JSplitPane topRightSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(photoBox), opraPersonBox); //上右 竖向
 
         JSplitPane topSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(messagePersonBox), topRightSplit); //上 横向
 
-        JSplitPane allNewSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(selectPersonResult), topSplit); //总 竖向
+        JSplitPane allNewSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, selectPersonResultPane, topSplit); //总 竖向
 
         showPanel.add(allNewSplit);
         //展示截图
@@ -576,7 +593,7 @@ public class HVAJapanPersonView implements JChildTabView {
     private void flushPersonList() {
         java.util.List<HVAJapanAVPersonM> hvaJapanAVPersonMS = null;
         try {
-            hvaJapanAVPersonMS = HVAJapanAVPersonDao.qryAll(serviceConn);
+            hvaJapanAVPersonMS = HVAJapanAVPersonDao.qryAllSimplePersonMessage(serviceConn);
             selectPersonResult.setListData(hvaJapanAVPersonMS.toArray(new HVAJapanAVPersonM[hvaJapanAVPersonMS.size()]));
         } catch (Exception e) {
             e.printStackTrace();
@@ -596,10 +613,13 @@ public class HVAJapanPersonView implements JChildTabView {
             }
             personStartTime.setText(personValue.getStart_time());
             personDataInfo.setText(personValue.getDeta_info());
-            personOtherInfo.setText(personValue.getOther_info());
+
+            if (!(personValue.getOther_info() == null && personOtherInfo.getText() != null)) {
+                personOtherInfo.setText(personValue.getOther_info());
+            }
             //personLevel.setSelectedIndex();
             personScore.setSelectedIndex((int) personValue.getScores() - 1);
-
+            isRobot.setSelected("1".equals(personValue.getRobot()));
             if (personValue.getPhtot_1() != null && personValue.getPhtot_1().length != 0) {
                 ImageIcon icon1 = new ImageIcon(personValue.getPhtot_1());
                 icon1 = new ImageIcon(icon1.getImage().getScaledInstance(400, 400, Image.SCALE_DEFAULT));
@@ -644,4 +664,14 @@ public class HVAJapanPersonView implements JChildTabView {
         }
     }
 
+    private void runMessagePrint(JTextArea textArea,String message,String model) {
+        String time_text = sdf.format(System.currentTimeMillis());
+        if (LabelConstant.TEXT_APPEND_MODEL_NO_TIME_AND_NO_NEXT.equals(model)) {
+            textArea.append(message);
+        } else if (LabelConstant.TEXT_APPEND_MODEL_TIME_AND_NEXT.equals(model)){
+            textArea.append("["+time_text+"]: ");
+            textArea.append(message);
+        }
+        textArea.paintImmediately(textArea.getBounds());
+    }
 }

@@ -15,20 +15,22 @@ import java.util.*;
 
 public class HVAJapanAVMDao {
 
-    public static final String qryAllMessageByCodeNameSql = "select UUID,IF_CODE,ONAME,CNAME,COVER,LANGUAGES,PRODUCTION_COMPANY,PUBLISH_COMPANY,PUBLISH_TIME,SERIES,MOSAIC,DURATION,DESCRIBE,SCORE,RECOMMEND,CUT1,CUT2,CUT3,ROBOT from H_V_A_JAP_AV_M order by IF_CODE";
+    public static final String qryAllMessageByCodeNameSql = "select UUID,IF_CODE,ONAME,CNAME,COVER,LANGUAGES,PRODUCTION_COMPANY,PUBLISH_COMPANY,PUBLISH_TIME,SERIES,MOSAIC,DURATION,DESCRIBE,SCORE,RECOMMEND,CUT1,CUT2,CUT3,CUT4,CUT5,CUT6,CUT7,CUT8,CUT9,ROBOT from H_V_A_JAP_AV_M order by IF_CODE";
     public static final String qryAllNameMessageByCodeNameSql = "select UUID,IF_CODE,RECOMMEND,ROBOT from H_V_A_JAP_AV_M order by IF_CODE";
-    public static final String qryAllNameRobotMessageByCodeNameSql = "select UUID,IF_CODE,RECOMMEND,ROBOT from H_V_A_JAP_AV_M where ROBOT = '1' order by IF_CODE";
-    public static final String qryMessageByCodeNameSql = "select UUID,IF_CODE,ONAME,CNAME,COVER,LANGUAGES,PRODUCTION_COMPANY,PUBLISH_COMPANY,PUBLISH_TIME,SERIES,MOSAIC,DURATION,DESCRIBE,SCORE,RECOMMEND,CUT1,CUT2,CUT3,ROBOT from H_V_A_JAP_AV_M where IF_CODE like ? or ONAME like ? or CNAME like ? order by IF_CODE";
-    public static final String qryMessageByLabelUUIDSql = "select UUID,IF_CODE,ONAME,CNAME,COVER,LANGUAGES,PRODUCTION_COMPANY,PUBLISH_COMPANY,PUBLISH_TIME,SERIES,MOSAIC,DURATION,DESCRIBE,SCORE,RECOMMEND,CUT1,CUT2,CUT3,ROBOT from H_V_A_JAP_AV_M a, H_V_A_JAP_AV_LABEL_C c where a.UUID = c.UUID_AV_M and c.UUID_AV_LABLE_M = ? order by IF_CODE";
-    public static final String qryMessageByPersonUUIDSql = "select UUID,IF_CODE,ONAME,CNAME,COVER,LANGUAGES,PRODUCTION_COMPANY,PUBLISH_COMPANY,PUBLISH_TIME,SERIES,MOSAIC,DURATION,DESCRIBE,SCORE,RECOMMEND,CUT1,CUT2,CUT3,ROBOT from H_V_A_JAP_AV_M a, H_V_A_JAP_AV_PERSON_C c where a.UUID = c.UUID_AV_M and c.UUID_AV_PERSON_M = ? order by IF_CODE";
+    public static final String qryAllNameRobotMessageByCodeNameSql = "select UUID,IF_CODE,RECOMMEND,ROBOT from H_V_A_JAP_AV_M where ROBOT = ? order by IF_CODE";
+    public static final String qryMessageByCodeNameSql = "select UUID,IF_CODE,ONAME,CNAME,COVER,LANGUAGES,PRODUCTION_COMPANY,PUBLISH_COMPANY,PUBLISH_TIME,SERIES,MOSAIC,DURATION,DESCRIBE,SCORE,RECOMMEND,CUT1,CUT2,CUT3,CUT4,CUT5,CUT6,CUT7,CUT8,CUT9,ROBOT from H_V_A_JAP_AV_M where IF_CODE like ? or ONAME like ? or CNAME like ? order by IF_CODE";
+    public static final String qryMessageByLabelUUIDSql = "select UUID,IF_CODE,ONAME,CNAME,COVER,LANGUAGES,PRODUCTION_COMPANY,PUBLISH_COMPANY,PUBLISH_TIME,SERIES,MOSAIC,DURATION,DESCRIBE,SCORE,RECOMMEND,CUT1,CUT2,CUT3,CUT4,CUT5,CUT6,CUT7,CUT8,CUT9,ROBOT from H_V_A_JAP_AV_M a, H_V_A_JAP_AV_LABEL_C c where a.UUID = c.UUID_AV_M and c.UUID_AV_LABLE_M = ? order by IF_CODE";
+    public static final String qryMessageByPersonUUIDSql = "select UUID,IF_CODE,ONAME,CNAME,COVER,LANGUAGES,PRODUCTION_COMPANY,PUBLISH_COMPANY,PUBLISH_TIME,SERIES,MOSAIC,DURATION,DESCRIBE,SCORE,RECOMMEND,CUT1,CUT2,CUT3,CUT4,CUT5,CUT6,CUT7,CUT8,CUT9,ROBOT from H_V_A_JAP_AV_M a, H_V_A_JAP_AV_PERSON_C c where a.UUID = c.UUID_AV_M and c.UUID_AV_PERSON_M = ? order by IF_CODE";
 
-    public static final String qryMessageByUUIDSql = "select UUID,IF_CODE,ONAME,CNAME,COVER,LANGUAGES,PRODUCTION_COMPANY,PUBLISH_COMPANY,PUBLISH_TIME,SERIES,MOSAIC,DURATION,DESCRIBE,SCORE,RECOMMEND,CUT1,CUT2,CUT3,ROBOT from H_V_A_JAP_AV_M where UUID = ?";
+    public static final String qryMessageByUUIDSql = "select UUID,IF_CODE,ONAME,CNAME,COVER,LANGUAGES,PRODUCTION_COMPANY,PUBLISH_COMPANY,PUBLISH_TIME,SERIES,MOSAIC,DURATION,DESCRIBE,SCORE,RECOMMEND,CUT1,CUT2,CUT3,CUT4,CUT5,CUT6,CUT7,CUT8,CUT9,ROBOT from H_V_A_JAP_AV_M where UUID = ?";
 
     public static final String qryExistByCodeSql = "select '1' from H_V_A_JAP_AV_M where IF_CODE = ?";
 
-    public static final String insertMessageSql = "insert into H_V_A_JAP_AV_M(UUID,IF_CODE,ONAME,CNAME,COVER,LANGUAGES,PRODUCTION_COMPANY,PUBLISH_COMPANY,PUBLISH_TIME,SERIES,MOSAIC,DURATION,DESCRIBE,SCORE,RECOMMEND,CUT1,CUT2,CUT3,ROBOT) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-    public static final String updateMessageSql = "update H_V_A_JAP_AV_M set IF_CODE = ?,ONAME = ?,CNAME = ?,COVER = ?,LANGUAGES = ?,PRODUCTION_COMPANY = ?,PUBLISH_COMPANY = ?,PUBLISH_TIME = ?,SERIES = ?,MOSAIC = ?,DURATION = ?,DESCRIBE = ?,SCORE = ?,RECOMMEND = ?,CUT1 = ?,CUT2 = ?,CUT3 = ?,ROBOT = ? where UUID = ?";
+    public static final String insertMessageSql = "insert into H_V_A_JAP_AV_M(UUID,IF_CODE,ONAME,CNAME,COVER,LANGUAGES,PRODUCTION_COMPANY,PUBLISH_COMPANY,PUBLISH_TIME,SERIES,MOSAIC,DURATION,DESCRIBE,SCORE,RECOMMEND,CUT1,CUT2,CUT3,CUT4,CUT5,CUT6,CUT7,CUT8,CUT9,ROBOT) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    public static final String updateMessageSql = "update H_V_A_JAP_AV_M set IF_CODE = ?,ONAME = ?,CNAME = ?,COVER = ?,LANGUAGES = ?,PRODUCTION_COMPANY = ?,PUBLISH_COMPANY = ?,PUBLISH_TIME = ?,SERIES = ?,MOSAIC = ?,DURATION = ?,DESCRIBE = ?,SCORE = ?,RECOMMEND = ?,CUT1 = ?,CUT2 = ?,CUT3 = ?,CUT4 = ?,CUT5 = ?,CUT6 = ?,CUT7 = ?,CUT8 = ?,CUT9 = ?,ROBOT = ? where UUID = ?";
     public static final String deleteMessageSql = "delete from H_V_A_JAP_AV_M where UUID = ?";
+
+    public static final String updateAllRobotToTwoMessageSql = "update H_V_A_JAP_AV_M set ROBOT = ? where ROBOT = ?";
 
     public static HVAJapanAVM selectMessageByUUID(Connection connection, String uuid) throws SQLException, IOException {
         Map<String, Object> map = DataBaseUtils.queryMap(connection, qryMessageByUUIDSql, uuid);
@@ -62,6 +64,18 @@ public class HVAJapanAVMDao {
         if (db_cut2 != null)   message.setCut2(((Blob) db_cut2).getBinaryStream().readAllBytes());
         Object db_cut3 = map.get("CUT3");
         if (db_cut3 != null)   message.setCut3(((Blob) db_cut3).getBinaryStream().readAllBytes());
+        Object db_cut4 = map.get("CUT4");
+        if (db_cut4 != null)   message.setCut4(((Blob) db_cut4).getBinaryStream().readAllBytes());
+        Object db_cut5 = map.get("CUT5");
+        if (db_cut5 != null)   message.setCut5(((Blob) db_cut5).getBinaryStream().readAllBytes());
+        Object db_cut6 = map.get("CUT6");
+        if (db_cut6 != null)   message.setCut6(((Blob) db_cut6).getBinaryStream().readAllBytes());
+        Object db_cut7 = map.get("CUT7");
+        if (db_cut7 != null)   message.setCut7(((Blob) db_cut7).getBinaryStream().readAllBytes());
+        Object db_cut8 = map.get("CUT8");
+        if (db_cut8 != null)   message.setCut8(((Blob) db_cut8).getBinaryStream().readAllBytes());
+        Object db_cut9 = map.get("CUT9");
+        if (db_cut9 != null)   message.setCut9(((Blob) db_cut9).getBinaryStream().readAllBytes());
 
         List<HVAJapanAVS> hvaJapanAVS = HVAJapanAVSDao.selectSourcesByMUUID(connection, message.getUuid());
         message.setSources(hvaJapanAVS);
@@ -107,6 +121,19 @@ public class HVAJapanAVMDao {
             if (db_cut2 != null)   message.setCut2(((Blob) db_cut2).getBinaryStream().readAllBytes());
             Object db_cut3 = map.get("CUT3");
             if (db_cut3 != null)   message.setCut3(((Blob) db_cut3).getBinaryStream().readAllBytes());
+            Object db_cut4 = map.get("CUT4");
+            if (db_cut4 != null)   message.setCut4(((Blob) db_cut4).getBinaryStream().readAllBytes());
+            Object db_cut5 = map.get("CUT5");
+            if (db_cut5 != null)   message.setCut5(((Blob) db_cut5).getBinaryStream().readAllBytes());
+            Object db_cut6 = map.get("CUT6");
+            if (db_cut6 != null)   message.setCut6(((Blob) db_cut6).getBinaryStream().readAllBytes());
+            Object db_cut7 = map.get("CUT7");
+            if (db_cut7 != null)   message.setCut7(((Blob) db_cut7).getBinaryStream().readAllBytes());
+            Object db_cut8 = map.get("CUT8");
+            if (db_cut8 != null)   message.setCut8(((Blob) db_cut8).getBinaryStream().readAllBytes());
+            Object db_cut9 = map.get("CUT9");
+            if (db_cut9 != null)   message.setCut9(((Blob) db_cut9).getBinaryStream().readAllBytes());
+
 
             List<HVAJapanAVS> hvaJapanAVS = HVAJapanAVSDao.selectSourcesByMUUID(connection, message.getUuid());
             message.setSources(hvaJapanAVS);
@@ -136,8 +163,8 @@ public class HVAJapanAVMDao {
         return list;
     }
 
-    public static List<HVAJapanAVM> selectAllNameRobotMessage(Connection connection) throws SQLException {
-        List<Map<String, Object>> maps = DataBaseUtils.queryMapList(connection, qryAllNameRobotMessageByCodeNameSql);
+    public static List<HVAJapanAVM> selectAllNameRobotMessage(Connection connection,String robot) throws SQLException {
+        List<Map<String, Object>> maps = DataBaseUtils.queryMapList(connection, qryAllNameRobotMessageByCodeNameSql,robot);
         if (maps == null || maps.size() == 0) return null;
 
         List<HVAJapanAVM> list = new ArrayList<>();
@@ -166,7 +193,10 @@ public class HVAJapanAVMDao {
 
             message.setUuid((String) map.get("UUID"));
             message.setIf_Code((String) map.get("IF_CODE"));
-            message.setOName((String) map.get("ONAME"));
+            message.setRecommend((String) map.get("RECOMMEND"));
+            message.setRobot((String) map.get("ROBOT"));
+
+            /*message.setOName((String) map.get("ONAME"));
             message.setCName((String) map.get("CNAME"));
             Blob db_cover = (Blob) map.get("COVER");
             if (db_cover != null)   message.setCover(db_cover.getBinaryStream().readAllBytes());
@@ -179,8 +209,6 @@ public class HVAJapanAVMDao {
             message.setDuration(((BigDecimal) map.get("DURATION")).longValue());
             message.setDescribe((String) map.get("DESCRIBE"));
             message.setScore(((BigDecimal) map.get("SCORE")).longValue());
-            message.setRecommend((String) map.get("RECOMMEND"));
-            message.setRobot((String) map.get("ROBOT"));
 
             Object db_cut1 = map.get("CUT1");
             if (db_cut1 != null)   message.setCut1(((Blob) db_cut1).getBinaryStream().readAllBytes());
@@ -188,13 +216,25 @@ public class HVAJapanAVMDao {
             if (db_cut2 != null)   message.setCut2(((Blob) db_cut2).getBinaryStream().readAllBytes());
             Object db_cut3 = map.get("CUT3");
             if (db_cut3 != null)   message.setCut3(((Blob) db_cut3).getBinaryStream().readAllBytes());
+            Object db_cut4 = map.get("CUT4");
+            if (db_cut4 != null)   message.setCut4(((Blob) db_cut4).getBinaryStream().readAllBytes());
+            Object db_cut5 = map.get("CUT5");
+            if (db_cut5 != null)   message.setCut5(((Blob) db_cut5).getBinaryStream().readAllBytes());
+            Object db_cut6 = map.get("CUT6");
+            if (db_cut6 != null)   message.setCut6(((Blob) db_cut6).getBinaryStream().readAllBytes());
+            Object db_cut7 = map.get("CUT7");
+            if (db_cut7 != null)   message.setCut7(((Blob) db_cut7).getBinaryStream().readAllBytes());
+            Object db_cut8 = map.get("CUT8");
+            if (db_cut8 != null)   message.setCut8(((Blob) db_cut8).getBinaryStream().readAllBytes());
+            Object db_cut9 = map.get("CUT9");
+            if (db_cut9 != null)   message.setCut9(((Blob) db_cut9).getBinaryStream().readAllBytes());*/
 
-            List<HVAJapanAVS> hvaJapanAVS = HVAJapanAVSDao.selectSourcesByMUUID(connection, message.getUuid());
+/*            List<HVAJapanAVS> hvaJapanAVS = HVAJapanAVSDao.selectSourcesByMUUID(connection, message.getUuid());
             message.setSources(hvaJapanAVS);
             List<HVAJapanAVPersonM> hvaJapanAVPersonMS = HVAJapanAVPersonDao.qryPersonByMessageUUID(connection, message.getUuid());
             message.setPersons(hvaJapanAVPersonMS);
             List<HVAJapanAVLabelM> hvaJapanAVLabelMS = HVAJapanAVLabelDao.qryLabelByMessageUUID(connection, message.getUuid());
-            message.setLabels(hvaJapanAVLabelMS);
+            message.setLabels(hvaJapanAVLabelMS);*/
             list.add(message);
         }
         return list;
@@ -213,7 +253,10 @@ public class HVAJapanAVMDao {
 
             message.setUuid((String) map.get("UUID"));
             message.setIf_Code((String) map.get("IF_CODE"));
-            message.setOName((String) map.get("ONAME"));
+            message.setRecommend((String) map.get("RECOMMEND"));
+            message.setRobot((String) map.get("ROBOT"));
+
+            /*message.setOName((String) map.get("ONAME"));
             message.setCName((String) map.get("CNAME"));
             Blob db_cover = (Blob) map.get("COVER");
             if (db_cover != null)   message.setCover(db_cover.getBinaryStream().readAllBytes());
@@ -226,8 +269,6 @@ public class HVAJapanAVMDao {
             message.setDuration(((BigDecimal) map.get("DURATION")).longValue());
             message.setDescribe((String) map.get("DESCRIBE"));
             message.setScore(((BigDecimal) map.get("SCORE")).longValue());
-            message.setRecommend((String) map.get("RECOMMEND"));
-            message.setRobot((String) map.get("ROBOT"));
 
             Object db_cut1 = map.get("CUT1");
             if (db_cut1 != null)   message.setCut1(((Blob) db_cut1).getBinaryStream().readAllBytes());
@@ -235,13 +276,26 @@ public class HVAJapanAVMDao {
             if (db_cut2 != null)   message.setCut2(((Blob) db_cut2).getBinaryStream().readAllBytes());
             Object db_cut3 = map.get("CUT3");
             if (db_cut3 != null)   message.setCut3(((Blob) db_cut3).getBinaryStream().readAllBytes());
+            Object db_cut4 = map.get("CUT4");
+            if (db_cut4 != null)   message.setCut4(((Blob) db_cut4).getBinaryStream().readAllBytes());
+            Object db_cut5 = map.get("CUT5");
+            if (db_cut5 != null)   message.setCut5(((Blob) db_cut5).getBinaryStream().readAllBytes());
+            Object db_cut6 = map.get("CUT6");
+            if (db_cut6 != null)   message.setCut6(((Blob) db_cut6).getBinaryStream().readAllBytes());
+            Object db_cut7 = map.get("CUT7");
+            if (db_cut7 != null)   message.setCut7(((Blob) db_cut7).getBinaryStream().readAllBytes());
+            Object db_cut8 = map.get("CUT8");
+            if (db_cut8 != null)   message.setCut8(((Blob) db_cut8).getBinaryStream().readAllBytes());
+            Object db_cut9 = map.get("CUT9");
+            if (db_cut9 != null)   message.setCut9(((Blob) db_cut9).getBinaryStream().readAllBytes());*/
 
-            List<HVAJapanAVS> hvaJapanAVS = HVAJapanAVSDao.selectSourcesByMUUID(connection, message.getUuid());
+/*            List<HVAJapanAVS> hvaJapanAVS = HVAJapanAVSDao.selectSourcesByMUUID(connection, message.getUuid());
             message.setSources(hvaJapanAVS);
             List<HVAJapanAVPersonM> hvaJapanAVPersonMS = HVAJapanAVPersonDao.qryPersonByMessageUUID(connection, message.getUuid());
             message.setPersons(hvaJapanAVPersonMS);
             List<HVAJapanAVLabelM> hvaJapanAVLabelMS = HVAJapanAVLabelDao.qryLabelByMessageUUID(connection, message.getUuid());
-            message.setLabels(hvaJapanAVLabelMS);
+            message.setLabels(hvaJapanAVLabelMS);*/
+
             list.add(message);
         }
         return list;
@@ -260,7 +314,10 @@ public class HVAJapanAVMDao {
 
             message.setUuid((String) map.get("UUID"));
             message.setIf_Code((String) map.get("IF_CODE"));
-            message.setOName((String) map.get("ONAME"));
+            message.setRecommend((String) map.get("RECOMMEND"));
+            message.setRobot((String) map.get("ROBOT"));
+
+            /*message.setOName((String) map.get("ONAME"));
             message.setCName((String) map.get("CNAME"));
             Blob db_cover = (Blob) map.get("COVER");
             if (db_cover != null)   message.setCover(db_cover.getBinaryStream().readAllBytes());
@@ -273,8 +330,6 @@ public class HVAJapanAVMDao {
             message.setDuration(((BigDecimal) map.get("DURATION")).longValue());
             message.setDescribe((String) map.get("DESCRIBE"));
             message.setScore(((BigDecimal) map.get("SCORE")).longValue());
-            message.setRecommend((String) map.get("RECOMMEND"));
-            message.setRobot((String) map.get("ROBOT"));
 
             Object db_cut1 = map.get("CUT1");
             if (db_cut1 != null)   message.setCut1(((Blob) db_cut1).getBinaryStream().readAllBytes());
@@ -282,13 +337,26 @@ public class HVAJapanAVMDao {
             if (db_cut2 != null)   message.setCut2(((Blob) db_cut2).getBinaryStream().readAllBytes());
             Object db_cut3 = map.get("CUT3");
             if (db_cut3 != null)   message.setCut3(((Blob) db_cut3).getBinaryStream().readAllBytes());
+            Object db_cut4 = map.get("CUT4");
+            if (db_cut4 != null)   message.setCut4(((Blob) db_cut4).getBinaryStream().readAllBytes());
+            Object db_cut5 = map.get("CUT5");
+            if (db_cut5 != null)   message.setCut5(((Blob) db_cut5).getBinaryStream().readAllBytes());
+            Object db_cut6 = map.get("CUT6");
+            if (db_cut6 != null)   message.setCut6(((Blob) db_cut6).getBinaryStream().readAllBytes());
+            Object db_cut7 = map.get("CUT7");
+            if (db_cut7 != null)   message.setCut7(((Blob) db_cut7).getBinaryStream().readAllBytes());
+            Object db_cut8 = map.get("CUT8");
+            if (db_cut8 != null)   message.setCut8(((Blob) db_cut8).getBinaryStream().readAllBytes());
+            Object db_cut9 = map.get("CUT9");
+            if (db_cut9 != null)   message.setCut9(((Blob) db_cut9).getBinaryStream().readAllBytes());*/
 
-            List<HVAJapanAVS> hvaJapanAVS = HVAJapanAVSDao.selectSourcesByMUUID(connection, message.getUuid());
+/*            List<HVAJapanAVS> hvaJapanAVS = HVAJapanAVSDao.selectSourcesByMUUID(connection, message.getUuid());
             message.setSources(hvaJapanAVS);
             List<HVAJapanAVPersonM> hvaJapanAVPersonMS = HVAJapanAVPersonDao.qryPersonByMessageUUID(connection, message.getUuid());
             message.setPersons(hvaJapanAVPersonMS);
             List<HVAJapanAVLabelM> hvaJapanAVLabelMS = HVAJapanAVLabelDao.qryLabelByMessageUUID(connection, message.getUuid());
-            message.setLabels(hvaJapanAVLabelMS);
+            message.setLabels(hvaJapanAVLabelMS);*/
+
             list.add(message);
         }
         return list;
@@ -378,6 +446,12 @@ public class HVAJapanAVMDao {
                 av.getCut1(),
                 av.getCut2(),
                 av.getCut3(),
+                av.getCut4(),
+                av.getCut5(),
+                av.getCut6(),
+                av.getCut7(),
+                av.getCut8(),
+                av.getCut9(),
                 av.getRobot());
 
         HVAJapanAVLabelDao.mergeLabelMessageC(connection,av);
@@ -404,6 +478,12 @@ public class HVAJapanAVMDao {
                 av.getCut1(),
                 av.getCut2(),
                 av.getCut3(),
+                av.getCut4(),
+                av.getCut5(),
+                av.getCut6(),
+                av.getCut7(),
+                av.getCut8(),
+                av.getCut9(),
                 av.getRobot(),
                 av.getUuid());
         HVAJapanAVLabelDao.mergeLabelMessageC(connection,av);
@@ -417,5 +497,9 @@ public class HVAJapanAVMDao {
     public static boolean qryExist(Connection connection,String if_code) throws SQLException {
         String exist = DataBaseUtils.queryOne(connection, qryExistByCodeSql, 1, if_code);
         return exist != null;
+    }
+
+    public static void updateAllRoBotByRobotMessage(Connection connection,String from,String end) throws SQLException {
+        DataBaseUtils.executeUpdate(connection,updateAllRobotToTwoMessageSql,end,from);
     }
 }

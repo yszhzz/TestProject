@@ -26,6 +26,7 @@ public class HVAJapanAVPersonM {
     private String create_time;
     private String update_time;
     private boolean have = false;
+    private String robot = "0";
 
     public HVAJapanAVPersonM() {
     }
@@ -56,6 +57,7 @@ public class HVAJapanAVPersonM {
                 ", levels='" + levels + '\'' +
                 ", create_time='" + create_time + '\'' +
                 ", update_time='" + update_time + '\'' +
+                ", robot='" + robot + '\'' +
                 ", have=" + have +
                 '}';
     }
