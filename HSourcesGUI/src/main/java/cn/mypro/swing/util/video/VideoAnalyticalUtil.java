@@ -85,7 +85,7 @@ public class VideoAnalyticalUtil {
                 BufferedReader br = new BufferedReader(new InputStreamReader(in));
                 String line ;
                 while((line=br.readLine())!=null) {
-                    System.out.println("读取数据："+line);
+                    //System.out.println("读取数据："+line);
                     if(line.trim().startsWith("Duration:")){
                         //根据字符匹配进行切割
                         String duration = line.trim().substring(0,line.trim().indexOf(","));

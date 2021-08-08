@@ -5,6 +5,7 @@
       <list>
         <option value="$PROJECT_DIR$/FirstMoudule/pom.xml" />
         <option value="$PROJECT_DIR$/HSourcesGUI/pom.xml" />
+        <option value="$PROJECT_DIR$/WebSimulated/pom.xml" />
       </list>
     </option>
   </component>

@@ -169,35 +169,49 @@ public class WebMagicOfSourcesUtil implements PageProcessor {
                 hvaJapanAVM.setOName(returnMap.get("ONAME"));
                 //hvaJapanAVM.setIf_Code(returnMap.get("IF_CODE"));
                 hvaJapanAVM.setIf_Code(runCode);
+
                 if (returnMap.get("PRODUCTION_COMPANY") != null || returnMap.get("ACTOR") != null) hvaJapanAVM.setProduction_company(returnMap.get("PRODUCTION_COMPANY")+"|"+returnMap.get("ACTOR"));
                 hvaJapanAVM.setPublish_company(returnMap.get("PUBLISH_COMPANY"));
-                hvaJapanAVM.setPublish_time(returnMap.get("PRODUCT_DATE"));
+                if (returnMap.get("PRODUCT_DATE") != null)  hvaJapanAVM.setPublish_time(returnMap.get("PRODUCT_DATE").replace("-",""));
                 hvaJapanAVM.setSeries(returnMap.get("SERIES"));
-                if (returnMap.get("TIME") != null) {
-                    hvaJapanAVM.setDuration(Integer.valueOf(returnMap.get("TIME").split(" ")[0])*60);
-                }
+                if (returnMap.get("TIME") != null) hvaJapanAVM.setDuration(Integer.valueOf(returnMap.get("TIME").split(" ")[0])*60);
+
                 long score = 0;
                 if (returnMap.get("SCORE") != null) score = (long) (Float.valueOf(returnMap.get("SCORE").substring(1).replace(" ","").replace("分","").split(",")[0]) *100/5);
                 hvaJapanAVM.setScore(score);
 
-                processBar.setValue(40);
+                processBar.setValue(30);
 
                 if (returnMap.get("PERSONS") != null) {
                     List<String> personNames = Arrays.asList(returnMap.get("PERSONS").split("\\|"));
                     List<HVAJapanAVPersonM> persons = new ArrayList<>();
+                    List<String> notExistsPersons = new ArrayList<>();
                     for (String name : personNames) {
                         HVAJapanAVPersonM hvaJapanAVPersonM = HVAJapanAVPersonDao.qryPersonByNames(serviceConn, name);
                         if (hvaJapanAVPersonM == null) {
                             runMessagePrint(messageRun,"["+name+"] 无该人物，请手动添加人物信息！！\n",LabelConstant.TEXT_APPEND_MODEL_TIME_AND_NEXT);
+                            notExistsPersons.add(name);
                         } else {
                             persons.add(hvaJapanAVPersonM);
                         }
                     }
                     hvaJapanAVM.setPersons(persons);
+                    hvaJapanAVM.setNotExistsPerson(notExistsPersons);
                 }
-                processBar.setValue(50);
+                processBar.setValue(40);
+
                 runMessagePrint(messageRun,"开始获取封面图片！！\n",LabelConstant.TEXT_APPEND_MODEL_TIME_AND_NEXT);
-                MyFileUtils.downloadImgByNet(returnMap.get("COVER_URL"),imgPath,"cover.jpg");
+                boolean cover_success = MyFileUtils.downloadImgByNet(returnMap.get("COVER_URL"), imgPath, "cover.jpg");
+                if (cover_success) {
+                    File coverFile = new File(LabelConstant.DEFAULT_FILE_PATH + "\\" + hvaJapanAVM.getIf_Code().replace(" ", "") + "\\" + "cover.jpg");
+                    if (coverFile.exists() && coverFile.isFile()) {
+                        hvaJapanAVM.setCover(MyFileUtils.getBytesFromFile(coverFile));
+                    }
+                }
+                //MyFileUtils.downloadImgByNet(returnMap.get("COVER_URL"),imgPath,"cover.jpg");
+
+                processBar.setValue(50);
+
                 int picSize = 1;
                 try {
                     picSize = Integer.valueOf(returnMap.get("CUTCOUNT"));
@@ -205,21 +219,44 @@ public class WebMagicOfSourcesUtil implements PageProcessor {
                     es.printStackTrace();
                 }
 
-                int every = picSize == 0 ? 0:40 / picSize;
+                int every = picSize == 0 ? 0:(40 / picSize);
                 runMessagePrint(messageRun,"开始获取截图，共["+picSize+"]个！！\n",LabelConstant.TEXT_APPEND_MODEL_TIME_AND_NEXT);
+
+                int i = 0;
                 for (String s : returnMap.keySet()) {
-                    if (s.startsWith("CUT")) MyFileUtils.downloadImgByNet(returnMap.get(s),imgPath,s.toLowerCase()+".jpg");
+                    if (s.startsWith("CUT")) {
+                        boolean cut_success = MyFileUtils.downloadImgByNet(returnMap.get(s), imgPath, s.toLowerCase() + ".jpg");
+
+                        if (cut_success && i <= 8) {
+                            File cutFile = new File(LabelConstant.DEFAULT_FILE_PATH + "\\" + hvaJapanAVM.getIf_Code().replace(" ", "") + "\\" + s.toLowerCase() + ".jpg");
+                            if (cutFile.exists() && cutFile.isFile()) {
+                                if (i == 0) hvaJapanAVM.setCut1(MyFileUtils.getBytesFromFile(cutFile));
+                                if (i == 1) hvaJapanAVM.setCut2(MyFileUtils.getBytesFromFile(cutFile));
+                                if (i == 2) hvaJapanAVM.setCut3(MyFileUtils.getBytesFromFile(cutFile));
+                                if (i == 3) hvaJapanAVM.setCut4(MyFileUtils.getBytesFromFile(cutFile));
+                                if (i == 4) hvaJapanAVM.setCut5(MyFileUtils.getBytesFromFile(cutFile));
+                                if (i == 5) hvaJapanAVM.setCut6(MyFileUtils.getBytesFromFile(cutFile));
+                                if (i == 6) hvaJapanAVM.setCut7(MyFileUtils.getBytesFromFile(cutFile));
+                                if (i == 7) hvaJapanAVM.setCut8(MyFileUtils.getBytesFromFile(cutFile));
+                                if (i == 8) hvaJapanAVM.setCut9(MyFileUtils.getBytesFromFile(cutFile));
+                                i++;
+                            }
+                        }
+                    }
                     processBar.setValue(processBar.getValue() + every);
                 }
-                //messageRun.append("图片下载成功！  \n");
-                processBar.setValue(90);
+                runMessagePrint(messageRun,"截图获取完毕，共["+picSize+"]个！！\n",LabelConstant.TEXT_APPEND_MODEL_TIME_AND_NEXT);
+
+                processBar.setValue(70);
 
             } else {
                 runMessagePrint(messageRun,"获取无数据！！\n",LabelConstant.TEXT_APPEND_MODEL_TIME_AND_NEXT);
-                processBar.setValue(90);
+                processBar.setValue(70);
             }
         } catch (SQLException e) {
             runMessagePrint(messageRun,"网路导入出现错误！\n",LabelConstant.TEXT_APPEND_MODEL_TIME_AND_NEXT);
+        } catch (IOException e) {
+            e.printStackTrace();
         } finally {
             DataBaseUtils.closeQuietly(serviceConn);
         }

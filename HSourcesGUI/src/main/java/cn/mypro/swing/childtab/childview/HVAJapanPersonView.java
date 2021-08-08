@@ -2,6 +2,7 @@ package cn.mypro.swing.childtab.childview;
 
 import cn.mypro.swing.childtab.JChildTabView;
 import cn.mypro.swing.constant.LabelConstant;
+import cn.mypro.swing.constant.PublicVariablePool;
 import cn.mypro.swing.dao.HVAJapanAVPersonDao;
 import cn.mypro.swing.entity.HVAJapanAVPersonM;
 import cn.mypro.swing.util.file.MyFileUtils;
@@ -567,6 +568,7 @@ public class HVAJapanPersonView implements JChildTabView {
         messagePersonBox.setPreferredSize(new Dimension(600, 450));
 
         JScrollPane selectPersonResultPane = new JScrollPane(selectPersonResult);
+
         selectPersonResultPane.setPreferredSize(new Dimension(200, 450));
 
         JSplitPane topRightSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(photoBox), opraPersonBox); //上右 竖向
@@ -673,5 +675,78 @@ public class HVAJapanPersonView implements JChildTabView {
             textArea.append(message);
         }
         textArea.paintImmediately(textArea.getBounds());
+    }
+
+    public void showPerson(String uuid) {
+        HVAJapanAVPersonM selectedValue = null;
+        try {
+            if (uuid != null) {
+                selectedValue = HVAJapanAVPersonDao.qryOnePersonByUUID(serviceConn,uuid);
+                if (selectedValue != null ) {
+                    personName.setText(selectedValue.getNames());
+                    personCName.setText(selectedValue.getCname());
+                    personOName.setText(selectedValue.getOname());
+                    if ("1".equals(selectedValue.getGender())) {
+                        female.setSelected(true);
+                    } else {
+                        male.setSelected(true);
+                    }
+                    personStartTime.setText(selectedValue.getStart_time());
+                    personDataInfo.setText(selectedValue.getDeta_info());
+                    personOtherInfo.setText(selectedValue.getOther_info());
+                    //personLevel.setSelectedIndex();
+                    personScore.setSelectedIndex((int) selectedValue.getScores() - 1);
+                    isRobot.setSelected("1".equals(selectedValue.getRobot()));
+
+                    if (selectedValue.getPhtot_1() != null && selectedValue.getPhtot_1().length != 0) {
+                        ImageIcon icon1 = new ImageIcon(selectedValue.getPhtot_1());
+                        icon1 = new ImageIcon(icon1.getImage().getScaledInstance(400, 400, Image.SCALE_DEFAULT));
+                        personPhoto1.setIcon(icon1);
+                    } else {
+                        personPhoto1.setIcon(null);
+                    }
+                    if (selectedValue.getPhtot_2() != null && selectedValue.getPhtot_2().length != 0) {
+                        ImageIcon icon2 = new ImageIcon(selectedValue.getPhtot_2());
+                        icon2 = new ImageIcon(icon2.getImage().getScaledInstance(400, 400, Image.SCALE_DEFAULT));
+                        personPhoto2.setIcon(icon2);
+                    } else {
+                        personPhoto2.setIcon(null);
+                    }
+
+                    if (selectedValue.getLevels() == null || "".equals(selectedValue.getLevels())) {
+                        personLevel.setSelectedIndex(0);
+                    } else if ("SSS".equals(selectedValue.getLevels())) {
+                        personLevel.setSelectedIndex(1);
+                    } else if ("SS".equals(selectedValue.getLevels())) {
+                        personLevel.setSelectedIndex(2);
+                    } else if ("S".equals(selectedValue.getLevels())) {
+                        personLevel.setSelectedIndex(3);
+                    } else if ("A".equals(selectedValue.getLevels())) {
+                        personLevel.setSelectedIndex(4);
+                    } else if ("B".equals(selectedValue.getLevels())) {
+                        personLevel.setSelectedIndex(5);
+                    } else if ("C".equals(selectedValue.getLevels())) {
+                        personLevel.setSelectedIndex(6);
+                    } else if ("D".equals(selectedValue.getLevels())) {
+                        personLevel.setSelectedIndex(7);
+                    } else if ("E".equals(selectedValue.getLevels())) {
+                        personLevel.setSelectedIndex(8);
+                    } else if ("F".equals(selectedValue.getLevels())) {
+                        personLevel.setSelectedIndex(9);
+                    } else if ("G".equals(selectedValue.getLevels())) {
+                        personLevel.setSelectedIndex(10);
+                    }
+
+                    personCase = selectedValue;
+                    personCase.setHave(true);
+                }
+            }
+        } catch (Exception es) {
+            selectedValue = null;
+            es.printStackTrace();
+        }
+    }
+    public void cleanPersonResultSelected() {
+        selectPersonResult.clearSelection();
     }
 }

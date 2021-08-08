@@ -1,9 +1,11 @@
 package cn.mypro.swing;
 
 import cn.mypro.swing.childtab.HVAJapanAVMTab;
+import cn.mypro.swing.constant.PublicVariablePool;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
+import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,18 +36,16 @@ public class StartGUIApp {
     JRadioButtonMenuItem motifItem = new JRadioButtonMenuItem("Motif Style");
     ButtonGroup popupButtonGroup = new ButtonGroup();
 
-
-    public static void main(String[] args) {
-        StartGUIApp startGUIApp = new StartGUIApp();
-        startGUIApp.init();
-
-    }
-
     public void init(){
 
+        PublicVariablePool.saveFather(totalJFram);
+        PublicVariablePool.saveFatherLogArea(runMessage);
         /*日志框 设置*/
         runMessage.append("欢迎使用！！\n");
         runMessage.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+
+        DefaultCaret caret = (DefaultCaret)runMessage.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
         /*初始化部件*/
         //顶部菜单初始化
@@ -168,6 +168,12 @@ public class StartGUIApp {
         SwingUtilities.updateComponentTreeUI(menuBar);
         //更新右键菜单及内部所有菜单项的UI
         SwingUtilities.updateComponentTreeUI(jPopupMenu);
+    }
+
+    public static void main(String[] args) {
+        StartGUIApp startGUIApp = new StartGUIApp();
+        startGUIApp.init();
+
     }
 
 }

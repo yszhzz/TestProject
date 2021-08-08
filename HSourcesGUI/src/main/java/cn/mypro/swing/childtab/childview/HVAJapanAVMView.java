@@ -1,6 +1,8 @@
 package cn.mypro.swing.childtab.childview;
 
 import cn.mypro.swing.childtab.JChildTabView;
+import cn.mypro.swing.childtab.childview.menu.PersonPopupMenuFactory;
+import cn.mypro.swing.childtab.childview.menu.TextPopupMenuFactory;
 import cn.mypro.swing.constant.LabelConstant;
 import cn.mypro.swing.dao.HVAJapanAVLabelDao;
 import cn.mypro.swing.dao.HVAJapanAVMDao;
@@ -97,13 +99,15 @@ public class HVAJapanAVMView implements JChildTabView {
     private JRadioButton recommend = new JRadioButton("推荐", false);
     private JRadioButton isRobot = new JRadioButton("自动注入", false);
     private JRadioButton isRobot2 = new JRadioButton("自动注入-初步处理", false);
+    private JLabel robotStatusLable = new JLabel("导入状态:");
+    private JComboBox<String> robotStatus = new JComboBox<String>(LabelConstant.ROBOT_STATUS);
     private ButtonGroup statusGroup = new ButtonGroup();
+    private JButton scoreRule = new JButton("评分细则");
 
-
-    private JLabel avLabelLabel = new JLabel("标签");
+    private JLabel avLabelLabel = new JLabel("元素标签：");
     private JList<HVAJapanAVLabelM> avLabelList = new JList<HVAJapanAVLabelM>();
     private JButton avLabelButton = new JButton("变更");
-    private JLabel avPersonLabel = new JLabel("参演人员");
+    private JLabel avPersonLabel = new JLabel("参演人员：");
     private JList<HVAJapanAVPersonM> avPersonList = new JList<HVAJapanAVPersonM>();
     private JButton avPersonButton = new JButton("变更");
 
@@ -119,15 +123,16 @@ public class HVAJapanAVMView implements JChildTabView {
     private JButton increaseCompressPollNumber = new JButton("增加压缩池并行数          ");
     private JButton reduceCompressPollNumber = new JButton("减少压缩池并行数          ");
 
-    private JButton fulshRobotList = new JButton("获取-自导(1)数据          ");
-    private JButton fulshRobot2List = new JButton("获取-初步(2)数据          ");
-    private JButton updateRobotToTwo = new JButton("修正自导数据(1-2)        ");
-    private JButton updateRobotToZero = new JButton("修正初步数据(2-0)        ");
+    private JButton fulshRobotList = new JButton("获取数据-Web Import");
+    private JButton fulshRobot2List = new JButton("获取数据-Deal First");
+    private JButton updateRobotToTwo = new JButton("修正数据(Web-Deal)");
+    private JButton updateRobotToZero = new JButton("修正数据(Deal-Artificial)");
 
     //信息进度框
     private JTextArea messageRun = null;
 
     private JButton autoImport = new JButton("全自动导入");
+    private JLabel listCount = new JLabel();
     private JButton fulshList = new JButton("刷新列表");
 
     //自动注入框
@@ -136,14 +141,6 @@ public class HVAJapanAVMView implements JChildTabView {
     private JTextArea sources = new JTextArea();
     private boolean isClose = false;
 
-    //文本框右键菜单
-    JPopupMenu textPopupMenu = new JPopupMenu();
-    JRadioButtonMenuItem copyItem = new JRadioButtonMenuItem("复制");
-    JRadioButtonMenuItem pasteItem = new JRadioButtonMenuItem("粘贴");
-
-    //人物List右键菜单
-    JPopupMenu personListPopupMenu = new JPopupMenu();
-    JRadioButtonMenuItem haveALookOfPerson = new JRadioButtonMenuItem("Metal Style");
 
     private CompressionUtil compressionUtil = null;
 
@@ -189,7 +186,7 @@ public class HVAJapanAVMView implements JChildTabView {
         logger.info("[资源操作界面]-[列表信息填充]");
         //列表信息填充
         //flushAVMList();
-        flushResourcesList(LabelConstant.SOURCES_FLUSH_MODLE_ALL,null);
+        flushResourcesList(LabelConstant.SOURCES_FLUSH_MODLE_ALL, null);
         logger.info("[资源操作界面]-[绑定事件]");
         //事件绑定
         bindingOfTheEvent();
@@ -212,46 +209,17 @@ public class HVAJapanAVMView implements JChildTabView {
     @Override
     public void bindingOfTheEvent() {
 
-        //绑定右键按钮
-        copyItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Object source = e.getSource();
-                String text = "";
-                if (source instanceof JTextArea) {
-                    text = ((JTextArea) source).getSelectedText();
-                } else if (source instanceof JTextField) {
-                    text = ((JTextField) source).getSelectedText();
-                }
-                WindowClipboardUtil.setIntoClipboard(text);
-            }
-        });
+        filePath.setEnabled(false);
+        ifCode.setComponentPopupMenu(TextPopupMenuFactory.createPopupMenu(LabelConstant.TEXT_POPUPMENU_TYPE_FIELD, ifCode));
+        describe.setComponentPopupMenu(TextPopupMenuFactory.createPopupMenu(LabelConstant.TEXT_POPUPMENU_TYPE_AREA, describe));
+        oName.setComponentPopupMenu(TextPopupMenuFactory.createPopupMenu(LabelConstant.TEXT_POPUPMENU_TYPE_FIELD, oName));
+        cName.setComponentPopupMenu(TextPopupMenuFactory.createPopupMenu(LabelConstant.TEXT_POPUPMENU_TYPE_FIELD, cName));
+        production.setComponentPopupMenu(TextPopupMenuFactory.createPopupMenu(LabelConstant.TEXT_POPUPMENU_TYPE_FIELD, production));
+        publish.setComponentPopupMenu(TextPopupMenuFactory.createPopupMenu(LabelConstant.TEXT_POPUPMENU_TYPE_FIELD, publish));
+        publishTime.setComponentPopupMenu(TextPopupMenuFactory.createPopupMenu(LabelConstant.TEXT_POPUPMENU_TYPE_FIELD, publishTime));
+        series.setComponentPopupMenu(TextPopupMenuFactory.createPopupMenu(LabelConstant.TEXT_POPUPMENU_TYPE_FIELD, series));
 
-        pasteItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Object source = e.getSource();
-                String text = WindowClipboardUtil.getFromClipboard();
-                if (source instanceof JTextArea) {
-                    JTextArea thisSource = (JTextArea) source;
-                    int selectionStart = thisSource.getSelectionStart();
-                    int selectionEnd = thisSource.getSelectionEnd();
-                    thisSource.replaceRange(text,selectionStart,selectionEnd);
-
-/*                  //指定光标处输入
-                    int dot = thisSource.getCaret().getDot();
-                    thisSource.insert(text,dot);*/
-                } else if (source instanceof JTextField) {
-                    JTextField thisSource = (JTextField) source;
-                    int selectionStart = thisSource.getSelectionStart();
-                    int selectionEnd = thisSource.getSelectionEnd();
-                    thisSource.replaceSelection(text);
-                    int dot = thisSource.getCaret().getDot();
-                    //thisSource.getDocument().insertString();
-                    //TODO 无法根据光标位置进行插入
-                }
-            }
-        });
+        avPersonList.setComponentPopupMenu(PersonPopupMenuFactory.createPopupMenu(avPersonList));
 
         //绑定Button
         select.addActionListener(new ActionListener() {
@@ -260,7 +228,8 @@ public class HVAJapanAVMView implements JChildTabView {
                 List<HVAJapanAVM> avms = null;
                 try {
                     avms = HVAJapanAVMDao.selectMessageByAll(serviceConn, selectField.getText());
-
+                    listCount.setText("共计" + avms.size() + "个");
+                    sourcesListMoudel = LabelConstant.SOURCES_FLUSH_MODLE_SELECT;
                     selectResult.setListData(avms.toArray(new HVAJapanAVM[avms.size()]));
                 } catch (Exception error) {
                     error.printStackTrace();
@@ -315,8 +284,9 @@ public class HVAJapanAVMView implements JChildTabView {
                         AVScore.setSelectedIndex((int) selectedValue.getScore() - 1);
                         recommend.setSelected("1".equals(selectedValue.getRecommend()));
 
-                        isRobot.setSelected("1".equals(selectedValue.getRobot()));
-                        isRobot2.setSelected("2".equals(selectedValue.getRobot()));
+/*                        isRobot.setSelected("1".equals(selectedValue.getRobot()));
+                        isRobot2.setSelected("2".equals(selectedValue.getRobot()));*/
+                        robotStatus.setSelectedIndex(Integer.valueOf(selectedValue.getRobot()));
 
                         if (selectedValue.getCover() != null) {
                             ImageIcon iconCover = new ImageIcon(selectedValue.getCover());
@@ -427,8 +397,9 @@ public class HVAJapanAVMView implements JChildTabView {
                 avCase.setScore(LabelConstant.Person_Score[AVScore.getSelectedIndex()]);
                 avCase.setRecommend(recommend.isSelected() ? "1" : "0");
                 avCase.setRobot("0");
-                if (isRobot.isSelected()) avCase.setRobot("1");
-                if (isRobot2.isSelected()) avCase.setRobot("2");
+/*                if (isRobot.isSelected()) avCase.setRobot("1");
+                if (isRobot2.isSelected()) avCase.setRobot("2");*/
+                avCase.setRobot(String.valueOf(robotStatus.getSelectedIndex()));
 //                avCase.setRobot(isRobot.isSelected() ? "1" :"0");
                 boolean exist = false;
                 try {
@@ -482,7 +453,7 @@ public class HVAJapanAVMView implements JChildTabView {
                     insertMessage.setEnabled(false);
                     JOptionPane.showMessageDialog(father, "插入成功！！", "MessageInsertDialog", JOptionPane.INFORMATION_MESSAGE);
                     //flushAVMList();
-                    flushResourcesList(sourcesListMoudel,null);
+                    flushResourcesList(sourcesListMoudel, null);
                 } catch (SQLException error) {
                     error.printStackTrace();
                     JOptionPane.showMessageDialog(father, "插入出错！！" + error.getMessage(), "MessageInsertDialog", JOptionPane.ERROR_MESSAGE);
@@ -499,7 +470,7 @@ public class HVAJapanAVMView implements JChildTabView {
                     updateMessage.setEnabled(false);
                     JOptionPane.showMessageDialog(father, "修改成功！！", "MessageUpdateDialog", JOptionPane.INFORMATION_MESSAGE);
                     //flushAVMList();
-                    flushResourcesList(sourcesListMoudel,null);
+                    flushResourcesList(sourcesListMoudel, null);
                 } catch (SQLException error) {
                     error.printStackTrace();
                     JOptionPane.showMessageDialog(father, "修改出错！！" + error.getMessage(), "MessageUpdateDialog", JOptionPane.ERROR_MESSAGE);
@@ -530,7 +501,9 @@ public class HVAJapanAVMView implements JChildTabView {
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                if (selectField.getText() == null || "".equals(selectField.getText())) flushResourcesList(LabelConstant.SOURCES_FLUSH_MODLE_ALL,null);;
+                if (selectField.getText() == null || "".equals(selectField.getText()))
+                    flushResourcesList(LabelConstant.SOURCES_FLUSH_MODLE_ALL, null);
+                ;
                 sourcesListMoudel = LabelConstant.SOURCES_FLUSH_MODLE_ALL;
             }
 
@@ -568,92 +541,109 @@ public class HVAJapanAVMView implements JChildTabView {
         cut1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                openShowDialogCut = 1;
-                showCutLabel.setIcon(new ImageIcon(avCase.getCut1()));
-                showCutDialog.add(showCutLabel);
-                showCutDialog.pack();
-                showCutDialog.setVisible(true);
-
+                if (avCase.getCut1() != null) {
+                    openShowDialogCut = 1;
+                    showCutLabel.setIcon(new ImageIcon(avCase.getCut1()));
+                    showCutDialog.add(showCutLabel);
+                    showCutDialog.pack();
+                    showCutDialog.setVisible(true);
+                }
             }
         });
         cut2.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                openShowDialogCut = 2;
-                showCutLabel.setIcon(new ImageIcon(avCase.getCut2()));
-                showCutDialog.add(showCutLabel);
-                showCutDialog.pack();
-                showCutDialog.setVisible(true);
+                if (avCase.getCut2() != null) {
+                    openShowDialogCut = 2;
+                    showCutLabel.setIcon(new ImageIcon(avCase.getCut2()));
+                    showCutDialog.add(showCutLabel);
+                    showCutDialog.pack();
+                    showCutDialog.setVisible(true);
+                }
             }
         });
         cut3.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                openShowDialogCut = 3;
-                showCutLabel.setIcon(new ImageIcon(avCase.getCut3()));
-                showCutDialog.add(showCutLabel);
-                showCutDialog.pack();
-                showCutDialog.setVisible(true);
+                if (avCase.getCut3() != null) {
+                    openShowDialogCut = 3;
+                    showCutLabel.setIcon(new ImageIcon(avCase.getCut3()));
+                    showCutDialog.add(showCutLabel);
+                    showCutDialog.pack();
+                    showCutDialog.setVisible(true);
+                }
             }
         });
         cut4.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                openShowDialogCut = 4;
-                showCutLabel.setIcon(new ImageIcon(avCase.getCut4()));
-                showCutDialog.add(showCutLabel);
-                showCutDialog.pack();
-                showCutDialog.setVisible(true);
+                if (avCase.getCut4() != null) {
+                    openShowDialogCut = 4;
+                    showCutLabel.setIcon(new ImageIcon(avCase.getCut4()));
+                    showCutDialog.add(showCutLabel);
+                    showCutDialog.pack();
+                    showCutDialog.setVisible(true);
+                }
             }
         });
         cut5.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                openShowDialogCut = 5;
-                showCutLabel.setIcon(new ImageIcon(avCase.getCut5()));
-                showCutDialog.add(showCutLabel);
-                showCutDialog.pack();
-                showCutDialog.setVisible(true);
+                if (avCase.getCut5() != null) {
+                    openShowDialogCut = 5;
+                    showCutLabel.setIcon(new ImageIcon(avCase.getCut5()));
+                    showCutDialog.add(showCutLabel);
+                    showCutDialog.pack();
+                    showCutDialog.setVisible(true);
+                }
             }
         });
         cut6.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                openShowDialogCut = 6;
-                showCutLabel.setIcon(new ImageIcon(avCase.getCut6()));
-                showCutDialog.add(showCutLabel);
-                showCutDialog.pack();
-                showCutDialog.setVisible(true);
+                if (avCase.getCut6() != null) {
+                    openShowDialogCut = 6;
+                    showCutLabel.setIcon(new ImageIcon(avCase.getCut6()));
+                    showCutDialog.add(showCutLabel);
+                    showCutDialog.pack();
+                    showCutDialog.setVisible(true);
+                }
             }
         });
         cut7.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                openShowDialogCut = 7;
-                showCutLabel.setIcon(new ImageIcon(avCase.getCut7()));
-                showCutDialog.add(showCutLabel);
-                showCutDialog.pack();
-                showCutDialog.setVisible(true);
+                if (avCase.getCut7() != null) {
+                    openShowDialogCut = 7;
+                    showCutLabel.setIcon(new ImageIcon(avCase.getCut7()));
+                    showCutDialog.add(showCutLabel);
+                    showCutDialog.pack();
+                    showCutDialog.setVisible(true);
+                }
             }
         });
         cut8.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                openShowDialogCut = 8;
-                showCutLabel.setIcon(new ImageIcon(avCase.getCut8()));
-                showCutDialog.add(showCutLabel);
-                showCutDialog.pack();
-                showCutDialog.setVisible(true);
+                if (avCase.getCut8() != null) {
+                    openShowDialogCut = 8;
+                    showCutLabel.setIcon(new ImageIcon(avCase.getCut8()));
+                    showCutDialog.add(showCutLabel);
+                    showCutDialog.pack();
+                    showCutDialog.setVisible(true);
+                }
             }
         });
         cut9.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                openShowDialogCut = 9;
-                showCutLabel.setIcon(new ImageIcon(avCase.getCut9()));
-                showCutDialog.add(showCutLabel);
-                showCutDialog.pack();
-                showCutDialog.setVisible(true);
+                if (avCase.getCut9() != null) {
+                    openShowDialogCut = 9;
+                    showCutLabel.setIcon(new ImageIcon(avCase.getCut9()));
+                    showCutDialog.add(showCutLabel);
+                    showCutDialog.pack();
+                    showCutDialog.setVisible(true);
+                }
             }
         });
 
@@ -712,75 +702,73 @@ public class HVAJapanAVMView implements JChildTabView {
                 new Thread(() -> {
                     if (code != null) {
 
-                        progressBar.setValue(MIN_PROGRESS);
-                        long start = System.currentTimeMillis();
-                        HVAJapanAVM hSources = webMagicUtil.getHSources(code, filePath.getText() + "\\" + code, progressBar, messageRun);
-                        progressBar.setValue(50);
-                        if (hSources != null) {
-
-                            if (hSources.getNotExistsPerson() != null && hSources.getNotExistsPerson().size() != 0) {
-
-                                for (String notExistsPerson : hSources.getNotExistsPerson()) {
-                                    try {
-
-                                        HVAJapanAVPersonM hPersonSimple = webMagicPersonUtil.getHPersonSimple(notExistsPerson);
-
-                                        if (hPersonSimple != null) {
-                                            hSources.getPersons().add(hPersonSimple);
-                                            hPersonSimple.setRobot("1");
-                                            HVAJapanAVPersonDao.insertPerson(serviceConn, hPersonSimple);
-                                            runMessagePrint(messageRun, "添加人物[" + notExistsPerson + "]完成！\n", LabelConstant.TEXT_APPEND_MODEL_TIME_AND_NEXT);
-
-                                        } else {
-                                            runMessagePrint(messageRun, "添加人物[" + notExistsPerson + "]失败！原因[不存在该人物]\n", LabelConstant.TEXT_APPEND_MODEL_TIME_AND_NEXT);
+                        try {
+                            if (HVAJapanAVMDao.qryExist(serviceConn, code)) {
+                                runMessagePrint(messageRun, "已存在，跳过！\n", LabelConstant.TEXT_APPEND_MODEL_TIME_AND_NEXT);
+                                return;
+                            } else {
+                                progressBar.setValue(MIN_PROGRESS);
+                                long start = System.currentTimeMillis();
+                                HVAJapanAVM hSources = webMagicUtil.getHSources(code, filePath.getText() + "\\" + code, progressBar, messageRun);
+                                progressBar.setValue(70);
+                                if (hSources != null) {
+                                    if (hSources.getNotExistsPerson() != null && hSources.getNotExistsPerson().size() != 0) {
+                                        for (String notExistsPerson : hSources.getNotExistsPerson()) {
+                                            try {
+                                                HVAJapanAVPersonM hPersonSimple = webMagicPersonUtil.getHPersonSimple(notExistsPerson);
+                                                if (hPersonSimple != null) {
+                                                    hSources.getPersons().add(hPersonSimple);
+                                                    hPersonSimple.setRobot("1");
+                                                    HVAJapanAVPersonDao.insertPerson(serviceConn, hPersonSimple);
+                                                    runMessagePrint(messageRun, "添加人物[" + notExistsPerson + "]完成！\n", LabelConstant.TEXT_APPEND_MODEL_TIME_AND_NEXT);
+                                                } else {
+                                                    runMessagePrint(messageRun, "添加人物[" + notExistsPerson + "]失败！原因[不存在该人物]\n", LabelConstant.TEXT_APPEND_MODEL_TIME_AND_NEXT);
+                                                }
+                                            } catch (Exception exx) {
+                                                exx.printStackTrace();
+                                                runMessagePrint(messageRun, "添加人物[" + notExistsPerson + "]失败！原因[导入错误]\n", LabelConstant.TEXT_APPEND_MODEL_TIME_AND_NEXT);
+                                            }
                                         }
-                                    } catch (Exception exx) {
-                                        exx.printStackTrace();
-                                        runMessagePrint(messageRun, "添加人物[" + notExistsPerson + "]失败！原因[导入错误]\n", LabelConstant.TEXT_APPEND_MODEL_TIME_AND_NEXT);
                                     }
+
+                                    progressBar.setValue(80);
+
+                                    String translateString = null;
+                                    try {
+                                        translateString = BaiduTranslateUtil.translateAsString(hSources.getOName());
+                                    } catch (Exception exxx) {
+                                        exxx.printStackTrace();
+                                    }
+                                    hSources.setRobot("0");
+
+                                    hSources.setCName(translateString);
+                                    hSources.setLanguages("JAP");
+                                    hSources.setMosaic("HM");
+                                    if (hSources.getScore() == 0) hSources.setScore(60);
+                                    hSources.setRecommend("0");
+
+                                    progressBar.setValue(90);
+                                    clearSourcesMessage();
+                                    fitAVMessage(hSources);
+                                    //uploadPhotosQuite();
+
+                                    if (hSources.getCover() == null) {
+                                        runMessagePrint(messageRun, "[" + code + "] 封面获取失败]！\n", LabelConstant.TEXT_APPEND_MODEL_TIME_AND_NEXT);
+                                    }
+                                    long end = System.currentTimeMillis();
+                                    runMessagePrint(messageRun, "[" + code + "]数据填充完成！耗时[" + (end - start) / 1000 + "]\n", LabelConstant.TEXT_APPEND_MODEL_TIME_AND_NEXT);
+                                } else {
+                                    long end = System.currentTimeMillis();
+                                    runMessagePrint(messageRun, "[" + code + "] 未获取有效数据！耗时[" + (end - start) / 1000 + "]\n", LabelConstant.TEXT_APPEND_MODEL_TIME_AND_NEXT);
                                 }
+                                showProgressBar.setValue(MAX_PROGRESS);
                             }
+                        } catch (Exception exception) {
 
-                            progressBar.setValue(70);
-                            runMessagePrint(messageRun, " .", LabelConstant.TEXT_APPEND_MODEL_NO_TIME_AND_NO_NEXT);
-
-                            String translateString = null;
-                            try {
-                                translateString = BaiduTranslateUtil.translateAsString(hSources.getOName());
-                            } catch (Exception exxx) {
-                                exxx.printStackTrace();
-                            }
-                            hSources.setRobot("0");
-
-                            hSources.setCName(translateString);
-                            hSources.setLanguages("JAP");
-                            hSources.setMosaic("HM");
-                            if (hSources.getScore() == 0) hSources.setScore(60);
-                            hSources.setRecommend("0");
-
-                            progressBar.setValue(90);
-                            clearSourcesMessage();
-                            fitAVMessage(hSources);
-                            //uploadPhotosQuite();
-                            progressBar.setValue(MAX_PROGRESS);
-
-                            runMessagePrint(messageRun, "[" + code + "]数据填充完成！\n", LabelConstant.TEXT_APPEND_MODEL_TIME_AND_NEXT);
-
-
-                            if (hSources.getCover() == null) {
-                                runMessagePrint(messageRun, "[" + code + "] 封面获取失败]！\n", LabelConstant.TEXT_APPEND_MODEL_TIME_AND_NEXT);
-                            }
-
-                            showProgressBar.setValue(90);
-                            long end = System.currentTimeMillis();
-                            runMessagePrint(messageRun, "[" + code + "]完成注入！耗时[" + (end - start) / 1000 + "]\n", LabelConstant.TEXT_APPEND_MODEL_TIME_AND_NEXT);
-                        } else {
-                            long end = System.currentTimeMillis();
-                            runMessagePrint(messageRun, "[" + code + "] 未获取有效数据！耗时[" + (end - start) / 1000 + "]\n", LabelConstant.TEXT_APPEND_MODEL_TIME_AND_NEXT);
                         }
-                        showProgressBar.setValue(MAX_PROGRESS);
+                        jDialog.setVisible(false);
+
                     }
-                    jDialog.setVisible(false);
                 }).start();
 
                 jDialog.add(progressBar);
@@ -1053,17 +1041,17 @@ public class HVAJapanAVMView implements JChildTabView {
         });
 
         fulshList.addActionListener((e) -> {
-            flushResourcesList(LabelConstant.SOURCES_FLUSH_MODLE_ALL,null);
+            flushResourcesList(LabelConstant.SOURCES_FLUSH_MODLE_ALL, null);
             sourcesListMoudel = LabelConstant.SOURCES_FLUSH_MODLE_ALL;
         });
 
         fulshRobotList.addActionListener((e) -> {
-            flushResourcesList(LabelConstant.SOURCES_FLUSH_MODLE_AUTO_IMPORT,null);
+            flushResourcesList(LabelConstant.SOURCES_FLUSH_MODLE_AUTO_IMPORT, null);
             sourcesListMoudel = LabelConstant.SOURCES_FLUSH_MODLE_AUTO_IMPORT;
 
         });
         fulshRobot2List.addActionListener((e) -> {
-            flushResourcesList(LabelConstant.SOURCES_FLUSH_MODLE_DEAL_FIRST,null);
+            flushResourcesList(LabelConstant.SOURCES_FLUSH_MODLE_DEAL_FIRST, null);
             sourcesListMoudel = LabelConstant.SOURCES_FLUSH_MODLE_DEAL_FIRST;
         });
         updateRobotToTwo.addActionListener(e -> {
@@ -1083,7 +1071,7 @@ public class HVAJapanAVMView implements JChildTabView {
                     try {
                         HVAJapanAVMDao.updateAllRoBotByRobotMessage(serviceConn, LabelConstant.ROBOT_TEXT_IMPORT_AUTO, LabelConstant.ROBOT_TEXT_DEAL_FIRST);
                         serviceConn.commit();
-                        flushResourcesList(LabelConstant.SOURCES_FLUSH_MODLE_AUTO_IMPORT,null);
+                        flushResourcesList(LabelConstant.SOURCES_FLUSH_MODLE_AUTO_IMPORT, null);
                         jDialog.setVisible(false);
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
@@ -1123,7 +1111,7 @@ public class HVAJapanAVMView implements JChildTabView {
                     try {
                         HVAJapanAVMDao.updateAllRoBotByRobotMessage(serviceConn, LabelConstant.ROBOT_TEXT_DEAL_FIRST, LabelConstant.ROBOT_TEXT_IMPORT_BY_PERSON);
                         serviceConn.commit();
-                        flushResourcesList(LabelConstant.SOURCES_FLUSH_MODLE_DEAL_FIRST,null);
+                        flushResourcesList(LabelConstant.SOURCES_FLUSH_MODLE_DEAL_FIRST, null);
                         jDialog.setVisible(false);
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
@@ -1146,22 +1134,29 @@ public class HVAJapanAVMView implements JChildTabView {
 
         });
 
+        scoreRule.addActionListener(e -> {
+
+            JDialog jDialog = new JDialog(father, "评分细则",  false);
+            Box smBox = Box.createVerticalBox();
+            smBox.add(new JLabel("95+  :极品，无法形容，一般为剧情画面以及其他都属于极品的作品"));
+            smBox.add(new JLabel("90-94：完美，感觉特别很好看，一般为喜欢的各种作品"));
+            smBox.add(new JLabel("80-89：很不错，但是没有那么喜欢，属于较为优秀的作品"));
+            smBox.add(new JLabel("70-79：没有什么亮点，但也还可以，属于一般般的作品"));
+            smBox.add(new JLabel("60-69：有明显的缺点，属于无所谓的作品"));
+            smBox.add(new JLabel("60-  ：引起不适的作品"));
+            jDialog.add(smBox, BorderLayout.CENTER);
+            jDialog.setLocationRelativeTo(father);
+            jDialog.pack();
+            jDialog.setVisible(true);
+
+        });
 
     }
+
     //视图组装
     @Override
     public JPanel assemblyOfTheView() {
         JPanel tabPanel = new JPanel();
-
-        //文本右键菜单
-        textPopupMenu.add(copyItem);
-        textPopupMenu.add(pasteItem);
-        describe.setComponentPopupMenu(textPopupMenu);
-
-
-
-        //人物列表右键菜单
-
 
         Box tabBox = Box.createVerticalBox();
         //查询栏
@@ -1248,19 +1243,30 @@ public class HVAJapanAVMView implements JChildTabView {
         //Person and label
         Box plBox = Box.createHorizontalBox();
 
-        Box personBox = Box.createVerticalBox();
-        personBox.add(avLabelLabel);
+        Box avLabelPanelBox = Box.createHorizontalBox();
+        Box avPersonPanelBox = Box.createHorizontalBox();
+
+        avLabelPanelBox.add(avLabelLabel);
+        avLabelPanelBox.add(new JPanel());
+        avLabelPanelBox.add(avLabelButton);
+        avPersonPanelBox.add(avPersonLabel);
+        avPersonPanelBox.add(new JPanel());
+        avPersonPanelBox.add(avPersonButton);
+
         avLabelList.setVisibleRowCount(10);
-        personBox.add(new JScrollPane(avLabelList));
-        personBox.add(avLabelButton);
-        plBox.add(personBox);
-        Box labelBox = Box.createVerticalBox();
-        labelBox.add(avPersonLabel);
         avPersonList.setVisibleRowCount(10);
+
+        Box personBox = Box.createVerticalBox();
+        personBox.add(avLabelPanelBox);
+        personBox.add(new JScrollPane(avLabelList));
+        plBox.add(personBox);
+
+        Box labelBox = Box.createVerticalBox();
+        labelBox.add(avPersonPanelBox);
         labelBox.add(new JScrollPane(avPersonList));
-        labelBox.add(avPersonButton);
         plBox.add(new JPanel());
         plBox.add(labelBox);
+
         messageBox.add(plBox);
         //视频长度
         Box durationBox = Box.createHorizontalBox();
@@ -1273,21 +1279,24 @@ public class HVAJapanAVMView implements JChildTabView {
         Box describeBox = Box.createHorizontalBox();
         describe.setLineWrap(true);
         describeBox.add(describeLable);
-        describeBox.add(describe);
+        describeBox.add(new JScrollPane(describe));
         messageBox.add(describeBox);
         //分数
-
-        statusGroup.add(isRobot);
-        statusGroup.add(isRobot2);
+/*        statusGroup.add(isRobot);
+        statusGroup.add(isRobot2);*/
         Box scoreBox = Box.createHorizontalBox();
         scoreBox.add(AVScoreLabel);
         scoreBox.add(AVScore);
+        scoreBox.add(scoreRule);
         scoreBox.add(new JPanel());
         scoreBox.add(recommend);
-        scoreBox.add(isRobot);
-        scoreBox.add(isRobot2);
+/*        scoreBox.add(isRobot);
+        scoreBox.add(isRobot2);*/
+        scoreBox.add(new JPanel());
+        scoreBox.add(robotStatusLable);
+        scoreBox.add(robotStatus);
         messageBox.add(scoreBox);
-        messageBox.add(new JLabel("95+:特别好 90-94：很好 80-89：挺好 70-79：一般好 69-：差"));
+
         JPanel cutPanel = new JPanel(); //截图集
         cut1.setPreferredSize(new Dimension(100, 90));
         cut2.setPreferredSize(new Dimension(100, 90));
@@ -1308,8 +1317,8 @@ public class HVAJapanAVMView implements JChildTabView {
         cutPanel.add(cut8);
         cutPanel.add(cut9);
         cover.setPreferredSize(new Dimension(200, 300));
-        opraBox.setPreferredSize(new Dimension(200, 100));
-        messageBox.setPreferredSize(new Dimension(800, 400));
+        opraBox.setPreferredSize(new Dimension(200, 200));
+        messageBox.setPreferredSize(new Dimension(800, 500));
         cutPanel.setPreferredSize(new Dimension(450, 100));
         //selectResult.setPreferredSize(new Dimension(100, 0));
         Box listBox = Box.createVerticalBox();
@@ -1346,7 +1355,7 @@ public class HVAJapanAVMView implements JChildTabView {
 
         JScrollPane selectResultScrollPane = new JScrollPane(selectResult);
         listBox.add(listButtonBox);
-        //listBox.add(listButtonBox2);
+        listBox.add(listCount);
         listBox.add(selectResultScrollPane);
 
         selectResultScrollPane.setPreferredSize(new Dimension(150, 450));
@@ -1389,6 +1398,9 @@ public class HVAJapanAVMView implements JChildTabView {
             } else if (LabelConstant.SOURCES_FLUSH_MODLE_DEAL_FIRST.equals(moudle)) {
                 allMessage = HVAJapanAVMDao.selectAllNameRobotMessage(serviceConn, LabelConstant.ROBOT_TEXT_DEAL_FIRST);
                 flushResourcesList(allMessage);
+            } else if (LabelConstant.SOURCES_FLUSH_MODLE_SELECT.equals(moudle)) {
+                allMessage = HVAJapanAVMDao.selectMessageByAll(serviceConn, selectField.getText());
+                flushResourcesList(allMessage);
             } else if (LabelConstant.SOURCES_FLUSH_MODLE_BY_CUSTOM.equals(moudle)) {
                 flushResourcesList(allMessage);
             } else {
@@ -1398,43 +1410,53 @@ public class HVAJapanAVMView implements JChildTabView {
             e.printStackTrace();
         }
     }
+
     private void flushResourcesList(List<HVAJapanAVM> allMessage) {
         if (allMessage != null) {
+            listCount.setText("共计" + allMessage.size() + "个");
             selectResult.setListData(allMessage.toArray(new HVAJapanAVM[allMessage.size()]));
         } else {
+            listCount.setText("共计0个");
             selectResult.setListData(new HVAJapanAVM[0]);
         }
     }
+
     private void flushRobotAVMList(String robot) {
         List<HVAJapanAVM> allMessage = null;
         try {
             //allMessage = HVAJapanAVMDao.selectAllMessage(serviceConn);
             allMessage = HVAJapanAVMDao.selectAllNameRobotMessage(serviceConn, robot);
             if (allMessage != null) {
+                listCount.setText("共计" + allMessage.size() + "个");
                 selectResult.setListData(allMessage.toArray(new HVAJapanAVM[allMessage.size()]));
             } else {
+                listCount.setText("共计0个");
                 selectResult.setListData(new HVAJapanAVM[0]);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     private void flushAVMList() {
         List<HVAJapanAVM> allMessage = null;
         try {
             //allMessage = HVAJapanAVMDao.selectAllMessage(serviceConn);
             allMessage = HVAJapanAVMDao.selectAllNameMessage(serviceConn);
             if (allMessage != null) {
+                listCount.setText("共计" + allMessage.size() + "个");
                 selectResult.setListData(allMessage.toArray(new HVAJapanAVM[allMessage.size()]));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     @Override
     public void flushMessageList() {
 
     }
+
     //清除资源信息框
     private void clearSourcesMessage() {
 
@@ -1458,8 +1480,9 @@ public class HVAJapanAVMView implements JChildTabView {
 
         AVScore.setSelectedIndex(0);
         recommend.setSelected(false);
-        isRobot.setSelected(false);
-        isRobot2.setSelected(false);
+/*        isRobot.setSelected(false);
+        isRobot2.setSelected(false);*/
+        robotStatus.setSelectedIndex(0);
 
         cover.setIcon(null);
         cut1.setIcon(null);
@@ -1634,14 +1657,12 @@ public class HVAJapanAVMView implements JChildTabView {
     }
 
     public void showSelectPersonDialog() {
-        JDialog jDialog = new JDialog(father, "任务选择器", true);
+        JDialog jDialog = new JDialog(father, "人物选择器", true);
 
         JList<HVAJapanAVPersonM> noSelected = new JList<>();
         JList<HVAJapanAVPersonM> yesSelected = new JList<>();
-        //noSelected.setPreferredSize(new Dimension(150, 300));
         noSelected.setFixedCellWidth(300);
         noSelected.setVisibleRowCount(30);
-        //yesSelected.setPreferredSize(new Dimension(150, 300));
         yesSelected.setFixedCellWidth(300);
         yesSelected.setVisibleRowCount(30);
 
@@ -1742,15 +1763,18 @@ public class HVAJapanAVMView implements JChildTabView {
         find.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                if (find.getText() == null) {
+                if (find.getText() == null || find.getText().length() == 0) {
+                    noSelectedPersons = removeRepPersons(allPersons, avCase.getPersons());
                     noSelected.setListData(noSelectedPersons.toArray(new HVAJapanAVPersonM[noSelectedPersons.size()]));
                 } else {
 
                     try {
                         List<HVAJapanAVPersonM> findList = HVAJapanAVPersonDao.qryPersonByName(serviceConn, find.getText());
                         if (findList != null && findList.size() != 0) {
-                            noSelected.setListData(findList.toArray(new HVAJapanAVPersonM[findList.size()]));
+                            noSelectedPersons = removeRepPersons(findList, avCase.getPersons());
+                            noSelected.setListData(noSelectedPersons.toArray(new HVAJapanAVPersonM[findList.size()]));
                         } else {
+                            noSelectedPersons = findList;
                             noSelected.setListData(new HVAJapanAVPersonM[0]);
                         }
                     } catch (Exception ex) {
@@ -1762,14 +1786,17 @@ public class HVAJapanAVMView implements JChildTabView {
             @Override
             public void removeUpdate(DocumentEvent e) {
                 if (find.getText() == null) {
+                    noSelectedPersons = removeRepPersons(allPersons, avCase.getPersons());
                     noSelected.setListData(noSelectedPersons.toArray(new HVAJapanAVPersonM[noSelectedPersons.size()]));
                 } else {
 
                     try {
                         List<HVAJapanAVPersonM> findList = HVAJapanAVPersonDao.qryPersonByName(serviceConn, find.getText());
                         if (findList != null && findList.size() != 0) {
+                            noSelectedPersons = removeRepPersons(findList, avCase.getPersons());
                             noSelected.setListData(findList.toArray(new HVAJapanAVPersonM[findList.size()]));
                         } else {
+                            noSelectedPersons = findList;
                             noSelected.setListData(new HVAJapanAVPersonM[0]);
                         }
                     } catch (Exception ex) {
@@ -1947,9 +1974,10 @@ public class HVAJapanAVMView implements JChildTabView {
         JLabel SOURCE_NAME = new JLabel("资源名称:" + hvaJapanAVS.getSource_name());
         JLabel translate = new JLabel("翻译:" + hvaJapanAVS.getTranslate());
         JLabel SUBTITLE = new JLabel("字幕:" + hvaJapanAVS.getSubtitle());
-        JLabel QUALITY = new JLabel("资源质量:" + hvaJapanAVS.getQuality());
-        JLabel WATERMARK = new JLabel("水印广告:" + hvaJapanAVS.getWatermark());
-        JLabel SIZES = new JLabel("资源大小:" + hvaJapanAVS.getSizes() + "MB");
+
+        JLabel QUALITY = new JLabel("资源质量:" + LabelConstant.SOURCE_QUALITY_TEXT[Integer.valueOf(hvaJapanAVS.getQuality()) - 1]);
+        JLabel WATERMARK = new JLabel("水印广告:" + (hvaJapanAVS.getWatermark().equals("1") ? "有" : "无"));
+        JLabel SIZES = new JLabel("资源大小:" + hvaJapanAVS.getSizes() + " MB");
         JLabel FORMAT = new JLabel("资源格式:" + hvaJapanAVS.getFormat());
         JLabel resolution = new JLabel("视频分辨率:" + hvaJapanAVS.getResolution());
         JLabel BIT_RATE = new JLabel("视频码率（kbps）:" + hvaJapanAVS.getBit_rate());
@@ -1989,6 +2017,7 @@ public class HVAJapanAVMView implements JChildTabView {
         Box sourceBox = Box.createHorizontalBox();
         JLabel sourceLabel = new JLabel("资源路径:");
         JTextField source = new JTextField(LabelConstant.DEFAULT_FILE_PATH);
+        source.setEnabled(false);
         sourceBox.add(sourceLabel);
         sourceBox.add(source);
 
@@ -2012,11 +2041,6 @@ public class HVAJapanAVMView implements JChildTabView {
         subtitleBox.add(subtitleLabel);
         subtitleBox.add(subtitle);
 
-        Box qualityBox = Box.createHorizontalBox();
-        JLabel qualityLabel = new JLabel("视频质量（1-10级）:");
-        JComboBox<String> quality = new JComboBox<String>(LabelConstant.SOURCE_QUALITY);
-        qualityBox.add(qualityLabel);
-        qualityBox.add(quality);
 
         Box watermarkBox = Box.createHorizontalBox();
         JLabel watermarkLabel = new JLabel("水印广告:");
@@ -2034,6 +2058,7 @@ public class HVAJapanAVMView implements JChildTabView {
         JTextField size = new JTextField(20);
         sizeBox.add(sizeLabel);
         sizeBox.add(size);
+        sizeBox.add(new JLabel("单位：MB"));
 
         Box formatBox = Box.createHorizontalBox();
         JLabel formatLabel = new JLabel("视频格式:");
@@ -2043,15 +2068,27 @@ public class HVAJapanAVMView implements JChildTabView {
 
         Box resolutionBox = Box.createHorizontalBox();
         JLabel resolutionLabel = new JLabel("视频分辨率:");
+        JComboBox<String> resolutionCombBox = new JComboBox<String>(LabelConstant.SOURCE_RESOLUTION);
         JTextField resolution = new JTextField(20);
+        JLabel qualityLabel = new JLabel("视频质量（1-3级）:");
+        JComboBox<String> quality = new JComboBox<String>(LabelConstant.SOURCE_QUALITY);
         resolutionBox.add(resolutionLabel);
+        resolutionBox.add(resolutionCombBox);
         resolutionBox.add(resolution);
+        resolutionBox.add(qualityLabel);
+        resolutionBox.add(quality);
+        /*
+        Box qualityBox = Box.createHorizontalBox();
+        qualityBox.add(qualityLabel);
+        qualityBox.add(quality);
+        */
 
         Box bitBox = Box.createHorizontalBox();
         JLabel bitLabel = new JLabel("视频码率:");
         JTextField bit = new JTextField(20);
         bitBox.add(bitLabel);
         bitBox.add(bit);
+        sizeBox.add(new JLabel("单位：kbps(千位每秒)"));
 
         Box uriBox = Box.createHorizontalBox();
         JLabel uriLabel = new JLabel("URI:");
@@ -2078,15 +2115,12 @@ public class HVAJapanAVMView implements JChildTabView {
         smBox.add(sourceNameBox);
         smBox.add(translateBox);
         smBox.add(subtitleBox);
-        smBox.add(qualityBox);
-        smBox.add(new JLabel("视频等级：1[最低级画质] 2-3[360P/480p 劣/优] 4-5[720P 劣/优] 6-7[1080 劣/优] 8-9[蓝光 劣/优] 10[顶级画质]"));
         smBox.add(watermarkBox);
         smBox.add(sizeBox);
         smBox.add(formatBox);
         smBox.add(resolutionBox);
-        smBox.add(resolution);
+        smBox.add(new JLabel("视频等级：1[低画质] 2[中画质] 3[顶级画质]"));
         smBox.add(bitBox);
-        //smBox.add(uploadBox);
         smBox.add(uriBox);
         smBox.add(new JLabel("后缀说明：-CH 中文 -F 相对完全版"));
         smBox.add(compressFormatBox);
@@ -2113,7 +2147,18 @@ public class HVAJapanAVMView implements JChildTabView {
                     sourceName.setText(text);
 
                     Map<String, Object> returnMap = VideoAnalyticalUtil.analyticalWithFFmpeg(filePath);
-                    resolution.setText((String) returnMap.get("resolution"));
+
+                    String resolutionText = (String) returnMap.get("resolution");
+                    resolution.setText(resolutionText);
+                    resolutionCombBox.setSelectedIndex(0);
+                    if (resolutionText != null && resolutionText.length() != 0) {
+                        for (int i = 1; i < LabelConstant.SOURCE_RESOLUTION.length; i++) {
+                            if (resolutionText.equals(LabelConstant.SOURCE_RESOLUTION[i])) {
+                                resolutionCombBox.setSelectedIndex(i);
+                            }
+                        }
+                    }
+
                     avCase.setDuration(returnMap.get("duration") == null ? 1 : (long) returnMap.get("duration"));
                     size.setText((String) returnMap.get("size"));
                     bit.setText((String) returnMap.get("bit"));
@@ -2257,15 +2302,24 @@ public class HVAJapanAVMView implements JChildTabView {
         quality.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                int selectedIndex = quality.getSelectedIndex();
+/*                int selectedIndex = quality.getSelectedIndex();
 
                 if (selectedIndex == 1 || selectedIndex == 2 || selectedIndex == 4 || selectedIndex == 6 || selectedIndex == 8)
                     watermark.setSelected(true);
                 if (selectedIndex == 3 || selectedIndex == 5 || selectedIndex == 7 || selectedIndex == 9 || selectedIndex == 10)
-                    watermark.setSelected(false);
+                    watermark.setSelected(false);*/
             }
         });
-
+        resolutionCombBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (resolutionCombBox.getSelectedIndex() != 0) {
+                    resolution.setText(LabelConstant.SOURCE_RESOLUTION[resolutionCombBox.getSelectedIndex()]);
+                } else {
+                    resolution.setText("");
+                }
+            }
+        });
 
         jDialog.add(smBox, BorderLayout.CENTER);
         jDialog.add(oprBox, BorderLayout.SOUTH);
@@ -2537,9 +2591,10 @@ public class HVAJapanAVMView implements JChildTabView {
                 }
                 recommend.setSelected("1".equals(selectedValue.getRecommend()));
 
-                isRobot.setSelected("1".equals(selectedValue.getRobot()));
+/*                isRobot.setSelected("1".equals(selectedValue.getRobot()));
                 isRobot2.setSelected("2".equals(selectedValue.getRobot()));
-                //isRobot.setSelected("1".equals(selectedValue.getRobot()));
+                //isRobot.setSelected("1".equals(selectedValue.getRobot()));*/
+                robotStatus.setSelectedIndex(Integer.valueOf(selectedValue.getRobot()));
                 if (selectedValue.getCover() != null) {
                     ImageIcon iconCover = new ImageIcon(selectedValue.getCover());
                     iconCover = new ImageIcon(iconCover.getImage().getScaledInstance(cover.getWidth(), cover.getHeight(), Image.SCALE_DEFAULT));
