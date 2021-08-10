@@ -5,7 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f68a3aba-e173-4209-98ba-ce744f3e29bd" name="Default Changelist" comment="2021.8.09-6 Commit From Home">
-      <change afterPath="$PROJECT_DIR$/WebSimulated/src/main/resources/study/JAVA Selenium 自动化测试.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/src/main/java/com/mycode/constant/Constant.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/src/main/java/com/mycode/entity/Course.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/src/main/java/com/mycode/entity/Task.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/src/main/java/com/mycode/entity/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/src/main/java/com/mycode/service/SimulatedService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/src/main/java/com/mycode/service/SimulatedYSRSJService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSimulated/WebSimulated.iml" beforeDir="false" afterPath="$PROJECT_DIR$/WebSimulated/WebSimulated.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSimulated/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/WebSimulated/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,6 +26,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
+        <option value="Python Script" />
         <option value="Class" />
       </list>
     </option>
@@ -350,7 +360,8 @@
       <workItem from="1628002988463" duration="5650000" />
       <workItem from="1628090336558" duration="677000" />
       <workItem from="1628173011499" duration="23295000" />
-      <workItem from="1628397778610" duration="7948000" />
+      <workItem from="1628397778610" duration="7993000" />
+      <workItem from="1628607368875" duration="4930000" />
     </task>
     <task id="LOCAL-00001" summary="2021.02.24 Commit From Home">
       <created>1614180483249</created>
@@ -478,7 +489,14 @@
       <option name="project" value="LOCAL" />
       <updated>1628462625568</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="2021.8.09-6 Commit From Home">
+      <created>1628462841236</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1628462841236</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
