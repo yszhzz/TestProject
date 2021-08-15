@@ -4,16 +4,59 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f68a3aba-e173-4209-98ba-ce744f3e29bd" name="Default Changelist" comment="2021.8.09-6 Commit From Home">
-      <change afterPath="$PROJECT_DIR$/WebSimulated/src/main/java/com/mycode/constant/Constant.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebSimulated/src/main/java/com/mycode/entity/Course.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebSimulated/src/main/java/com/mycode/entity/Task.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebSimulated/src/main/java/com/mycode/entity/User.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebSimulated/src/main/java/com/mycode/service/SimulatedService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebSimulated/src/main/java/com/mycode/service/SimulatedYSRSJService.java" afterDir="false" />
+    <list default="true" id="f68a3aba-e173-4209-98ba-ce744f3e29bd" name="Default Changelist" comment="2021.8.11-6 Commit From Home">
+      <change afterPath="$PROJECT_DIR$/WebSimulated/src/main/java/com/mycode/app/MainFram.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/src/main/java/com/mycode/app/StartApp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/src/main/java/com/mycode/test/TestBase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/src/main/java/com/mycode/test/TestRunOnce.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/src/main/java/com/mycode/test/ThreadTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/src/main/java/com/mycode/util/FileBaseUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/src/main/resources/log4j.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/target/WebSimulated-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/target/classes/com/mycode/app/MainFram$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/target/classes/com/mycode/app/MainFram$2.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/target/classes/com/mycode/app/MainFram$3.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/target/classes/com/mycode/app/MainFram$4$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/target/classes/com/mycode/app/MainFram$4.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/target/classes/com/mycode/app/MainFram$5.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/target/classes/com/mycode/app/MainFram$6.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/target/classes/com/mycode/app/MainFram$7.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/target/classes/com/mycode/app/MainFram$8.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/target/classes/com/mycode/app/MainFram.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/target/classes/com/mycode/app/StartApp.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/target/classes/com/mycode/constant/Constant.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/target/classes/com/mycode/entity/Course.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/target/classes/com/mycode/entity/Task.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/target/classes/com/mycode/entity/User.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/target/classes/com/mycode/service/SimulatedService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/target/classes/com/mycode/service/SimulatedYSRSJService$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/target/classes/com/mycode/service/SimulatedYSRSJService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/target/classes/com/mycode/test/TestBase.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/target/classes/com/mycode/test/TestRunOnce.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/target/classes/com/mycode/test/ThreadTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/target/classes/com/mycode/util/FileBaseUtil.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/target/classes/log4j.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/target/classes/study/JAVA Selenium 自动化测试.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/target/maven-archiver/pom.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSimulated/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/base.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/import.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/src/main/java/cn/mypro/swing/util/file/MyFileUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/src/main/java/cn/mypro/swing/util/file/MyFileUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HSourcesGUI/src/main/java/cn/mypro/swing/util/file/ReadFromFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/HSourcesGUI/src/main/java/cn/mypro/swing/util/file/FileReadAndWriteUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebSimulated/WebSimulated.iml" beforeDir="false" afterPath="$PROJECT_DIR$/WebSimulated/WebSimulated.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebSimulated/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/WebSimulated/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSimulated/src/main/java/com/mycode/constant/Constant.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebSimulated/src/main/java/com/mycode/constant/Constant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSimulated/src/main/java/com/mycode/entity/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebSimulated/src/main/java/com/mycode/entity/Course.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSimulated/src/main/java/com/mycode/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebSimulated/src/main/java/com/mycode/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSimulated/src/main/java/com/mycode/service/SimulatedYSRSJService.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebSimulated/src/main/java/com/mycode/service/SimulatedYSRSJService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSimulated/src/main/java/com/mycode/test/SimulatedTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebSimulated/src/main/java/com/mycode/test/SimulatedTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSimulated/target/classes/com/mycode/RunMain.class" beforeDir="false" afterPath="$PROJECT_DIR$/WebSimulated/target/classes/com/mycode/RunMain.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSimulated/target/classes/com/mycode/test/SimulatedTest$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/WebSimulated/target/classes/com/mycode/test/SimulatedTest$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSimulated/target/classes/com/mycode/test/SimulatedTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/WebSimulated/target/classes/com/mycode/test/SimulatedTest.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +124,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="jdk.selected.PYTHON_MODULE" value="Python 3.9" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/WebSimulated/src/main/resources/study" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/WebSimulated/src/main/resources" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
@@ -91,20 +134,20 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="G:\WorkSpace\WorkSpaceForIDEA\TestProject\WebSimulated\src\main\resources" />
+      <recent name="G:\WorkSpace\WorkSpaceForIDEA\TestProject\WebSimulated\src\main\java\com\mycode\test" />
+      <recent name="G:\WorkSpace\WorkSpaceForIDEA\TestProject\WebSimulated\src\main\java\com\mycode\service" />
+      <recent name="G:\WorkSpace\WorkSpaceForIDEA\TestProject\WebSimulated\src\main\java\com\mycode" />
       <recent name="G:\WorkSpace\WorkSpaceForIDEA\TestProject\WebSimulated\src\main\resources\study" />
-      <recent name="G:\WorkSpace\WorkSpaceForIDEA\TestProject\WebSimulated\src\main\resources\dirver" />
-      <recent name="G:\WorkSpace\WorkSpaceForIDEA\TestProject\HSourcesGUI\src\main\java\cn\mypro\swing\util\compress" />
-      <recent name="G:\WorkSpace\WorkSpaceForIDEA\TestProject\HSourcesGUI\src\main\java\cn\mypro\swing\util\file" />
-      <recent name="G:\WorkSpace\WorkSpaceForIDEA\TestProject\HSourcesGUI\src\main\java\cn\mypro\swing\util\translateAPI" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.SimulatedTest">
-    <configuration name="CompressionUtil" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="cn.mypro.swing.util.compress.CompressionUtil" />
-      <module name="HSourcesGUI" />
+  <component name="RunManager" selected="Application.StartApp">
+    <configuration name="SimulatedTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.mycode.test.SimulatedTest" />
+      <module name="WebSimulated" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="cn.mypro.swing.util.compress.*" />
+          <option name="PATTERN" value="com.mycode.test.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -112,12 +155,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="SimulatedTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.mycode.test.SimulatedTest" />
+    <configuration name="StartApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.mycode.app.StartApp" />
       <module name="WebSimulated" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.mycode.test.*" />
+          <option name="PATTERN" value="com.mycode.app.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -138,12 +181,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="VideoAnalyticalUtil" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="cn.mypro.swing.util.video.VideoAnalyticalUtil" />
-      <module name="HSourcesGUI" />
+    <configuration name="TestBase" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.mycode.test.TestBase" />
+      <module name="WebSimulated" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="cn.mypro.swing.util.video.*" />
+          <option name="PATTERN" value="com.mycode.test.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -151,12 +194,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="WindowClipboardUtil" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="cn.mypro.swing.util.file.WindowClipboardUtil" />
-      <module name="HSourcesGUI" />
+    <configuration name="TestRunOnce" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.mycode.test.TestRunOnce" />
+      <module name="WebSimulated" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="cn.mypro.swing.util.file.*" />
+          <option name="PATTERN" value="com.mycode.test.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -164,13 +207,15 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="class" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -224,18 +269,18 @@
     </configuration>
     <list>
       <item itemvalue="Application.StartGUIApp" />
-      <item itemvalue="Application.VideoAnalyticalUtil" />
-      <item itemvalue="Application.CompressionUtil" />
-      <item itemvalue="Application.WindowClipboardUtil" />
       <item itemvalue="Application.SimulatedTest" />
+      <item itemvalue="Application.TestRunOnce" />
+      <item itemvalue="Application.StartApp" />
+      <item itemvalue="Application.TestBase" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.StartApp" />
+        <item itemvalue="Application.TestBase" />
+        <item itemvalue="Application.TestRunOnce" />
         <item itemvalue="Application.SimulatedTest" />
         <item itemvalue="Application.StartGUIApp" />
-        <item itemvalue="Application.WindowClipboardUtil" />
-        <item itemvalue="Application.VideoAnalyticalUtil" />
-        <item itemvalue="Application.CompressionUtil" />
       </list>
     </recent_temporary>
   </component>
@@ -362,6 +407,10 @@
       <workItem from="1628173011499" duration="23295000" />
       <workItem from="1628397778610" duration="7993000" />
       <workItem from="1628607368875" duration="4930000" />
+      <workItem from="1628633720252" duration="656000" />
+      <workItem from="1628690323706" duration="5449000" />
+      <workItem from="1628924110109" duration="3299000" />
+      <workItem from="1628987295054" duration="17798000" />
     </task>
     <task id="LOCAL-00001" summary="2021.02.24 Commit From Home">
       <created>1614180483249</created>
@@ -496,7 +545,14 @@
       <option name="project" value="LOCAL" />
       <updated>1628462841236</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="2021.8.11-6 Commit From Home">
+      <created>1628633773392</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1628633773392</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -529,7 +585,8 @@
     <MESSAGE value="2021.7.06-24 Commit From Home" />
     <MESSAGE value="2021.8.02-6 Commit From Home" />
     <MESSAGE value="2021.8.09-6 Commit From Home" />
-    <option name="LAST_COMMIT_MESSAGE" value="2021.8.09-6 Commit From Home" />
+    <MESSAGE value="2021.8.11-6 Commit From Home" />
+    <option name="LAST_COMMIT_MESSAGE" value="2021.8.11-6 Commit From Home" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

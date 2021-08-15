@@ -77,10 +77,23 @@ public class Course {
         this.tasks = tasks;
     }
 
-    @Override
+/*    @Override
     public String toString() {
         return "Course{" +
                 "course_title='" + course_title + '\'' +
+                '}';
+    }*/
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "course_index=" + course_index +
+                ", course_title='" + course_title + '\'' +
+                ", course=" + course +
+                ", study_over=" + study_over +
+                ", percent='" + percent + '\'' +
+                ", task_num=" + task_num +
+                ", tasks=" + tasks +
                 '}';
     }
 }

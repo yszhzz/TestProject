@@ -15,7 +15,7 @@
     <bytecodeTargetLevel>
       <module name="FirstMoudule" target="8" />
       <module name="HSourcesGUI" target="9" />
-      <module name="WebSimulated" target="11" />
+      <module name="WebSimulated" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>

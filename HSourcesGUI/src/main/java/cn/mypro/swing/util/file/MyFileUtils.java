@@ -11,9 +11,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MyFileUtils {
-
     private static final Logger logger = LoggerFactory.getLogger(MyFileUtils.class);
 
+    public static void main(String[] args) {
+        Map<String, Object> imgByteByNet = MyFileUtils.getImgByteByNet("https://m1.xslist.org/gallery/0/260/1576399312.jpg");
+        System.out.println(((byte[])imgByteByNet.get(LabelConstant.RETURN_ANSWER_OBJECT)).length);
+    }
+
+    /**
+     * 读取二进制文件 输出Byte数组
+     */
     public static byte[] getBytesFromFile(File cntIdImg) throws IOException {
         if (cntIdImg == null) return null;
         logger.info("Read Picture :"  + cntIdImg.getCanonicalPath());
@@ -24,7 +31,9 @@ public class MyFileUtils {
         is.close();
         return idImgBytes;
     }
-
+    /**
+     * 根据Http下载图片并保存
+     */
     public static void downloadImgByNet2(String imgSrc, String filePath, String fileName) {
         if (imgSrc == null) return;
         logger.info("Down Picture :"  + imgSrc);
@@ -109,7 +118,9 @@ public class MyFileUtils {
         }
         return false;
     }
-
+    /**
+     * 根据Http下载图片并保存Byte数组
+     */
     public static Map<String, Object> getImgByteByNet(String imgSrc) {
 
         Map<String, Object> returnMap = new HashMap<>(){
@@ -153,9 +164,5 @@ public class MyFileUtils {
         return returnMap;
     }
 
-    public static void main(String[] args) {
-        Map<String, Object> imgByteByNet = MyFileUtils.getImgByteByNet("https://m1.xslist.org/gallery/0/260/1576399312.jpg");
-        System.out.println(((byte[])imgByteByNet.get(LabelConstant.RETURN_ANSWER_OBJECT)).length);
-    }
 
 }

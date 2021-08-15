@@ -19,7 +19,6 @@ public class SimulatedTest {
     private static String username = "jz18635080488";
     private static String password = "hdg123456";
 
-
     public static void main(String[] args) throws InterruptedException {
         System.setProperty("webdriver.chrome.driver", "WebSimulated/src/main/resources/dirver/chromedriver.exe");// chromedriver服务地址
         WebDriver driver = new ChromeDriver();
